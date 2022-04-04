@@ -1,4 +1,6 @@
-export default () => ({
+import { Environment } from './configuration.types';
+
+export default (): Environment => ({
   port: Number(process.env.PORT),
   mode: 'DEVELOPMENT',
   db: {
