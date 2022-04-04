@@ -22,4 +22,7 @@ export default (): Environment => ({
     autoLoadEntities: true,
     ssl: false,
   },
+  graphql: {
+    autoSchemaFile: join(__dirname, 'src/schema.gql'),
+  },
 });
