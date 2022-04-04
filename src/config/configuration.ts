@@ -1,3 +1,4 @@
+import { join } from 'path';
 import { Environment } from './configuration.types';
 
 export default (): Environment => ({
@@ -12,11 +13,13 @@ export default (): Environment => ({
     password: process.env.POSTGRES_PASSWORD,
     database: process.env.POSTGRES_DATABASE,
 
-    entities: ['**/*.entity{.ts,.js}'],
+    entities: [join(__dirname, '**/*.entity.{ts,js}')],
     migrationsTableName: 'migration',
     migrations: ['src/migration/*.ts'],
     cli: { migrationsDir: 'src/migration' },
 
+    synchronize: true,
+    autoLoadEntities: true,
     ssl: false,
   },
 });
