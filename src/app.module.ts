@@ -7,7 +7,6 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import configuration from './config/configuration';
 import { ExercisesModule } from './exercises/exercises.module';
-import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -24,7 +23,6 @@ import { UsersModule } from './users/users.module';
       inject: [ConfigService],
     }),
 
-    UsersModule,
     ExercisesModule,
   ],
   controllers: [AppController],
