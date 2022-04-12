@@ -58,10 +58,10 @@ describe('ExercisesService', () => {
     });
 
     it('should try insert a new exercise into repository', async () => {
-      await service.addExercise(td.mockNewExerciseParams);
+      await service.insert(td.mockInsertExerciseParams);
 
       expect(insertMock).toBeCalledTimes(1);
-      expect(insertMock).toBeCalledWith(td.mockNewExerciseParams);
+      expect(insertMock).toBeCalledWith(td.mockInsertExerciseParams);
     });
 
     it('should return the exercise which was just added', async () => {
@@ -69,7 +69,7 @@ describe('ExercisesService', () => {
         .spyOn(repository, 'findOne')
         .mockImplementation(() => Promise.resolve(td.mockExercise1));
 
-      const result = await service.addExercise(td.mockNewExerciseParams);
+      const result = await service.insert(td.mockInsertExerciseParams);
       const identifierId = td.mockInsertExerciseResponse.identifiers[0].id;
 
       expect(findOneMock).toBeCalledTimes(1);

@@ -13,7 +13,7 @@ export const mockExercise1: Exercise = {
 
 export const mockExercises: Exercise[] = [mockExercise1];
 
-export const mockNewExerciseParams: ExerciseParams = {
+export const mockInsertExerciseParams: ExerciseParams = {
   name: 'Test exercise',
   calories: 10,
   timeSpentInMinutes: 20,

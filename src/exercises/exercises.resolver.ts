@@ -25,6 +25,6 @@ export class ExercisesResolver {
     @Args(exerciseArgs.timeSpentInMinutes) timeSpentInMinutes: number,
   ): Promise<Exercise> {
     const data: ExerciseParams = { name, calories, timeSpentInMinutes };
-    return this.exercisesService.addExercise(data);
+    return this.exercisesService.insert(data);
   }
 }

@@ -15,7 +15,7 @@ export class ExercisesService {
     return this.exercisesRepository.find();
   }
 
-  async addExercise(params: ExerciseParams): Promise<Exercise> {
+  async insert(params: ExerciseParams): Promise<Exercise> {
     const exercise = new Exercise(params);
     // TODO: Add error handling here
     const result = await this.exercisesRepository.insert(exercise);
