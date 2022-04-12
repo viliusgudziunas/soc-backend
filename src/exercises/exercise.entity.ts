@@ -1,4 +1,4 @@
-import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
 import {
   Column,
   CreateDateColumn,
@@ -6,29 +6,34 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { ExerciseParams } from './exercise.types';
 
 @ObjectType()
 @Entity('exercises')
 export class Exercise {
-  @Field(() => Int)
+  @Field(() => ID)
   @PrimaryGeneratedColumn()
   id: number;
-  @Field({ nullable: false })
+  @Field()
   @CreateDateColumn()
   createdAt: Date;
-  @Field({ nullable: false })
+  @Field()
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @Field({ nullable: false })
+  @Field()
   @Column()
   name: string;
 
-  @Field(() => Int, { nullable: false })
+  @Field(() => Int)
   @Column()
   calories: number;
 
-  @Field(() => Int, { nullable: false })
+  @Field(() => Int)
   @Column()
   timeSpentInMinutes: number;
+
+  constructor(params: ExerciseParams) {
+    Object.assign(this, params);
+  }
 }

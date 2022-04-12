@@ -3,7 +3,7 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Exercise } from '../exercise.entity';
 import { ExercisesService } from '../exercises.service';
-import { mockExercises } from './test-data';
+import * as td from './test-data';
 
 describe('ExercisesService', () => {
   let repository: Repository<Exercise>;
@@ -15,7 +15,10 @@ describe('ExercisesService', () => {
     const module = await Test.createTestingModule({
       providers: [
         ExercisesService,
-        { provide: REPOSITORY_TOKEN, useValue: { find: jest.fn() } },
+        {
+          provide: REPOSITORY_TOKEN,
+          useValue: { find: jest.fn(), insert: jest.fn(), findOne: jest.fn() },
+        },
       ],
     }).compile();
 
@@ -31,12 +34,47 @@ describe('ExercisesService', () => {
 
   describe('.findAll()', () => {
     it('should return all exercises found by repository', async () => {
-      jest
+      const findMock = jest
         .spyOn(repository, 'find')
-        .mockImplementation(() => Promise.resolve(mockExercises));
+        .mockImplementation(() => Promise.resolve(td.mockExercises));
 
-      const exercises = await service.findAll();
-      expect(exercises).toBe(mockExercises);
+      const result = await service.findAll();
+
+      expect(findMock).toBeCalledTimes(1);
+      expect(findMock).toBeCalledWith();
+      expect(result).toBe(td.mockExercises);
+    });
+  });
+
+  describe('.addExercise()', () => {
+    let insertMock: jest.SpyInstance;
+
+    beforeEach(() => {
+      insertMock = jest
+        .spyOn(repository, 'insert')
+        .mockImplementation(() =>
+          Promise.resolve(td.mockInsertExerciseResponse),
+        );
+    });
+
+    it('should try insert a new exercise into repository', async () => {
+      await service.addExercise(td.mockNewExerciseParams);
+
+      expect(insertMock).toBeCalledTimes(1);
+      expect(insertMock).toBeCalledWith(td.mockNewExerciseParams);
+    });
+
+    it('should return the exercise which was just added', async () => {
+      const findOneMock = jest
+        .spyOn(repository, 'findOne')
+        .mockImplementation(() => Promise.resolve(td.mockExercise1));
+
+      const result = await service.addExercise(td.mockNewExerciseParams);
+      const identifierId = td.mockInsertExerciseResponse.identifiers[0].id;
+
+      expect(findOneMock).toBeCalledTimes(1);
+      expect(findOneMock).toBeCalledWith(identifierId);
+      expect(result).toBe(td.mockExercise1);
     });
   });
 });
