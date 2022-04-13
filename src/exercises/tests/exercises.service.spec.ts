@@ -90,15 +90,15 @@ describe('ExercisesService', () => {
     });
 
     it('should return the exercise which was just added', async () => {
-      const findOneMock = jest
-        .spyOn(repository, 'findOne')
+      const findByIdMock = jest
+        .spyOn(service, 'findById')
         .mockImplementation(() => Promise.resolve(td.mockExercise1));
 
       const result = await service.insert(td.mockInsertExerciseParams);
       const identifierId = td.mockInsertExerciseResponse.identifiers[0].id;
 
-      expect(findOneMock).toBeCalledTimes(1);
-      expect(findOneMock).toBeCalledWith(identifierId);
+      expect(findByIdMock).toBeCalledTimes(1);
+      expect(findByIdMock).toBeCalledWith(identifierId);
       expect(result).toBe(td.mockExercise1);
     });
   });

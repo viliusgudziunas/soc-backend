@@ -25,6 +25,6 @@ export class ExercisesService {
     const result = await this.exercisesRepository.insert(exercise);
     const id: number = result.identifiers[0].id;
 
-    return this.exercisesRepository.findOne(id);
+    return this.findById(id);
   }
 }
