@@ -46,6 +46,31 @@ describe('ExercisesService', () => {
     });
   });
 
+  describe('.findById', () => {
+    let findOneMock: jest.SpyInstance;
+    let id: number;
+
+    beforeEach(() => {
+      id = td.mockExercise1.id;
+      findOneMock = jest
+        .spyOn(repository, 'findOne')
+        .mockImplementation(() => Promise.resolve(td.mockExercise1));
+    });
+
+    it('should try get an exercise from repository by id', () => {
+      service.findById(id);
+
+      expect(findOneMock).toBeCalledTimes(1);
+      expect(findOneMock).toBeCalledWith(id);
+    });
+
+    it('should return the exercise it got back from repository', async () => {
+      const result = await service.findById(id);
+
+      expect(result).toBe(td.mockExercise1);
+    });
+  });
+
   describe('.addExercise()', () => {
     let insertMock: jest.SpyInstance;
 

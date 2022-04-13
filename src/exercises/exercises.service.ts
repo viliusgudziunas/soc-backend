@@ -15,6 +15,10 @@ export class ExercisesService {
     return this.exercisesRepository.find();
   }
 
+  findById(id: number): Promise<Exercise> {
+    return this.exercisesRepository.findOne(id);
+  }
+
   async insert(params: ExerciseParams): Promise<Exercise> {
     const exercise = new Exercise(params);
     // TODO: Add error handling here
