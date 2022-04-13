@@ -14,7 +14,7 @@ describe('ExercisesResolver', () => {
     })
       .useMocker((token: InstanceToken) => {
         if (token === ExercisesService) {
-          return { findAll: jest.fn(), insert: jest.fn() };
+          return { findAll: jest.fn(), insert: jest.fn(), findById: jest.fn() };
         }
       })
       .compile();
@@ -43,11 +43,36 @@ describe('ExercisesResolver', () => {
     });
   });
 
-  describe('.addExercise() mutation', () => {
-    let addExerciseMock: jest.SpyInstance;
+  describe('.exercise() query', () => {
+    let findByIdMock: jest.SpyInstance;
+
+    const { id } = td.mockExercise1;
 
     beforeEach(() => {
-      addExerciseMock = jest
+      findByIdMock = jest
+        .spyOn(service, 'findById')
+        .mockImplementation(() => Promise.resolve(td.mockExercise1));
+    });
+
+    it('should pass id to exercises service', () => {
+      resolver.exercise(id);
+
+      expect(findByIdMock).toBeCalledTimes(1);
+      expect(findByIdMock).toBeCalledWith(id);
+    });
+
+    it('should return the result it gets back from exercises service', async () => {
+      const result = await resolver.exercise(id);
+
+      expect(result).toBe(td.mockExercise1);
+    });
+  });
+
+  describe('.addExercise() mutation', () => {
+    let insertMock: jest.SpyInstance;
+
+    beforeEach(() => {
+      insertMock = jest
         .spyOn(service, 'insert')
         .mockImplementation(() => Promise.resolve(td.mockExercise1));
     });
@@ -59,8 +84,8 @@ describe('ExercisesResolver', () => {
         td.mockInsertExerciseParams.timeSpentInMinutes,
       );
 
-      expect(addExerciseMock).toBeCalledTimes(1);
-      expect(addExerciseMock).toBeCalledWith(td.mockInsertExerciseParams);
+      expect(insertMock).toBeCalledTimes(1);
+      expect(insertMock).toBeCalledWith(td.mockInsertExerciseParams);
     });
 
     it('should return the result it gets back from exercises service', async () => {

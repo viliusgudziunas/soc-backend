@@ -4,6 +4,7 @@ import { ExerciseParams } from './exercise.types';
 import { ExercisesService } from './exercises.service';
 
 const exerciseArgs = {
+  id: { name: 'id', type: () => Int },
   name: { name: 'name', type: () => String },
   calories: { name: 'calories', type: () => Int },
   timeSpentInMinutes: { name: 'timeSpentInMinutes', type: () => Int },
@@ -16,6 +17,11 @@ export class ExercisesResolver {
   @Query(() => [Exercise])
   async exercises(): Promise<Exercise[]> {
     return this.exercisesService.findAll();
+  }
+
+  @Query(() => Exercise)
+  async exercise(@Args(exerciseArgs.id) id: number): Promise<Exercise> {
+    return this.exercisesService.findById(id);
   }
 
   @Mutation(() => Exercise)

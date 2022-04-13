@@ -46,12 +46,11 @@ describe('ExercisesService', () => {
     });
   });
 
-  describe('.findById', () => {
+  describe('.findById()', () => {
     let findOneMock: jest.SpyInstance;
-    let id: number;
+    const { id } = td.mockExercise1;
 
     beforeEach(() => {
-      id = td.mockExercise1.id;
       findOneMock = jest
         .spyOn(repository, 'findOne')
         .mockImplementation(() => Promise.resolve(td.mockExercise1));

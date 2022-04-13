@@ -16,6 +16,7 @@ export class ExercisesService {
   }
 
   findById(id: number): Promise<Exercise> {
+    // TODO: Handle id not in repo error
     return this.exercisesRepository.findOne(id);
   }
 
