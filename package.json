@@ -75,9 +75,11 @@
       "**/*.(t|j)s"
     ],
     "coveragePathIgnorePatterns": [
-      ".module.ts",
       ".entity.ts",
+      ".module.ts",
       ".spec.ts",
+      "config/",
+      "main.ts",
       "test-data.ts"
     ],
     "coverageDirectory": "../coverage",
