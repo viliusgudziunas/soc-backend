@@ -1,4 +1,5 @@
 import { join } from 'path';
+import { formatAppError } from 'src/app.errors';
 import { Environment } from './configuration.types';
 
 export default (): Environment => ({
@@ -23,6 +24,7 @@ export default (): Environment => ({
     ssl: false,
   },
   graphql: {
-    autoSchemaFile: join(__dirname, 'src/schema.gql'),
+    autoSchemaFile: true,
+    formatError: formatAppError,
   },
 });

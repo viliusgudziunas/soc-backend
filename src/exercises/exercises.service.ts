@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Exercise } from './exercise.entity';
+import { ErrorCode } from './exercise.enums';
+import { ExerciseError } from './exercise.error';
 import { ExerciseParams } from './exercise.types';
 
 @Injectable()
@@ -15,9 +17,13 @@ export class ExercisesService {
     return this.exercisesRepository.find();
   }
 
-  findById(id: number): Promise<Exercise> {
-    // TODO: Handle id not in repo error
-    return this.exercisesRepository.findOne(id);
+  async findById(id: number): Promise<Exercise> {
+    const exercise = await this.exercisesRepository.findOne(id);
+    if (exercise === undefined) {
+      throw new ExerciseError({ code: ErrorCode.NotFound, id });
+    }
+
+    return exercise;
   }
 
   async insert(params: ExerciseParams): Promise<Exercise> {
