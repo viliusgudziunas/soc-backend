@@ -8,5 +8,7 @@ export interface ExerciseParams {
 
 export interface ExerciseErrorParams {
   code: ErrorCode;
+
   id?: number;
+  column?: string;
 }

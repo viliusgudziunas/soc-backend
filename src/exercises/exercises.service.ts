@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { InsertResult, QueryFailedError, Repository } from 'typeorm';
 import { Exercise } from './exercise.entity';
 import { ErrorCode } from './exercise.enums';
 import { ExerciseError } from './exercise.error';
@@ -28,10 +28,22 @@ export class ExercisesService {
 
   async insert(params: ExerciseParams): Promise<Exercise> {
     const exercise = new Exercise(params);
-    // TODO: Add error handling here
-    const result = await this.exercisesRepository.insert(exercise);
-    const id: number = result.identifiers[0].id;
 
+    let result: InsertResult;
+    try {
+      result = await this.exercisesRepository.insert(exercise);
+    } catch (error) {
+      if (error instanceof QueryFailedError) {
+        throw new ExerciseError({
+          code: ErrorCode.RequiredPropertyMissing,
+          column: error.driverError.column,
+        });
+      }
+
+      throw error;
+    }
+
+    const id: number = result.identifiers[0].id;
     return this.findById(id);
   }
 }

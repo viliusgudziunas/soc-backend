@@ -19,17 +19,38 @@ describe('ExerciseError', () => {
   describe('.code', () => {
     it('should allow to overwrite the error code', () => {
       const result = new ExerciseError({ code: ErrorCode.NotFound });
-      result.code = ErrorCode.Temp;
+      result.code = ErrorCode.RequiredPropertyMissing;
 
-      expect(result.code).toBe(ErrorCode.Temp);
+      expect(result.code).toBe(ErrorCode.RequiredPropertyMissing);
     });
   });
 
   describe('.message', () => {
-    it('should construct an exercise not found message from the error code', () => {
-      const result = new ExerciseError({ code: ErrorCode.NotFound, id: 1 });
+    it.each<[string, ErrorCode, { [key: string]: unknown }, string]>([
+      [
+        'exercise not found',
+        ErrorCode.NotFound,
+        { id: 1 },
+        "Exercise was not found with ID '1'",
+      ],
+      [
+        'required property missing',
+        ErrorCode.RequiredPropertyMissing,
+        { column: 'name' },
+        "Required property 'name' was not found in the payload",
+      ],
+    ])(
+      'should construct %p message from error code',
+      (
+        _,
+        code: ErrorCode,
+        params: { [key: string]: unknown },
+        expectedMessage: string,
+      ) => {
+        const result = new ExerciseError({ code, ...params });
 
-      expect(result.message).toBe("Exercise was not found with ID '1'");
-    });
+        expect(result.message).toBe(expectedMessage);
+      },
+    );
   });
 });

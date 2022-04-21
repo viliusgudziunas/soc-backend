@@ -1,6 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { testErrorCode } from 'src/shared/test-utils';
+import { InsertResult, QueryFailedError, Repository } from 'typeorm';
 import { Exercise } from '../exercise.entity';
 import { ErrorCode } from '../exercise.enums';
 import { ExerciseError } from '../exercise.error';
@@ -78,32 +79,30 @@ describe('ExercisesService', () => {
       const testFunc = () => service.findById(id);
 
       await expect(testFunc()).rejects.toThrow(ExerciseError);
-      try {
-        await testFunc();
-        // Fail if didn't throw
-        expect(true).toBe(false);
-      } catch (error) {
-        expect(error.code).toBe(ErrorCode.NotFound);
-      }
+      testErrorCode(testFunc, ErrorCode.NotFound);
     });
   });
 
-  describe('.addExercise()', () => {
-    let insertMock: jest.SpyInstance;
+  describe('.insert()', () => {
     let findByIdMock: jest.SpyInstance;
+    const mockInsert = (response: InsertResult): jest.SpyInstance =>
+      jest
+        .spyOn(repository, 'insert')
+        .mockImplementation(() => Promise.resolve(response));
+    const mockInsertError = (error: Error): jest.SpyInstance =>
+      jest.spyOn(repository, 'insert').mockImplementation(() => {
+        throw error;
+      });
 
     beforeEach(() => {
-      insertMock = jest
-        .spyOn(repository, 'insert')
-        .mockImplementation(() =>
-          Promise.resolve(td.mockInsertExerciseResponse),
-        );
       findByIdMock = jest
         .spyOn(service, 'findById')
         .mockImplementation(() => Promise.resolve(td.mockExercise1));
     });
 
     it('should try insert a new exercise into repository', async () => {
+      const insertMock = mockInsert(td.mockInsertExerciseResponse);
+
       await service.insert(td.mockInsertExerciseParams);
 
       expect(insertMock).toBeCalledTimes(1);
@@ -111,12 +110,40 @@ describe('ExercisesService', () => {
     });
 
     it('should return the exercise which was just added', async () => {
+      mockInsert(td.mockInsertExerciseResponse);
+
       const result = await service.insert(td.mockInsertExerciseParams);
       const identifierId = td.mockInsertExerciseResponse.identifiers[0].id;
 
       expect(findByIdMock).toBeCalledTimes(1);
       expect(findByIdMock).toBeCalledWith(identifierId);
       expect(result).toBe(td.mockExercise1);
+    });
+
+    it('should throw an exercise error when a required key is missing from the params', async () => {
+      const error = new QueryFailedError('', [], { column: 'name' });
+      mockInsertError(error);
+
+      const params = td.mockInsertExerciseParams;
+      delete params.name;
+      const testFunc = () => service.insert(params);
+
+      await expect(testFunc()).rejects.toThrow(ExerciseError);
+      await expect(testFunc()).rejects.not.toThrow(QueryFailedError);
+      testErrorCode(testFunc, ErrorCode.RequiredPropertyMissing);
+    });
+
+    it('should throw the original error if it is not QueryFailedError', async () => {
+      const error = new Error();
+      mockInsertError(error);
+
+      const params = td.mockInsertExerciseParams;
+      delete params.name;
+      const testFunc = () => service.insert(params);
+
+      await expect(testFunc()).rejects.toThrow(Error);
+      await expect(testFunc()).rejects.not.toThrow(ExerciseError);
+      await expect(testFunc()).rejects.not.toThrow(QueryFailedError);
     });
   });
 });

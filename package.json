@@ -81,9 +81,13 @@
       ".spec.ts",
       "config/",
       "main.ts",
-      "test-data.ts"
+      "test-data.ts",
+      "test-utils.ts"
     ],
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "moduleNameMapper": {
+      "^src/(.*)$": "<rootDir>/$1"
+    }
   }
 }

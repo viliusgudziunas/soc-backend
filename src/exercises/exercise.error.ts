@@ -4,27 +4,23 @@ import { ExerciseErrorParams } from './exercise.types';
 export class ExerciseError extends Error {
   code: ErrorCode;
 
-  private id: number;
+  private params: ExerciseErrorParams;
 
   constructor(params: ExerciseErrorParams) {
     super();
 
-    this.setupVariables(params);
+    this.params = params;
+    this.code = params.code;
     this.constructMessage();
-  }
-
-  private setupVariables(params: ExerciseErrorParams): void {
-    const { code, id } = params;
-
-    this.code = code;
-    this.id = id || 0;
   }
 
   private constructMessage(): void {
     switch (this.code) {
       case ErrorCode.NotFound:
-        this.message = `Exercise was not found with ID '${this.id}'`;
-      default:
+        this.message = `Exercise was not found with ID '${this.params.id}'`;
+        break;
+      case ErrorCode.RequiredPropertyMissing:
+        this.message = `Required property '${this.params.column}' was not found in the payload`;
         break;
     }
   }
