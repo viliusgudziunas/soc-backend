@@ -1,5 +1,5 @@
 import { InsertResult } from 'typeorm';
-import { Exercise } from '../exercise.entity';
+import { AddExerciseInput, Exercise } from '../exercise.entity';
 import { ExerciseParams } from '../exercise.types';
 
 export const mockExercise1: Exercise = {
@@ -13,11 +13,12 @@ export const mockExercise1: Exercise = {
 
 export const mockExercises: Exercise[] = [mockExercise1];
 
-export const mockInsertExerciseParams: ExerciseParams = {
+export const mockAddExerciseInput: AddExerciseInput = {
   name: 'Test exercise',
   calories: 10,
   timeSpentInMinutes: 20,
 };
+export const mockInsertExerciseParams: ExerciseParams = mockAddExerciseInput;
 
 export const mockInsertExerciseResponse: InsertResult = {
   identifiers: [{ id: 1 }],

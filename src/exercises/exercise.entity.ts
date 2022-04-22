@@ -1,4 +1,11 @@
-import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
+import {
+  Field,
+  ID,
+  InputType,
+  Int,
+  ObjectType,
+  OmitType,
+} from '@nestjs/graphql';
 import {
   Column,
   CreateDateColumn,
@@ -13,27 +20,34 @@ import { ExerciseParams } from './exercise.types';
 export class Exercise {
   @Field(() => ID)
   @PrimaryGeneratedColumn()
-  id: number;
+  readonly id: number;
   @Field()
   @CreateDateColumn()
-  createdAt: Date;
+  readonly createdAt: Date;
   @Field()
   @UpdateDateColumn()
-  updatedAt: Date;
+  readonly updatedAt: Date;
 
   @Field()
   @Column()
-  name: string;
+  readonly name: string;
 
   @Field(() => Int)
   @Column()
-  calories: number;
+  readonly calories: number;
 
   @Field(() => Int)
   @Column()
-  timeSpentInMinutes: number;
+  readonly timeSpentInMinutes: number;
 
   constructor(params: ExerciseParams) {
     Object.assign(this, params);
   }
 }
+
+@InputType()
+export class AddExerciseInput extends OmitType(
+  Exercise,
+  ['id', 'createdAt', 'updatedAt'],
+  InputType,
+) {}

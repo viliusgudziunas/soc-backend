@@ -1,13 +1,9 @@
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { Exercise } from './exercise.entity';
-import { ExerciseParams } from './exercise.types';
+import { AddExerciseInput, Exercise } from './exercise.entity';
 import { ExercisesService } from './exercises.service';
 
 const exerciseArgs = {
   id: { name: 'id', type: () => Int },
-  name: { name: 'name', type: () => String },
-  calories: { name: 'calories', type: () => Int },
-  timeSpentInMinutes: { name: 'timeSpentInMinutes', type: () => Int },
 };
 
 @Resolver(() => Exercise)
@@ -26,11 +22,8 @@ export class ExercisesResolver {
 
   @Mutation(() => Exercise)
   async addExercise(
-    @Args(exerciseArgs.name) name: string,
-    @Args(exerciseArgs.calories) calories: number,
-    @Args(exerciseArgs.timeSpentInMinutes) timeSpentInMinutes: number,
+    @Args('exercise') exercise: AddExerciseInput,
   ): Promise<Exercise> {
-    const data: ExerciseParams = { name, calories, timeSpentInMinutes };
-    return this.exercisesService.insert(data);
+    return this.exercisesService.insert(exercise);
   }
 }

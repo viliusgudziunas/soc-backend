@@ -78,22 +78,14 @@ describe('ExercisesResolver', () => {
     });
 
     it("should pass it's parameters to exercises service", () => {
-      resolver.addExercise(
-        td.mockInsertExerciseParams.name,
-        td.mockInsertExerciseParams.calories,
-        td.mockInsertExerciseParams.timeSpentInMinutes,
-      );
+      resolver.addExercise(td.mockAddExerciseInput);
 
       expect(insertMock).toBeCalledTimes(1);
-      expect(insertMock).toBeCalledWith(td.mockInsertExerciseParams);
+      expect(insertMock).toBeCalledWith(td.mockAddExerciseInput);
     });
 
     it('should return the result it gets back from exercises service', async () => {
-      const result = await resolver.addExercise(
-        td.mockInsertExerciseParams.name,
-        td.mockInsertExerciseParams.calories,
-        td.mockInsertExerciseParams.timeSpentInMinutes,
-      );
+      const result = await resolver.addExercise(td.mockAddExerciseInput);
 
       expect(result).toBe(td.mockExercise1);
     });
