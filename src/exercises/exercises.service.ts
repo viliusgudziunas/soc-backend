@@ -46,4 +46,9 @@ export class ExercisesService {
     const id: number = result.identifiers[0].id;
     return this.findById(id);
   }
+
+  async update(id: number, params: Partial<ExerciseParams>): Promise<Exercise> {
+    await this.exercisesRepository.update(id, { ...params });
+    return await this.findById(id);
+  }
 }

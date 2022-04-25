@@ -14,7 +14,7 @@ describe('ExercisesResolver', () => {
     })
       .useMocker((token: InstanceToken) => {
         if (token === ExercisesService) {
-          return { findAll: jest.fn(), insert: jest.fn(), findById: jest.fn() };
+          return td.mockExercisesService;
         }
       })
       .compile();
@@ -46,12 +46,12 @@ describe('ExercisesResolver', () => {
   describe('.exercise() query', () => {
     let findByIdMock: jest.SpyInstance;
 
-    const { id } = td.mockExercise1;
+    const { id } = td.mockExercise;
 
     beforeEach(() => {
       findByIdMock = jest
         .spyOn(service, 'findById')
-        .mockImplementation(() => Promise.resolve(td.mockExercise1));
+        .mockImplementation(() => Promise.resolve(td.mockExercise));
     });
 
     it('should pass id to exercises service', () => {
@@ -64,7 +64,7 @@ describe('ExercisesResolver', () => {
     it('should return the result it gets back from exercises service', async () => {
       const result = await resolver.exercise(id);
 
-      expect(result).toBe(td.mockExercise1);
+      expect(result).toBe(td.mockExercise);
     });
   });
 
@@ -74,7 +74,7 @@ describe('ExercisesResolver', () => {
     beforeEach(() => {
       insertMock = jest
         .spyOn(service, 'insert')
-        .mockImplementation(() => Promise.resolve(td.mockExercise1));
+        .mockImplementation(() => Promise.resolve(td.mockExercise));
     });
 
     it("should pass it's parameters to exercises service", () => {
@@ -87,7 +87,35 @@ describe('ExercisesResolver', () => {
     it('should return the result it gets back from exercises service', async () => {
       const result = await resolver.addExercise(td.mockAddExerciseInput);
 
-      expect(result).toBe(td.mockExercise1);
+      expect(result).toBe(td.mockExercise);
+    });
+  });
+
+  describe('.updateExercise() mutation', () => {
+    let updateMock: jest.SpyInstance;
+
+    const { id } = td.mockExercise;
+
+    beforeEach(() => {
+      updateMock = jest
+        .spyOn(service, 'update')
+        .mockImplementation(() => Promise.resolve(td.mockUpdatedExercise));
+    });
+
+    it("should pass it's parameters to exercises service", () => {
+      resolver.updateExercise(id, td.mockUpdateExerciseInput);
+
+      expect(updateMock).toBeCalledTimes(1);
+      expect(updateMock).toBeCalledWith(id, td.mockUpdateExerciseInput);
+    });
+
+    it('should return the result it gets back from exercises service', async () => {
+      const result = await resolver.updateExercise(
+        id,
+        td.mockUpdateExerciseInput,
+      );
+
+      expect(result).toBe(td.mockUpdatedExercise);
     });
   });
 });

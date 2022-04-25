@@ -18,10 +18,7 @@ describe('ExercisesService', () => {
     const module = await Test.createTestingModule({
       providers: [
         ExercisesService,
-        {
-          provide: REPOSITORY_TOKEN,
-          useValue: { find: jest.fn(), insert: jest.fn(), findOne: jest.fn() },
-        },
+        { provide: REPOSITORY_TOKEN, useValue: td.mockRepository },
       ],
     }).compile();
 
@@ -50,14 +47,14 @@ describe('ExercisesService', () => {
   });
 
   describe('.findById()', () => {
-    const { id } = td.mockExercise1;
+    const { id } = td.mockExercise;
     const mockFindOne = (exercise: Exercise): jest.SpyInstance =>
       jest
         .spyOn(repository, 'findOne')
         .mockImplementation(() => Promise.resolve(exercise));
 
     it('should try get an exercise from repository by id', () => {
-      const findOneMock = mockFindOne(td.mockExercise1);
+      const findOneMock = mockFindOne(td.mockExercise);
 
       service.findById(id);
 
@@ -66,11 +63,11 @@ describe('ExercisesService', () => {
     });
 
     it('should return the exercise it got back from repository', async () => {
-      mockFindOne(td.mockExercise1);
+      mockFindOne(td.mockExercise);
 
       const result = await service.findById(id);
 
-      expect(result).toBe(td.mockExercise1);
+      expect(result).toBe(td.mockExercise);
     });
 
     it('should throw an exercise error when exercise was not found in repository', async () => {
@@ -85,7 +82,9 @@ describe('ExercisesService', () => {
 
   describe('.insert()', () => {
     let findByIdMock: jest.SpyInstance;
-    const mockInsert = (response: InsertResult): jest.SpyInstance =>
+    const mockInsert = (
+      response: InsertResult = td.mockInsertExerciseResponse,
+    ): jest.SpyInstance =>
       jest
         .spyOn(repository, 'insert')
         .mockImplementation(() => Promise.resolve(response));
@@ -97,11 +96,11 @@ describe('ExercisesService', () => {
     beforeEach(() => {
       findByIdMock = jest
         .spyOn(service, 'findById')
-        .mockImplementation(() => Promise.resolve(td.mockExercise1));
+        .mockImplementation(() => Promise.resolve(td.mockExercise));
     });
 
     it('should try insert a new exercise into repository', async () => {
-      const insertMock = mockInsert(td.mockInsertExerciseResponse);
+      const insertMock = mockInsert();
 
       await service.insert(td.mockInsertExerciseParams);
 
@@ -110,14 +109,14 @@ describe('ExercisesService', () => {
     });
 
     it('should return the exercise which was just added', async () => {
-      mockInsert(td.mockInsertExerciseResponse);
+      mockInsert();
 
       const result = await service.insert(td.mockInsertExerciseParams);
       const identifierId = td.mockInsertExerciseResponse.identifiers[0].id;
 
       expect(findByIdMock).toBeCalledTimes(1);
       expect(findByIdMock).toBeCalledWith(identifierId);
-      expect(result).toBe(td.mockExercise1);
+      expect(result).toBe(td.mockExercise);
     });
 
     it('should throw an exercise error when a required key is missing from the params', async () => {
@@ -144,6 +143,35 @@ describe('ExercisesService', () => {
       await expect(testFunc()).rejects.toThrow(Error);
       await expect(testFunc()).rejects.not.toThrow(ExerciseError);
       await expect(testFunc()).rejects.not.toThrow(QueryFailedError);
+    });
+  });
+
+  describe('.update()', () => {
+    let findByIdMock: jest.SpyInstance;
+
+    const { id } = td.mockExercise;
+
+    beforeEach(() => {
+      findByIdMock = jest
+        .spyOn(service, 'findById')
+        .mockImplementation(() => Promise.resolve(td.mockUpdatedExercise));
+    });
+
+    it('should try update an existing exercise in a repository', async () => {
+      const updateMock = jest.spyOn(repository, 'update');
+
+      await service.update(id, td.mockUpdateExerciseParams);
+
+      expect(updateMock).toBeCalledTimes(1);
+      expect(updateMock).toBeCalledWith(id, td.mockUpdateExerciseParams);
+    });
+
+    it('should return the exercise which was just updated', async () => {
+      const result = await service.update(id, td.mockUpdateExerciseParams);
+
+      expect(findByIdMock).toBeCalledTimes(1);
+      expect(findByIdMock).toBeCalledWith(id);
+      expect(result).toBe(td.mockUpdatedExercise);
     });
   });
 });

@@ -1,5 +1,9 @@
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { AddExerciseInput, Exercise } from './exercise.entity';
+import {
+  AddExerciseInput,
+  Exercise,
+  UpdateExerciseInput,
+} from './exercise.entity';
 import { ExercisesService } from './exercises.service';
 
 const exerciseArgs = {
@@ -25,5 +29,13 @@ export class ExercisesResolver {
     @Args('exercise') exercise: AddExerciseInput,
   ): Promise<Exercise> {
     return this.exercisesService.insert(exercise);
+  }
+
+  @Mutation(() => Exercise)
+  async updateExercise(
+    @Args(exerciseArgs.id) id: number,
+    @Args('exercise') exercise: UpdateExerciseInput,
+  ): Promise<Exercise> {
+    return this.exercisesService.update(id, exercise);
   }
 }
