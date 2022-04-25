@@ -5,6 +5,7 @@ import {
   Int,
   ObjectType,
   OmitType,
+  PartialType,
 } from '@nestjs/graphql';
 import {
   Column,
@@ -51,3 +52,6 @@ export class AddExerciseInput extends OmitType(
   ['id', 'createdAt', 'updatedAt'],
   InputType,
 ) {}
+
+@InputType()
+export class UpdateExerciseInput extends PartialType(AddExerciseInput) {}
