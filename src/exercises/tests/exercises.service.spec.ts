@@ -1,12 +1,13 @@
 import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { testErrorCode } from 'src/shared/test-utils';
-import { InsertResult, QueryFailedError, Repository } from 'typeorm';
+import { QueryFailedError, Repository } from 'typeorm';
 import { Exercise } from '../exercise.entity';
 import { ErrorCode } from '../exercise.enums';
 import { ExerciseError } from '../exercise.error';
 import { ExercisesService } from '../exercises.service';
-import * as td from './test-data';
+import * as td from './test.data';
+import * as tm from './test.mocks';
 
 describe('ExercisesService', () => {
   let repository: Repository<Exercise>;
@@ -18,7 +19,7 @@ describe('ExercisesService', () => {
     const module = await Test.createTestingModule({
       providers: [
         ExercisesService,
-        { provide: REPOSITORY_TOKEN, useValue: td.mockRepository },
+        { provide: REPOSITORY_TOKEN, useValue: tm.mockRepository },
       ],
     }).compile();
 
@@ -33,28 +34,27 @@ describe('ExercisesService', () => {
   });
 
   describe('.findAll()', () => {
-    it('should return all exercises found by repository', async () => {
-      const findMock = jest
-        .spyOn(repository, 'find')
-        .mockImplementation(() => Promise.resolve(td.mockExercises));
+    it('should try get all exercises from repository', () => {
+      const findMock = jest.spyOn(repository, 'find');
 
-      const result = await service.findAll();
+      service.findAll();
 
       expect(findMock).toBeCalledTimes(1);
       expect(findMock).toBeCalledWith();
+    });
+
+    it('should return all exercises found by repository', async () => {
+      const result = await service.findAll();
+
       expect(result).toBe(td.mockExercises);
     });
   });
 
   describe('.findById()', () => {
     const { id } = td.mockExercise;
-    const mockFindOne = (exercise: Exercise): jest.SpyInstance =>
-      jest
-        .spyOn(repository, 'findOne')
-        .mockImplementation(() => Promise.resolve(exercise));
 
     it('should try get an exercise from repository by id', () => {
-      const findOneMock = mockFindOne(td.mockExercise);
+      const findOneMock = jest.spyOn(repository, 'findOne');
 
       service.findById(id);
 
@@ -63,15 +63,13 @@ describe('ExercisesService', () => {
     });
 
     it('should return the exercise it got back from repository', async () => {
-      mockFindOne(td.mockExercise);
-
       const result = await service.findById(id);
 
       expect(result).toBe(td.mockExercise);
     });
 
     it('should throw an exercise error when exercise was not found in repository', async () => {
-      mockFindOne(undefined);
+      tm.mockFindOne(repository, undefined);
 
       const testFunc = () => service.findById(id);
 
@@ -82,25 +80,13 @@ describe('ExercisesService', () => {
 
   describe('.insert()', () => {
     let findByIdMock: jest.SpyInstance;
-    const mockInsert = (
-      response: InsertResult = td.mockInsertExerciseResponse,
-    ): jest.SpyInstance =>
-      jest
-        .spyOn(repository, 'insert')
-        .mockImplementation(() => Promise.resolve(response));
-    const mockInsertError = (error: Error): jest.SpyInstance =>
-      jest.spyOn(repository, 'insert').mockImplementation(() => {
-        throw error;
-      });
 
     beforeEach(() => {
-      findByIdMock = jest
-        .spyOn(service, 'findById')
-        .mockImplementation(() => Promise.resolve(td.mockExercise));
+      findByIdMock = tm.mockServiceFindById(service, td.mockExercise);
     });
 
     it('should try insert a new exercise into repository', async () => {
-      const insertMock = mockInsert();
+      const insertMock = jest.spyOn(repository, 'insert');
 
       await service.insert(td.mockInsertExerciseParams);
 
@@ -109,8 +95,6 @@ describe('ExercisesService', () => {
     });
 
     it('should return the exercise which was just added', async () => {
-      mockInsert();
-
       const result = await service.insert(td.mockInsertExerciseParams);
       const identifierId = td.mockInsertExerciseResponse.identifiers[0].id;
 
@@ -121,7 +105,7 @@ describe('ExercisesService', () => {
 
     it('should throw an exercise error when a required key is missing from the params', async () => {
       const error = new QueryFailedError('', [], { column: 'name' });
-      mockInsertError(error);
+      tm.mockInsertError(repository, error);
 
       const params = td.mockInsertExerciseParams;
       delete params.name;
@@ -134,7 +118,7 @@ describe('ExercisesService', () => {
 
     it('should throw the original error if it is not QueryFailedError', async () => {
       const error = new Error();
-      mockInsertError(error);
+      tm.mockInsertError(repository, error);
 
       const params = td.mockInsertExerciseParams;
       delete params.name;
@@ -152,9 +136,7 @@ describe('ExercisesService', () => {
     const { id } = td.mockExercise;
 
     beforeEach(() => {
-      findByIdMock = jest
-        .spyOn(service, 'findById')
-        .mockImplementation(() => Promise.resolve(td.mockUpdatedExercise));
+      findByIdMock = tm.mockServiceFindById(service, td.mockUpdatedExercise);
     });
 
     it('should try update an existing exercise in a repository', async () => {

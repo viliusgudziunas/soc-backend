@@ -2,7 +2,8 @@ import { InstanceToken } from '@nestjs/core/injector/module';
 import { Test } from '@nestjs/testing';
 import { ExercisesResolver } from '../exercises.resolver';
 import { ExercisesService } from '../exercises.service';
-import * as td from './test-data';
+import * as td from './test.data';
+import * as tm from './test.mocks';
 
 describe('ExercisesResolver', () => {
   let service: ExercisesService;
@@ -14,7 +15,7 @@ describe('ExercisesResolver', () => {
     })
       .useMocker((token: InstanceToken) => {
         if (token === ExercisesService) {
-          return td.mockExercisesService;
+          return tm.mockExercisesService;
         }
       })
       .compile();

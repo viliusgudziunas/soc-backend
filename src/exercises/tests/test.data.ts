@@ -6,19 +6,6 @@ import {
 } from '../exercise.entity';
 import { ExerciseParams } from '../exercise.types';
 
-export const mockExercisesService = {
-  findAll: jest.fn(),
-  findById: jest.fn(),
-  insert: jest.fn(),
-  update: jest.fn(),
-};
-export const mockRepository = {
-  find: jest.fn(),
-  findOne: jest.fn(),
-  insert: jest.fn(),
-  update: jest.fn(),
-};
-
 export const mockExercise: Exercise = {
   id: 1,
   name: 'Test exercise',
