@@ -155,5 +155,14 @@ describe('ExercisesService', () => {
       expect(findByIdMock).toBeCalledWith(id);
       expect(result).toBe(td.mockUpdatedExercise);
     });
+
+    it('should throw an exercise error when exercise was not found in repository', async () => {
+      tm.mockUpdateNone(repository);
+
+      const testFunc = () => service.update(id, td.mockUpdateExerciseParams);
+
+      await expect(testFunc()).rejects.toThrow(ExerciseError);
+      testErrorCode(testFunc, ErrorCode.NotFound);
+    });
   });
 });

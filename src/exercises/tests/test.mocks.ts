@@ -14,7 +14,7 @@ export const mockRepository = {
   find: jest.fn(() => Promise.resolve(td.mockExercises)),
   findOne: jest.fn(() => Promise.resolve(td.mockExercise)),
   insert: jest.fn(() => Promise.resolve(td.mockInsertExerciseResponse)),
-  update: jest.fn(),
+  update: jest.fn(() => Promise.resolve(td.mockUpdateExerciseResponse)),
 };
 
 export const mockFindOne = (
@@ -33,10 +33,19 @@ export const mockInsertError = (
     throw error;
   });
 
+export const mockUpdateNone = (
+  repository: Repository<Exercise>,
+): jest.SpyInstance =>
+  jest
+    .spyOn(repository, 'update')
+    .mockImplementation(() =>
+      Promise.resolve(td.mockUpdateExerciseNoneResponse),
+    );
+
 export const mockServiceFindById = (
   service: ExercisesService,
   exercise: Exercise,
-) =>
+): jest.SpyInstance =>
   jest
     .spyOn(service, 'findById')
     .mockImplementation(() => Promise.resolve(exercise));

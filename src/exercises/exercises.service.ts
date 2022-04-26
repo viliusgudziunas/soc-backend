@@ -48,7 +48,10 @@ export class ExercisesService {
   }
 
   async update(id: number, params: Partial<ExerciseParams>): Promise<Exercise> {
-    await this.exercisesRepository.update(id, { ...params });
+    const result = await this.exercisesRepository.update(id, { ...params });
+    if (result.affected === 0) {
+      throw new ExerciseError({ code: ErrorCode.NotFound, id });
+    }
     return await this.findById(id);
   }
 }

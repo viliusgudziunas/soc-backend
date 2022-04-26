@@ -1,4 +1,4 @@
-import { InsertResult } from 'typeorm';
+import { InsertResult, UpdateResult } from 'typeorm';
 import {
   AddExerciseInput,
   Exercise,
@@ -41,4 +41,15 @@ export const mockUpdateExerciseParams: Partial<ExerciseParams> =
 export const mockUpdatedExercise: Exercise = {
   ...mockExercise,
   ...mockUpdateExerciseInput,
+};
+
+export const mockUpdateExerciseResponse: UpdateResult = {
+  raw: [],
+  affected: 1,
+  generatedMaps: [],
+};
+
+export const mockUpdateExerciseNoneResponse: UpdateResult = {
+  ...mockUpdateExerciseResponse,
+  affected: 0,
 };
