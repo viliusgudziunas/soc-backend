@@ -4,10 +4,10 @@ import { ExercisesService } from '../exercises.service';
 import * as td from './test.data';
 
 export const mockExercisesService = {
-  findAll: jest.fn(),
-  findById: jest.fn(),
-  insert: jest.fn(),
-  update: jest.fn(),
+  findAll: jest.fn(() => Promise.resolve(td.mockExercises)),
+  findById: jest.fn(() => Promise.resolve(td.mockExercise)),
+  insert: jest.fn(() => Promise.resolve(td.mockExercise)),
+  update: jest.fn(() => Promise.resolve(td.mockUpdatedExercise)),
 };
 
 export const mockRepository = {
