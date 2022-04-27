@@ -49,7 +49,7 @@ export const mockUpdateExerciseResponse: UpdateResult = {
   generatedMaps: [],
 };
 
-export const mockUpdateExerciseNoneResponse: UpdateResult = {
+export const mockUpdateExerciseZeroAffectedResponse: UpdateResult = {
   ...mockUpdateExerciseResponse,
   affected: 0,
 };

@@ -1,4 +1,4 @@
-import { Repository } from 'typeorm';
+import { Repository, UpdateResult } from 'typeorm';
 import { Exercise } from '../exercise.entity';
 import { ExercisesService } from '../exercises.service';
 import * as td from './test.data';
@@ -33,14 +33,13 @@ export const mockInsertError = (
     throw error;
   });
 
-export const mockUpdateNone = (
+export const mockUpdate = (
   repository: Repository<Exercise>,
+  result: UpdateResult,
 ): jest.SpyInstance =>
   jest
     .spyOn(repository, 'update')
-    .mockImplementation(() =>
-      Promise.resolve(td.mockUpdateExerciseNoneResponse),
-    );
+    .mockImplementation(() => Promise.resolve(result));
 
 export const mockServiceFindById = (
   service: ExercisesService,

@@ -1,6 +1,6 @@
 import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { testErrorCode } from 'src/shared/test-utils';
+import { testErrorCode } from 'src/shared/test.utils';
 import { QueryFailedError, Repository } from 'typeorm';
 import { Exercise } from '../exercise.entity';
 import { ErrorCode } from '../exercise.enums';
@@ -74,7 +74,7 @@ describe('ExercisesService', () => {
       const testFunc = () => service.findById(id);
 
       await expect(testFunc()).rejects.toThrow(ExerciseError);
-      testErrorCode(testFunc, ErrorCode.NotFound);
+      await testErrorCode(testFunc, ErrorCode.NotFound);
     });
   });
 
@@ -113,7 +113,7 @@ describe('ExercisesService', () => {
 
       await expect(testFunc()).rejects.toThrow(ExerciseError);
       await expect(testFunc()).rejects.not.toThrow(QueryFailedError);
-      testErrorCode(testFunc, ErrorCode.RequiredPropertyMissing);
+      await testErrorCode(testFunc, ErrorCode.RequiredPropertyMissing);
     });
 
     it('should throw the original error if it is not QueryFailedError', async () => {
@@ -157,12 +157,12 @@ describe('ExercisesService', () => {
     });
 
     it('should throw an exercise error when exercise was not found in repository', async () => {
-      tm.mockUpdateNone(repository);
+      tm.mockUpdate(repository, td.mockUpdateExerciseZeroAffectedResponse);
 
       const testFunc = () => service.update(id, td.mockUpdateExerciseParams);
 
       await expect(testFunc()).rejects.toThrow(ExerciseError);
-      testErrorCode(testFunc, ErrorCode.NotFound);
+      await testErrorCode(testFunc, ErrorCode.NotFound);
     });
   });
 });

@@ -1,5 +1,5 @@
 import { formatAppError } from './app.errors';
-import * as td from './test-data';
+import * as td from './test.data';
 
 describe('formatAppError()', () => {
   it.each<string>(['message', 'path'])(
