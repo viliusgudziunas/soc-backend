@@ -32,7 +32,7 @@ export class Challenge {
   @Column()
   readonly active: boolean;
 
-  @Field()
-  @Column()
-  readonly endDate: Date;
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+  readonly endDate?: Date;
 }
