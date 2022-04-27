@@ -17,6 +17,12 @@ export const mockRepository = {
   update: jest.fn().mockResolvedValue(td.mockUpdateExerciseResponse),
 };
 
+export const mockFindAll = (
+  repository: Repository<Exercise>,
+  exercises: Exercise[],
+): jest.SpyInstance =>
+  jest.spyOn(repository, 'find').mockResolvedValue(exercises);
+
 export const mockFindOne = (
   repository: Repository<Exercise>,
   exercise: Exercise,

@@ -48,6 +48,14 @@ describe('ExercisesService', () => {
 
       expect(result).toBe(td.mockExercises);
     });
+
+    it('should return empty array when no exercises exist in repository', async () => {
+      tm.mockFindAll(repository, []);
+
+      const result = await service.findAll();
+
+      expect(result).toStrictEqual([]);
+    });
   });
 
   describe('.findById()', () => {
