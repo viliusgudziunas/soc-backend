@@ -29,7 +29,7 @@ export class Challenge {
   readonly description: string;
 
   @Field()
-  @Column()
+  @Column({ default: true })
   readonly active: boolean;
 
   @Field({ nullable: true })
