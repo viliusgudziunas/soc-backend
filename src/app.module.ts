@@ -5,6 +5,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { ChallengesModule } from './challenges/challenges.module';
 import configuration from './config/configuration';
 import { ExercisesModule } from './exercises/exercises.module';
 
@@ -23,6 +24,7 @@ import { ExercisesModule } from './exercises/exercises.module';
       inject: [ConfigService],
     }),
 
+    ChallengesModule,
     ExercisesModule,
   ],
   controllers: [AppController],
