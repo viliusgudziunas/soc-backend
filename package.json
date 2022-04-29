@@ -81,8 +81,8 @@
       ".spec.ts",
       "config/",
       "main.ts",
-      "test.data.ts",
-      "test.mocks.ts"
+      "test.data/",
+      "test.mocks/"
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node",

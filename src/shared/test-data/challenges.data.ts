@@ -1,4 +1,4 @@
-import { Challenge } from '../challenge.entity';
+import { Challenge } from 'src/challenges/challenge.entity';
 
 export const mockChallenges: Challenge[] = [
   {

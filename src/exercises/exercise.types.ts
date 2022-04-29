@@ -1,3 +1,4 @@
+import { HttpStatus } from '@nestjs/common';
 import { ErrorCode } from './exercise.enums';
 
 export interface ExerciseParams {
@@ -12,3 +13,14 @@ export interface ExerciseErrorParams {
   id?: number;
   column?: string;
 }
+
+export interface ExerciseExceptionArgs {
+  status: HttpStatus;
+
+  id?: number;
+}
+
+export type ExerciseExceptionHandlerArgs = Omit<
+  ExerciseExceptionArgs,
+  'status'
+>;

@@ -1,9 +1,9 @@
 import { InstanceToken } from '@nestjs/core/injector/module';
 import { Test } from '@nestjs/testing';
+import { challengesData as data } from 'src/shared/test-data';
+import { challengesMocks as mocks } from 'src/shared/test-mocks';
 import { ChallengesResolver } from '../challenges.resolver';
 import { ChallengesService } from '../challenges.service';
-import * as td from './test.data';
-import * as tm from './test.mocks';
 
 describe('ChallengesResolver', () => {
   let service: ChallengesService;
@@ -15,7 +15,7 @@ describe('ChallengesResolver', () => {
     })
       .useMocker((token: InstanceToken) => {
         if (token === ChallengesService) {
-          return tm.mockChallengesService;
+          return mocks.mockChallengesService;
         }
       })
       .compile();
@@ -43,7 +43,7 @@ describe('ChallengesResolver', () => {
     it('should return all challenges found by challenges service', async () => {
       const result = await resolver.challenges();
 
-      expect(result).toBe(td.mockChallenges);
+      expect(result).toBe(data.mockChallenges);
     });
   });
 });

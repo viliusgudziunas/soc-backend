@@ -1,17 +1,20 @@
+import { InstanceToken } from '@nestjs/core/injector/module';
 import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { exercisesData as data } from 'src/shared/test-data';
+import { exerciseMocks as mocks, sharedMocks } from 'src/shared/test-mocks';
 import { testErrorCode } from 'src/shared/test.utils';
 import { QueryFailedError, Repository } from 'typeorm';
 import { Exercise } from '../exercise.entity';
 import { ErrorCode } from '../exercise.enums';
 import { ExerciseError } from '../exercise.error';
+import { ExercisesExceptionsService } from '../exercises-exceptions.service';
 import { ExercisesService } from '../exercises.service';
-import * as td from './test.data';
-import * as tm from './test.mocks';
 
 describe('ExercisesService', () => {
   let repository: Repository<Exercise>;
   let service: ExercisesService;
+  let exceptionsService: ExercisesExceptionsService;
 
   const REPOSITORY_TOKEN = getRepositoryToken(Exercise);
 
@@ -19,12 +22,21 @@ describe('ExercisesService', () => {
     const module = await Test.createTestingModule({
       providers: [
         ExercisesService,
-        { provide: REPOSITORY_TOKEN, useValue: tm.mockRepository },
+        { provide: REPOSITORY_TOKEN, useValue: mocks.mockRepository },
       ],
-    }).compile();
+    })
+      .useMocker((token: InstanceToken) => {
+        if (token === ExercisesExceptionsService) {
+          return mocks.mockExercisesExceptionsService;
+        }
+      })
+      .compile();
 
     service = module.get<ExercisesService>(ExercisesService);
     repository = module.get<Repository<Exercise>>(REPOSITORY_TOKEN);
+    exceptionsService = module.get<ExercisesExceptionsService>(
+      ExercisesExceptionsService,
+    );
   });
 
   afterEach(() => jest.clearAllMocks());
@@ -46,11 +58,11 @@ describe('ExercisesService', () => {
     it('should return all exercises found by repository', async () => {
       const result = await service.findAll();
 
-      expect(result).toBe(td.mockExercises);
+      expect(result).toBe(data.mockExercises);
     });
 
     it('should return empty array when no exercises exist in repository', async () => {
-      tm.mockFindAll(repository, []);
+      mocks.mockFindAll(repository, []);
 
       const result = await service.findAll();
 
@@ -59,30 +71,29 @@ describe('ExercisesService', () => {
   });
 
   describe('.findById()', () => {
-    const { id } = td.mockExercise;
+    const { id } = data.mockExercise;
 
     it('should try get an exercise from repository by id', () => {
-      const findOneMock = jest.spyOn(repository, 'findOne');
-
       service.findById(id);
 
-      expect(findOneMock).toBeCalledTimes(1);
-      expect(findOneMock).toBeCalledWith(id);
+      expect(repository.findOneOrFail).toBeCalledTimes(1);
+      expect(repository.findOneOrFail).toBeCalledWith(id);
     });
 
     it('should return the exercise it got back from repository', async () => {
       const result = await service.findById(id);
 
-      expect(result).toBe(td.mockExercise);
+      expect(result).toBe(data.mockExercise);
     });
 
-    it('should throw an exercise error when exercise was not found in repository', async () => {
-      tm.mockFindOne(repository, undefined);
+    it('should call exercise exception service handle method if repository throws an exception', async () => {
+      const exception = sharedMocks.mockHttpException();
+      mocks.mockFindOneOrFailException(repository, exception);
 
-      const testFunc = () => service.findById(id);
+      await service.findById(id);
 
-      await expect(testFunc()).rejects.toThrow(ExerciseError);
-      await testErrorCode(testFunc, ErrorCode.NotFound);
+      expect(exceptionsService.handle).toBeCalledTimes(1);
+      expect(exceptionsService.handle).toBeCalledWith(exception, { id });
     });
   });
 
@@ -90,32 +101,32 @@ describe('ExercisesService', () => {
     let findByIdMock: jest.SpyInstance;
 
     beforeEach(() => {
-      findByIdMock = tm.mockServiceFindById(service, td.mockExercise);
+      findByIdMock = mocks.mockServiceFindById(service, data.mockExercise);
     });
 
     it('should try insert a new exercise into repository', async () => {
       const insertMock = jest.spyOn(repository, 'insert');
 
-      await service.insert(td.mockInsertExerciseParams);
+      await service.insert(data.mockInsertExerciseParams);
 
       expect(insertMock).toBeCalledTimes(1);
-      expect(insertMock).toBeCalledWith(td.mockInsertExerciseParams);
+      expect(insertMock).toBeCalledWith(data.mockInsertExerciseParams);
     });
 
     it('should return the exercise which was just added', async () => {
-      const result = await service.insert(td.mockInsertExerciseParams);
-      const identifierId = td.mockInsertExerciseResponse.identifiers[0].id;
+      const result = await service.insert(data.mockInsertExerciseParams);
+      const identifierId = data.mockInsertExerciseResponse.identifiers[0].id;
 
       expect(findByIdMock).toBeCalledTimes(1);
       expect(findByIdMock).toBeCalledWith(identifierId);
-      expect(result).toBe(td.mockExercise);
+      expect(result).toBe(data.mockExercise);
     });
 
     it('should throw an exercise error when a required key is missing from the params', async () => {
       const error = new QueryFailedError('', [], { column: 'name' });
-      tm.mockInsertError(repository, error);
+      mocks.mockInsertError(repository, error);
 
-      const params = td.mockInsertExerciseParams;
+      const params = data.mockInsertExerciseParams;
       delete params.name;
       const testFunc = () => service.insert(params);
 
@@ -126,9 +137,9 @@ describe('ExercisesService', () => {
 
     it('should throw the original error if it is not QueryFailedError', async () => {
       const error = new Error();
-      tm.mockInsertError(repository, error);
+      mocks.mockInsertError(repository, error);
 
-      const params = td.mockInsertExerciseParams;
+      const params = data.mockInsertExerciseParams;
       delete params.name;
       const testFunc = () => service.insert(params);
 
@@ -141,33 +152,36 @@ describe('ExercisesService', () => {
   describe('.update()', () => {
     let findByIdMock: jest.SpyInstance;
 
-    const { id } = td.mockExercise;
+    const { id } = data.mockExercise;
 
     beforeEach(() => {
-      findByIdMock = tm.mockServiceFindById(service, td.mockUpdatedExercise);
+      findByIdMock = mocks.mockServiceFindById(
+        service,
+        data.mockUpdatedExercise,
+      );
     });
 
     it('should try update an existing exercise in a repository', async () => {
       const updateMock = jest.spyOn(repository, 'update');
 
-      await service.update(id, td.mockUpdateExerciseParams);
+      await service.update(id, data.mockUpdateExerciseParams);
 
       expect(updateMock).toBeCalledTimes(1);
-      expect(updateMock).toBeCalledWith(id, td.mockUpdateExerciseParams);
+      expect(updateMock).toBeCalledWith(id, data.mockUpdateExerciseParams);
     });
 
     it('should return the exercise which was just updated', async () => {
-      const result = await service.update(id, td.mockUpdateExerciseParams);
+      const result = await service.update(id, data.mockUpdateExerciseParams);
 
       expect(findByIdMock).toBeCalledTimes(1);
       expect(findByIdMock).toBeCalledWith(id);
-      expect(result).toBe(td.mockUpdatedExercise);
+      expect(result).toBe(data.mockUpdatedExercise);
     });
 
     it('should throw an exercise error when exercise was not found in repository', async () => {
-      tm.mockUpdate(repository, td.mockUpdateExerciseZeroAffectedResponse);
+      mocks.mockUpdate(repository, data.mockUpdateExerciseZeroAffectedResponse);
 
-      const testFunc = () => service.update(id, td.mockUpdateExerciseParams);
+      const testFunc = () => service.update(id, data.mockUpdateExerciseParams);
 
       await expect(testFunc()).rejects.toThrow(ExerciseError);
       await testErrorCode(testFunc, ErrorCode.NotFound);

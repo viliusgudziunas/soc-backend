@@ -1,13 +1,13 @@
+import { Challenge } from 'src/challenges/challenge.entity';
+import { challengesData as data } from 'src/shared/test-data';
 import { Repository } from 'typeorm';
-import { Challenge } from '../challenge.entity';
-import * as td from './test.data';
 
 export const mockChallengesService = {
-  findAll: jest.fn().mockResolvedValue(td.mockChallenges),
+  findAll: jest.fn().mockResolvedValue(data.mockChallenges),
 };
 
 export const mockRepository = {
-  find: jest.fn().mockResolvedValue(td.mockChallenges),
+  find: jest.fn().mockResolvedValue(data.mockChallenges),
 };
 
 export const mockFindAll = (

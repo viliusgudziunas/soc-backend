@@ -1,10 +1,10 @@
-import { InsertResult, UpdateResult } from 'typeorm';
 import {
   AddExerciseInput,
   Exercise,
   UpdateExerciseInput,
-} from '../exercise.entity';
-import { ExerciseParams } from '../exercise.types';
+} from 'src/exercises/exercise.entity';
+import { ExerciseParams } from 'src/exercises/exercise.types';
+import { InsertResult, UpdateResult } from 'typeorm';
 
 export const mockExercise: Exercise = {
   id: 1,

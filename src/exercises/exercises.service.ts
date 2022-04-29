@@ -5,12 +5,14 @@ import { Exercise } from './exercise.entity';
 import { ErrorCode } from './exercise.enums';
 import { ExerciseError } from './exercise.error';
 import { ExerciseParams } from './exercise.types';
+import { ExercisesExceptionsService } from './exercises-exceptions.service';
 
 @Injectable()
 export class ExercisesService {
   constructor(
     @InjectRepository(Exercise)
     private readonly exercisesRepository: Repository<Exercise>,
+    private readonly exercisesExceptionsService: ExercisesExceptionsService,
   ) {}
 
   findAll(): Promise<Exercise[]> {
@@ -18,12 +20,11 @@ export class ExercisesService {
   }
 
   async findById(id: number): Promise<Exercise> {
-    const exercise = await this.exercisesRepository.findOne(id);
-    if (exercise === undefined) {
-      throw new ExerciseError({ code: ErrorCode.NotFound, id });
+    try {
+      return await this.exercisesRepository.findOneOrFail(id);
+    } catch (error) {
+      this.exercisesExceptionsService.handle(error, { id });
     }
-
-    return exercise;
   }
 
   async insert(params: ExerciseParams): Promise<Exercise> {

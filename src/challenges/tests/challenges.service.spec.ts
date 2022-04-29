@@ -1,10 +1,10 @@
 import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { challengesData as data } from 'src/shared/test-data';
+import { challengesMocks as mocks } from 'src/shared/test-mocks';
 import { Repository } from 'typeorm';
 import { Challenge } from '../challenge.entity';
 import { ChallengesService } from '../challenges.service';
-import * as td from './test.data';
-import * as tm from './test.mocks';
 
 describe('ChallengesService', () => {
   let repository: Repository<Challenge>;
@@ -16,7 +16,7 @@ describe('ChallengesService', () => {
     const module = await Test.createTestingModule({
       providers: [
         ChallengesService,
-        { provide: REPOSITORY_TOKEN, useValue: tm.mockRepository },
+        { provide: REPOSITORY_TOKEN, useValue: mocks.mockRepository },
       ],
     }).compile();
 
@@ -43,11 +43,11 @@ describe('ChallengesService', () => {
     it('should return all challenges found by repository', async () => {
       const result = await service.findAll();
 
-      expect(result).toBe(td.mockChallenges);
+      expect(result).toBe(data.mockChallenges);
     });
 
     it('should return empty array when no challenges exist in repository', async () => {
-      tm.mockFindAll(repository, []);
+      mocks.mockFindAll(repository, []);
 
       const result = await service.findAll();
 

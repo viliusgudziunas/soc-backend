@@ -1,9 +1,9 @@
 import { InstanceToken } from '@nestjs/core/injector/module';
 import { Test } from '@nestjs/testing';
+import { exercisesData as data } from 'src/shared/test-data';
+import { exerciseMocks as mocks } from 'src/shared/test-mocks';
 import { ExercisesResolver } from '../exercises.resolver';
 import { ExercisesService } from '../exercises.service';
-import * as td from './test.data';
-import * as tm from './test.mocks';
 
 describe('ExercisesResolver', () => {
   let service: ExercisesService;
@@ -15,7 +15,7 @@ describe('ExercisesResolver', () => {
     })
       .useMocker((token: InstanceToken) => {
         if (token === ExercisesService) {
-          return tm.mockExercisesService;
+          return mocks.mockExercisesService;
         }
       })
       .compile();
@@ -43,12 +43,12 @@ describe('ExercisesResolver', () => {
     it('should return all exercises found by exercises service', async () => {
       const result = await resolver.exercises();
 
-      expect(result).toBe(td.mockExercises);
+      expect(result).toBe(data.mockExercises);
     });
   });
 
   describe('.exercise() query', () => {
-    const { id } = td.mockExercise;
+    const { id } = data.mockExercise;
 
     it('should pass id to exercises service', () => {
       const findByIdMock = jest.spyOn(service, 'findById');
@@ -62,7 +62,7 @@ describe('ExercisesResolver', () => {
     it('should return the result it gets back from exercises service', async () => {
       const result = await resolver.exercise(id);
 
-      expect(result).toBe(td.mockExercise);
+      expect(result).toBe(data.mockExercise);
     });
   });
 
@@ -70,38 +70,38 @@ describe('ExercisesResolver', () => {
     it("should pass it's parameters to exercises service", () => {
       const insertMock = jest.spyOn(service, 'insert');
 
-      resolver.addExercise(td.mockAddExerciseInput);
+      resolver.addExercise(data.mockAddExerciseInput);
 
       expect(insertMock).toBeCalledTimes(1);
-      expect(insertMock).toBeCalledWith(td.mockAddExerciseInput);
+      expect(insertMock).toBeCalledWith(data.mockAddExerciseInput);
     });
 
     it('should return the result it gets back from exercises service', async () => {
-      const result = await resolver.addExercise(td.mockAddExerciseInput);
+      const result = await resolver.addExercise(data.mockAddExerciseInput);
 
-      expect(result).toBe(td.mockExercise);
+      expect(result).toBe(data.mockExercise);
     });
   });
 
   describe('.updateExercise() mutation', () => {
-    const { id } = td.mockExercise;
+    const { id } = data.mockExercise;
 
     it("should pass it's parameters to exercises service", () => {
       const updateMock = jest.spyOn(service, 'update');
 
-      resolver.updateExercise(id, td.mockUpdateExerciseInput);
+      resolver.updateExercise(id, data.mockUpdateExerciseInput);
 
       expect(updateMock).toBeCalledTimes(1);
-      expect(updateMock).toBeCalledWith(id, td.mockUpdateExerciseInput);
+      expect(updateMock).toBeCalledWith(id, data.mockUpdateExerciseInput);
     });
 
     it('should return the result it gets back from exercises service', async () => {
       const result = await resolver.updateExercise(
         id,
-        td.mockUpdateExerciseInput,
+        data.mockUpdateExerciseInput,
       );
 
-      expect(result).toBe(td.mockUpdatedExercise);
+      expect(result).toBe(data.mockUpdatedExercise);
     });
   });
 });

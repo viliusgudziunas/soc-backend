@@ -1,20 +1,20 @@
+import { appData as data } from 'src/shared/test-data';
 import { formatAppError } from './app.errors';
-import * as td from './test.data';
 
 describe('formatAppError()', () => {
   it.each<string>(['message', 'path'])(
     'should return %p property of the original error',
     (property: string) => {
-      const result = formatAppError(td.mockGqlError);
+      const result = formatAppError(data.mockGqlError);
 
-      expect(result[property]).toBe(td.mockGqlError[property]);
+      expect(result[property]).toBe(data.mockGqlError[property]);
     },
   );
 
   it.each<string>(['locations', 'extensions'])(
     'should remove %p property of the original error',
     (property: string) => {
-      const result = formatAppError(td.mockGqlError);
+      const result = formatAppError(data.mockGqlError);
 
       expect(result).not.toHaveProperty(property);
     },
