@@ -1,20 +1,17 @@
-import { InstanceToken } from '@nestjs/core/injector/module';
 import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { exercisesData as data } from 'src/shared/test-data';
-import { exerciseMocks as mocks, sharedMocks } from 'src/shared/test-mocks';
+import { exerciseMocks as mocks } from 'src/shared/test-mocks';
 import { testErrorCode } from 'src/shared/test.utils';
-import { QueryFailedError, Repository } from 'typeorm';
+import { EntityNotFoundError, QueryFailedError, Repository } from 'typeorm';
 import { Exercise } from '../exercise.entity';
 import { ErrorCode } from '../exercise.enums';
 import { ExerciseError } from '../exercise.error';
-import { ExercisesExceptionsService } from '../exercises-exceptions.service';
 import { ExercisesService } from '../exercises.service';
 
 describe('ExercisesService', () => {
   let repository: Repository<Exercise>;
   let service: ExercisesService;
-  let exceptionsService: ExercisesExceptionsService;
 
   const REPOSITORY_TOKEN = getRepositoryToken(Exercise);
 
@@ -24,19 +21,10 @@ describe('ExercisesService', () => {
         ExercisesService,
         { provide: REPOSITORY_TOKEN, useValue: mocks.mockRepository },
       ],
-    })
-      .useMocker((token: InstanceToken) => {
-        if (token === ExercisesExceptionsService) {
-          return mocks.mockExercisesExceptionsService;
-        }
-      })
-      .compile();
+    }).compile();
 
     service = module.get<ExercisesService>(ExercisesService);
     repository = module.get<Repository<Exercise>>(REPOSITORY_TOKEN);
-    exceptionsService = module.get<ExercisesExceptionsService>(
-      ExercisesExceptionsService,
-    );
   });
 
   afterEach(() => jest.clearAllMocks());
@@ -86,14 +74,11 @@ describe('ExercisesService', () => {
       expect(result).toBe(data.mockExercise);
     });
 
-    it('should call exercise exception service handle method if repository throws an exception', async () => {
-      const exception = sharedMocks.mockHttpException();
-      mocks.mockFindOneOrFailException(repository, exception);
+    it('should not handle errors thrown by repository', async () => {
+      const error = new EntityNotFoundError(Exercise, id);
+      jest.spyOn(repository, 'findOneOrFail').mockRejectedValue(error);
 
-      await service.findById(id);
-
-      expect(exceptionsService.handle).toBeCalledTimes(1);
-      expect(exceptionsService.handle).toBeCalledWith(exception, { id });
+      await expect(service.findById(id)).rejects.toThrowError(error);
     });
   });
 

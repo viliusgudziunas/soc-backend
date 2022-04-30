@@ -1,39 +1,37 @@
-import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { operationArgs } from 'src/shared/operation-args';
 import {
   AddExerciseInput,
   Exercise,
+  returns,
   UpdateExerciseInput,
 } from './exercise.entity';
 import { ExercisesService } from './exercises.service';
-
-const exerciseArgs = {
-  id: { name: 'id', type: () => Int },
-};
 
 @Resolver(() => Exercise)
 export class ExercisesResolver {
   constructor(private readonly exercisesService: ExercisesService) {}
 
-  @Query(() => [Exercise])
+  @Query(returns.exercises)
   async exercises(): Promise<Exercise[]> {
     return this.exercisesService.findAll();
   }
 
-  @Query(() => Exercise)
-  async exercise(@Args(exerciseArgs.id) id: number): Promise<Exercise> {
+  @Query(returns.exercise)
+  async exercise(@Args(operationArgs.id) id: number): Promise<Exercise> {
     return this.exercisesService.findById(id);
   }
 
-  @Mutation(() => Exercise)
+  @Mutation(returns.exercise)
   async addExercise(
     @Args('exercise') exercise: AddExerciseInput,
   ): Promise<Exercise> {
     return this.exercisesService.insert(exercise);
   }
 
-  @Mutation(() => Exercise)
+  @Mutation(returns.exercise)
   async updateExercise(
-    @Args(exerciseArgs.id) id: number,
+    @Args(operationArgs.id) id: number,
     @Args('exercise') exercise: UpdateExerciseInput,
   ): Promise<Exercise> {
     return this.exercisesService.update(id, exercise);

@@ -14,7 +14,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { ExerciseParams } from './exercise.types';
+import { ExerciseParams } from './exercises.types';
 
 @ObjectType()
 @Entity('exercises')
@@ -45,6 +45,11 @@ export class Exercise {
     Object.assign(this, params);
   }
 }
+
+export const returns = {
+  exercises: () => [Exercise],
+  exercise: () => Exercise,
+};
 
 @InputType()
 export class AddExerciseInput extends OmitType(

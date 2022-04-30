@@ -4,15 +4,13 @@ import { InsertResult, QueryFailedError, Repository } from 'typeorm';
 import { Exercise } from './exercise.entity';
 import { ErrorCode } from './exercise.enums';
 import { ExerciseError } from './exercise.error';
-import { ExerciseParams } from './exercise.types';
-import { ExercisesExceptionsService } from './exercises-exceptions.service';
+import { ExerciseParams } from './exercises.types';
 
 @Injectable()
 export class ExercisesService {
   constructor(
     @InjectRepository(Exercise)
     private readonly exercisesRepository: Repository<Exercise>,
-    private readonly exercisesExceptionsService: ExercisesExceptionsService,
   ) {}
 
   findAll(): Promise<Exercise[]> {
@@ -20,11 +18,7 @@ export class ExercisesService {
   }
 
   async findById(id: number): Promise<Exercise> {
-    try {
-      return await this.exercisesRepository.findOneOrFail(id);
-    } catch (error) {
-      this.exercisesExceptionsService.handle(error, { id });
-    }
+    return await this.exercisesRepository.findOneOrFail(id);
   }
 
   async insert(params: ExerciseParams): Promise<Exercise> {

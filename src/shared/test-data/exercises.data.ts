@@ -3,7 +3,7 @@ import {
   Exercise,
   UpdateExerciseInput,
 } from 'src/exercises/exercise.entity';
-import { ExerciseParams } from 'src/exercises/exercise.types';
+import { ExerciseParams } from 'src/exercises/exercises.types';
 import { InsertResult, UpdateResult } from 'typeorm';
 
 export const mockExercise: Exercise = {

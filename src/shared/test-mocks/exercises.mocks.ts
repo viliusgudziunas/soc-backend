@@ -28,12 +28,6 @@ export const mockFindAll = (
 ): jest.SpyInstance =>
   jest.spyOn(repository, 'find').mockResolvedValue(exercises);
 
-export const mockFindOne = (
-  repository: Repository<Exercise>,
-  exercise: Exercise,
-): jest.SpyInstance =>
-  jest.spyOn(repository, 'findOne').mockResolvedValue(exercise);
-
 export const mockFindOneOrFailException = (
   repository: Repository<Exercise>,
   exception: HttpException,

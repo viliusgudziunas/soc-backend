@@ -36,3 +36,7 @@ export class Challenge {
   @Column({ nullable: true })
   readonly endDate?: Date;
 }
+
+export const returns = {
+  challenges: () => [Challenge],
+};

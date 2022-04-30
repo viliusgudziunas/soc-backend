@@ -28,12 +28,6 @@ describe('ExerciseError', () => {
   describe('.message', () => {
     it.each<[string, ErrorCode, { [key: string]: unknown }, string]>([
       [
-        'exercise not found',
-        ErrorCode.NotFound,
-        { id: 1 },
-        "Exercise was not found with ID '1'",
-      ],
-      [
         'required property missing',
         ErrorCode.RequiredPropertyMissing,
         { column: 'name' },

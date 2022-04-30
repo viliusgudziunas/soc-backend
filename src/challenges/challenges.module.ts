@@ -6,6 +6,6 @@ import { ChallengesService } from './challenges.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Challenge])],
-  providers: [ChallengesService, ChallengesResolver],
+  providers: [ChallengesResolver, ChallengesService],
 })
 export class ChallengesModule {}

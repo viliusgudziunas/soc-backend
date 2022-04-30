@@ -1,4 +1,3 @@
-import { InstanceToken } from '@nestjs/core/injector/module';
 import { Test } from '@nestjs/testing';
 import { exercisesData as data } from 'src/shared/test-data';
 import { exerciseMocks as mocks } from 'src/shared/test-mocks';
@@ -11,14 +10,11 @@ describe('ExercisesResolver', () => {
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
-      providers: [ExercisesResolver],
-    })
-      .useMocker((token: InstanceToken) => {
-        if (token === ExercisesService) {
-          return mocks.mockExercisesService;
-        }
-      })
-      .compile();
+      providers: [
+        ExercisesResolver,
+        { provide: ExercisesService, useValue: mocks.mockExercisesService },
+      ],
+    }).compile();
 
     service = module.get<ExercisesService>(ExercisesService);
     resolver = module.get<ExercisesResolver>(ExercisesResolver);
