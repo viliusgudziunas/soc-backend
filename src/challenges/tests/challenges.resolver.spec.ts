@@ -44,14 +44,14 @@ describe('ChallengesResolver', () => {
   describe('.challenge() query', () => {
     const { id } = data.mockChallenge;
 
-    it('should pass id to exercises service', () => {
+    it('should pass id to challenges service', () => {
       resolver.challenge(id);
 
       expect(service.findById).toBeCalledTimes(1);
       expect(service.findById).toBeCalledWith(id);
     });
 
-    it('should return the result it gets back from exercises service', async () => {
+    it('should return the result it gets back from challenges service', async () => {
       const result = await resolver.challenge(id);
 
       expect(result).toBe(data.mockChallenge);

@@ -2,7 +2,7 @@ import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { challengesData as data } from 'src/shared/test-data';
 import { challengesMocks as mocks, sharedMocks } from 'src/shared/test-mocks';
-import { EntityNotFoundError, Repository } from 'typeorm';
+import { EntityNotFoundError, QueryFailedError, Repository } from 'typeorm';
 import { Challenge } from '../challenge.entity';
 import { ChallengesService } from '../challenges.service';
 
@@ -74,6 +74,44 @@ describe('ChallengesService', () => {
       sharedMocks.mockFindOneOrFailError<Challenge>(repository, error);
 
       await expect(service.findById(id)).rejects.toThrowError(error);
+    });
+  });
+
+  describe('.insert()', () => {
+    let findByIdMock: jest.SpyInstance;
+
+    beforeEach(() => {
+      findByIdMock = mocks.mockFindById(service, data.mockChallenge);
+    });
+
+    it('should try insert a new challenge into repository', async () => {
+      await service.insert(data.mockInsertChallengeParams);
+
+      expect(repository.insert).toBeCalledTimes(1);
+      expect(repository.insert).toBeCalledWith(data.mockInsertChallengeParams);
+    });
+
+    it('should try to get an challenge from challenges service', async () => {
+      await service.insert(data.mockInsertChallengeParams);
+      const identifierId = data.mockInsertChallengeResponse.identifiers[0].id;
+
+      expect(findByIdMock).toBeCalledTimes(1);
+      expect(findByIdMock).toBeCalledWith(identifierId);
+    });
+
+    it('should return the challenge which was just added', async () => {
+      const result = await service.insert(data.mockInsertChallengeParams);
+
+      expect(result).toBe(data.mockChallenge);
+    });
+
+    it('should not handle errors thrown by repository', async () => {
+      const error = new QueryFailedError('', [], {});
+      sharedMocks.mockInsertError<Challenge>(repository, error);
+
+      await expect(
+        service.insert(data.mockInsertChallengeParams),
+      ).rejects.toThrowError(error);
     });
   });
 });

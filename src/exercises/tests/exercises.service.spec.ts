@@ -84,7 +84,7 @@ describe('ExercisesService', () => {
     let findByIdMock: jest.SpyInstance;
 
     beforeEach(() => {
-      findByIdMock = mocks.mockServiceFindById(service, data.mockExercise);
+      findByIdMock = mocks.mockFindById(service, data.mockExercise);
     });
 
     it('should try insert a new exercise into repository', async () => {
@@ -124,10 +124,7 @@ describe('ExercisesService', () => {
     const { id } = data.mockExercise;
 
     beforeEach(() => {
-      findByIdMock = mocks.mockServiceFindById(
-        service,
-        data.mockUpdatedExercise,
-      );
+      findByIdMock = mocks.mockFindById(service, data.mockUpdatedExercise);
     });
 
     it('should try update an existing exercise in a repository', async () => {

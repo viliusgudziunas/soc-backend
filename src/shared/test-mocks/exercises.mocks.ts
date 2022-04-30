@@ -23,7 +23,7 @@ export const mockUpdate = (
 ): jest.SpyInstance =>
   jest.spyOn(repository, 'update').mockResolvedValue(result);
 
-export const mockServiceFindById = (
+export const mockFindById = (
   service: ExercisesService,
   exercise: Exercise,
 ): jest.SpyInstance =>

@@ -6,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { ChallengeParams } from './challenges.types';
 
 @ObjectType()
 @Entity('challenges')
@@ -35,6 +36,10 @@ export class Challenge {
   @Field({ nullable: true })
   @Column({ nullable: true })
   readonly endDate?: Date;
+
+  constructor(params: ChallengeParams) {
+    Object.assign(this, params);
+  }
 }
 
 export const returns = {
