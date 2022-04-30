@@ -16,8 +16,8 @@ export class ExerciseError extends Error {
 
   private constructMessage(): void {
     switch (this.code) {
-      case ErrorCode.RequiredPropertyMissing:
-        this.message = `Required property '${this.params.column}' was not found in the payload`;
+      case ErrorCode.NotFound:
+        this.message = `Exercise was not found with ID '${this.params.id}'`;
         break;
     }
   }

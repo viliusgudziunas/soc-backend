@@ -88,47 +88,33 @@ describe('ExercisesService', () => {
     });
 
     it('should try insert a new exercise into repository', async () => {
-      const insertMock = jest.spyOn(repository, 'insert');
-
       await service.insert(data.mockInsertExerciseParams);
 
-      expect(insertMock).toBeCalledTimes(1);
-      expect(insertMock).toBeCalledWith(data.mockInsertExerciseParams);
+      expect(repository.insert).toBeCalledTimes(1);
+      expect(repository.insert).toBeCalledWith(data.mockInsertExerciseParams);
     });
 
-    it('should return the exercise which was just added', async () => {
-      const result = await service.insert(data.mockInsertExerciseParams);
+    it('should try to get an exercise from exercises service', async () => {
+      await service.insert(data.mockInsertExerciseParams);
       const identifierId = data.mockInsertExerciseResponse.identifiers[0].id;
 
       expect(findByIdMock).toBeCalledTimes(1);
       expect(findByIdMock).toBeCalledWith(identifierId);
+    });
+
+    it('should return the exercise which was just added', async () => {
+      const result = await service.insert(data.mockInsertExerciseParams);
+
       expect(result).toBe(data.mockExercise);
     });
 
-    it('should throw an exercise error when a required key is missing from the params', async () => {
-      const error = new QueryFailedError('', [], { column: 'name' });
-      mocks.mockInsertError(repository, error);
+    it('should not handle errors thrown by repository', async () => {
+      const error = new QueryFailedError('', [], {});
+      sharedMocks.mockInsertError<Exercise>(repository, error);
 
-      const params = data.mockInsertExerciseParams;
-      delete params.name;
-      const testFunc = () => service.insert(params);
-
-      await expect(testFunc()).rejects.toThrow(ExerciseError);
-      await expect(testFunc()).rejects.not.toThrow(QueryFailedError);
-      await testErrorCode(testFunc, ErrorCode.RequiredPropertyMissing);
-    });
-
-    it('should throw the original error if it is not QueryFailedError', async () => {
-      const error = new Error();
-      mocks.mockInsertError(repository, error);
-
-      const params = data.mockInsertExerciseParams;
-      delete params.name;
-      const testFunc = () => service.insert(params);
-
-      await expect(testFunc()).rejects.toThrow(Error);
-      await expect(testFunc()).rejects.not.toThrow(ExerciseError);
-      await expect(testFunc()).rejects.not.toThrow(QueryFailedError);
+      await expect(
+        service.insert(data.mockInsertExerciseParams),
+      ).rejects.toThrowError(error);
     });
   });
 

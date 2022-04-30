@@ -16,3 +16,9 @@ export const mockFindOneOrFailError = <T>(
   error: Error,
 ): jest.SpyInstance =>
   jest.spyOn(repository, 'findOneOrFail').mockRejectedValue(error);
+
+export const mockInsertError = <T>(
+  repository: Repository<T>,
+  error: Error,
+): jest.SpyInstance =>
+  jest.spyOn(repository, 'insert').mockRejectedValue(error);

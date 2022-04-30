@@ -1,26 +1,11 @@
-import { HttpStatus } from '@nestjs/common';
+import { Exercise } from './exercise.entity';
 import { ErrorCode } from './exercise.enums';
 
-export interface ExerciseParams {
-  name: string;
-  calories: number;
-  timeSpentInMinutes: number;
-}
+type ExerciseGenericColumns = 'id' | 'createdAt' | 'updatedAt';
+export type ExerciseParams = Omit<Exercise, ExerciseGenericColumns>;
 
 export interface ExerciseErrorParams {
   code: ErrorCode;
 
   id?: number;
-  column?: string;
 }
-
-export interface ExerciseExceptionArgs {
-  status: HttpStatus;
-
-  id?: number;
-}
-
-export type ExerciseExceptionHandlerArgs = Omit<
-  ExerciseExceptionArgs,
-  'status'
->;

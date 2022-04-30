@@ -17,12 +17,6 @@ export const mockRepository = {
   update: jest.fn().mockResolvedValue(data.mockUpdateExerciseResponse),
 };
 
-export const mockInsertError = (
-  repository: Repository<Exercise>,
-  error: Error,
-): jest.SpyInstance =>
-  jest.spyOn(repository, 'insert').mockRejectedValue(error);
-
 export const mockUpdate = (
   repository: Repository<Exercise>,
   result: UpdateResult,

@@ -10,6 +10,7 @@ import { ChallengesModule } from './challenges/challenges.module';
 import configuration from './config/configuration';
 import { ExercisesModule } from './exercises/exercises.module';
 import { EntityNotFoundErrorFilter } from './shared/exception-filters/entity-not-found-error.filter';
+import { QueryFailedErrorFilter } from './shared/exception-filters/query-failed-error.filter';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { EntityNotFoundErrorFilter } from './shared/exception-filters/entity-not
     AppService,
 
     { provide: APP_FILTER, useClass: EntityNotFoundErrorFilter },
+    { provide: APP_FILTER, useClass: QueryFailedErrorFilter },
   ],
 })
 export class AppModule {}

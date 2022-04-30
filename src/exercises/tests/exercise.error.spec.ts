@@ -28,10 +28,10 @@ describe('ExerciseError', () => {
   describe('.message', () => {
     it.each<[string, ErrorCode, { [key: string]: unknown }, string]>([
       [
-        'required property missing',
-        ErrorCode.RequiredPropertyMissing,
-        { column: 'name' },
-        "Required property 'name' was not found in the payload",
+        'exercise not found',
+        ErrorCode.NotFound,
+        { id: 1 },
+        "Exercise was not found with ID '1'",
       ],
     ])(
       'should construct %p message from error code',
