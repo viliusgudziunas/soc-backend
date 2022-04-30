@@ -28,12 +28,10 @@ describe('ExercisesResolver', () => {
 
   describe('.exercises() query', () => {
     it('should try get all exercises from exercises service', () => {
-      const findAllMock = jest.spyOn(service, 'findAll');
-
       resolver.exercises();
 
-      expect(findAllMock).toBeCalledTimes(1);
-      expect(findAllMock).toBeCalledWith();
+      expect(service.findAll).toBeCalledTimes(1);
+      expect(service.findAll).toBeCalledWith();
     });
 
     it('should return all exercises found by exercises service', async () => {
@@ -47,12 +45,10 @@ describe('ExercisesResolver', () => {
     const { id } = data.mockExercise;
 
     it('should pass id to exercises service', () => {
-      const findByIdMock = jest.spyOn(service, 'findById');
-
       resolver.exercise(id);
 
-      expect(findByIdMock).toBeCalledTimes(1);
-      expect(findByIdMock).toBeCalledWith(id);
+      expect(service.findById).toBeCalledTimes(1);
+      expect(service.findById).toBeCalledWith(id);
     });
 
     it('should return the result it gets back from exercises service', async () => {

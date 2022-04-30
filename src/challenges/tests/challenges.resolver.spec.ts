@@ -28,18 +28,33 @@ describe('ChallengesResolver', () => {
 
   describe('.challenges() query', () => {
     it('should try get all challenges from challenges service', () => {
-      const findAllMock = jest.spyOn(service, 'findAll');
-
       resolver.challenges();
 
-      expect(findAllMock).toBeCalledTimes(1);
-      expect(findAllMock).toBeCalledWith();
+      expect(service.findAll).toBeCalledTimes(1);
+      expect(service.findAll).toBeCalledWith();
     });
 
     it('should return all challenges found by challenges service', async () => {
       const result = await resolver.challenges();
 
       expect(result).toBe(data.mockChallenges);
+    });
+  });
+
+  describe('.challenge() query', () => {
+    const { id } = data.mockChallenge;
+
+    it('should pass id to exercises service', () => {
+      resolver.challenge(id);
+
+      expect(service.findById).toBeCalledTimes(1);
+      expect(service.findById).toBeCalledWith(id);
+    });
+
+    it('should return the result it gets back from exercises service', async () => {
+      const result = await resolver.challenge(id);
+
+      expect(result).toBe(data.mockChallenge);
     });
   });
 });

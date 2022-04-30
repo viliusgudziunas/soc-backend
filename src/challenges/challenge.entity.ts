@@ -38,5 +38,6 @@ export class Challenge {
 }
 
 export const returns = {
+  challenge: () => Challenge,
   challenges: () => [Challenge],
 };

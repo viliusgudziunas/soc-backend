@@ -47,8 +47,8 @@ export class Exercise {
 }
 
 export const returns = {
-  exercises: () => [Exercise],
   exercise: () => Exercise,
+  exercises: () => [Exercise],
 };
 
 @InputType()

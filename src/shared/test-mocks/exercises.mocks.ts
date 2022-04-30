@@ -11,8 +11,8 @@ export const mockExercisesService = {
 };
 
 export const mockRepository = {
-  findOneOrFail: jest.fn().mockResolvedValue(data.mockExercise),
   find: jest.fn().mockResolvedValue(data.mockExercises),
+  findOneOrFail: jest.fn().mockResolvedValue(data.mockExercise),
   insert: jest.fn().mockResolvedValue(data.mockInsertExerciseResponse),
   update: jest.fn().mockResolvedValue(data.mockUpdateExerciseResponse),
 };
