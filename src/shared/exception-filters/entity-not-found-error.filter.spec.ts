@@ -18,6 +18,10 @@ describe('EntityNotFoundErrorFilter', () => {
 
   afterEach(() => jest.clearAllMocks());
 
+  it('should be defined', () => {
+    expect(filter).toBeDefined();
+  });
+
   describe('handle()', () => {
     const id = 1;
     const fieldName = 'object';

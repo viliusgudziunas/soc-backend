@@ -1,8 +1,8 @@
 import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { challengesData as data } from 'src/shared/test-data';
-import { challengesMocks as mocks } from 'src/shared/test-mocks';
-import { Repository } from 'typeorm';
+import { challengesMocks as mocks, sharedMocks } from 'src/shared/test-mocks';
+import { EntityNotFoundError, Repository } from 'typeorm';
 import { Challenge } from '../challenge.entity';
 import { ChallengesService } from '../challenges.service';
 
@@ -32,12 +32,10 @@ describe('ChallengesService', () => {
 
   describe('.findAll()', () => {
     it('should try get all challenges from repository', () => {
-      const findMock = jest.spyOn(repository, 'find');
-
       service.findAll();
 
-      expect(findMock).toBeCalledTimes(1);
-      expect(findMock).toBeCalledWith();
+      expect(repository.find).toBeCalledTimes(1);
+      expect(repository.find).toBeCalledWith();
     });
 
     it('should return all challenges found by repository', async () => {
@@ -47,11 +45,35 @@ describe('ChallengesService', () => {
     });
 
     it('should return empty array when no challenges exist in repository', async () => {
-      mocks.mockFindAll(repository, []);
+      sharedMocks.mockFind<Challenge>(repository, []);
 
       const result = await service.findAll();
 
       expect(result).toStrictEqual([]);
+    });
+  });
+
+  describe('.findById()', () => {
+    const { id } = data.mockChallenge;
+
+    it('should try get a challenge from repository by id', () => {
+      service.findById(id);
+
+      expect(repository.findOneOrFail).toBeCalledTimes(1);
+      expect(repository.findOneOrFail).toBeCalledWith(id);
+    });
+
+    it('should return the challenge it got back from repository', async () => {
+      const result = await service.findById(id);
+
+      expect(result).toBe(data.mockChallenge);
+    });
+
+    it('should not handle errors thrown by repository', async () => {
+      const error = new EntityNotFoundError(Challenge, id);
+      sharedMocks.mockFindOneOrFailError<Challenge>(repository, error);
+
+      await expect(service.findById(id)).rejects.toThrowError(error);
     });
   });
 });

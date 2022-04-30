@@ -13,4 +13,8 @@ export class ChallengesService {
   findAll(): Promise<Challenge[]> {
     return this.challengesRepository.find();
   }
+
+  async findById(id: number): Promise<Challenge> {
+    return await this.challengesRepository.findOneOrFail(id);
+  }
 }

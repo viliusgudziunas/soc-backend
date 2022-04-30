@@ -1,7 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { exercisesData as data } from 'src/shared/test-data';
-import { exerciseMocks as mocks } from 'src/shared/test-mocks';
+import { exerciseMocks as mocks, sharedMocks } from 'src/shared/test-mocks';
 import { testErrorCode } from 'src/shared/test.utils';
 import { EntityNotFoundError, QueryFailedError, Repository } from 'typeorm';
 import { Exercise } from '../exercise.entity';
@@ -35,12 +35,10 @@ describe('ExercisesService', () => {
 
   describe('.findAll()', () => {
     it('should try get all exercises from repository', () => {
-      const findMock = jest.spyOn(repository, 'find');
-
       service.findAll();
 
-      expect(findMock).toBeCalledTimes(1);
-      expect(findMock).toBeCalledWith();
+      expect(repository.find).toBeCalledTimes(1);
+      expect(repository.find).toBeCalledWith();
     });
 
     it('should return all exercises found by repository', async () => {
@@ -50,7 +48,7 @@ describe('ExercisesService', () => {
     });
 
     it('should return empty array when no exercises exist in repository', async () => {
-      mocks.mockFindAll(repository, []);
+      sharedMocks.mockFind<Exercise>(repository, []);
 
       const result = await service.findAll();
 
@@ -76,7 +74,7 @@ describe('ExercisesService', () => {
 
     it('should not handle errors thrown by repository', async () => {
       const error = new EntityNotFoundError(Exercise, id);
-      jest.spyOn(repository, 'findOneOrFail').mockRejectedValue(error);
+      sharedMocks.mockFindOneOrFailError<Exercise>(repository, error);
 
       await expect(service.findById(id)).rejects.toThrowError(error);
     });
