@@ -12,15 +12,30 @@ import { EntityNotFoundError } from 'typeorm';
 export class EntityNotFoundErrorFilter
   implements ExceptionFilter<EntityNotFoundError>
 {
-  catch(_: EntityNotFoundError, host: ArgumentsHost): HttpException {
-    const { fieldName } = host.getArgByIndex<{ fieldName: string }>(3);
-    const entity = fieldName.charAt(0).toUpperCase() + fieldName.slice(1);
-    const { id } = host.getArgByIndex<{ id: number }>(1);
-
-    const message = locale.entityNotFoundMessage
-      .replace('%entity', entity)
-      .replace('%id', String(id));
+  catch(error: EntityNotFoundError, host: ArgumentsHost): HttpException {
+    const entity = this.getEntity(error);
+    const id = this.getId(host);
+    const message = this.makeMessage(entity, id);
 
     return new HttpException(message, HttpStatus.NOT_FOUND);
+  }
+
+  private getEntity(error: EntityNotFoundError): string {
+    const { message } = error;
+    const left = message.indexOf('"') + 1;
+    const right = message.indexOf('"', left);
+
+    return message.slice(left, right);
+  }
+
+  private getId(host: ArgumentsHost): string {
+    const { id } = host.getArgByIndex<{ id: number }>(1);
+    return String(id);
+  }
+
+  private makeMessage(entity: string, id: string): string {
+    return locale.entityNotFoundMessage
+      .replace('%entity', entity)
+      .replace('%id', id);
   }
 }

@@ -3,8 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { EntityParams } from 'src/shared/entity-base/entity-base.types';
 import { Repository } from 'typeorm';
 import { Exercise } from './exercise.entity';
-import { ErrorCode } from './exercise.enums';
-import { ExerciseError } from './exercise.error';
 
 @Injectable()
 export class ExercisesService {
@@ -33,11 +31,8 @@ export class ExercisesService {
   async update(
     id: number,
     params: Partial<EntityParams<Exercise>>,
-  ): Promise<Exercise> {
-    const result = await this.exercisesRepository.update(id, { ...params });
-    if (result.affected === 0) {
-      throw new ExerciseError({ code: ErrorCode.NotFound, id });
-    }
-    return await this.findById(id);
+  ): Promise<void> {
+    const partialEntity = { ...params };
+    await this.exercisesRepository.update(id, partialEntity);
   }
 }

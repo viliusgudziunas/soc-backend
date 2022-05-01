@@ -2,11 +2,8 @@ import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { exercisesData as data } from 'src/shared/test-data';
 import { exerciseMocks as mocks, sharedMocks } from 'src/shared/test-mocks';
-import { testErrorCode } from 'src/shared/test.utils';
 import { EntityNotFoundError, QueryFailedError, Repository } from 'typeorm';
 import { Exercise } from '../exercise.entity';
-import { ErrorCode } from '../exercise.enums';
-import { ExerciseError } from '../exercise.error';
 import { ExercisesService } from '../exercises.service';
 
 describe('ExercisesService', () => {
@@ -119,38 +116,16 @@ describe('ExercisesService', () => {
   });
 
   describe('.update()', () => {
-    let findByIdMock: jest.SpyInstance;
+    it('should try to update an exercise in a repository', () => {
+      const { id } = data.mockExercise;
 
-    const { id } = data.mockExercise;
+      service.update(id, data.mockUpdateExerciseParams);
 
-    beforeEach(() => {
-      findByIdMock = mocks.mockFindById(service, data.mockUpdatedExercise);
-    });
-
-    it('should try update an existing exercise in a repository', async () => {
-      const updateMock = jest.spyOn(repository, 'update');
-
-      await service.update(id, data.mockUpdateExerciseParams);
-
-      expect(updateMock).toBeCalledTimes(1);
-      expect(updateMock).toBeCalledWith(id, data.mockUpdateExerciseParams);
-    });
-
-    it('should return the exercise which was just updated', async () => {
-      const result = await service.update(id, data.mockUpdateExerciseParams);
-
-      expect(findByIdMock).toBeCalledTimes(1);
-      expect(findByIdMock).toBeCalledWith(id);
-      expect(result).toBe(data.mockUpdatedExercise);
-    });
-
-    it('should throw an exercise error when exercise was not found in repository', async () => {
-      mocks.mockUpdate(repository, data.mockUpdateExerciseZeroAffectedResponse);
-
-      const testFunc = () => service.update(id, data.mockUpdateExerciseParams);
-
-      await expect(testFunc()).rejects.toThrow(ExerciseError);
-      await testErrorCode(testFunc, ErrorCode.NotFound);
+      expect(repository.update).toBeCalledTimes(1);
+      expect(repository.update).toBeCalledWith(
+        id,
+        data.mockUpdateExerciseParams,
+      );
     });
   });
 });
