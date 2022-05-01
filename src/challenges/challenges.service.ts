@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { EntityParams } from 'src/shared/entity-base/entity-base.types';
 import { Repository } from 'typeorm';
 import { Challenge } from './challenge.entity';
-import { ChallengeParams } from './challenges.types';
 
 @Injectable()
 export class ChallengesService {
@@ -19,10 +19,10 @@ export class ChallengesService {
     return await this.challengesRepository.findOneOrFail(id);
   }
 
-  async insert(params: ChallengeParams): Promise<Challenge> {
-    const exercise = new Challenge(params);
+  async insert(params: EntityParams<Challenge>): Promise<Challenge> {
+    const challenge = new Challenge(params);
 
-    const result = await this.challengesRepository.insert(exercise);
+    const result = await this.challengesRepository.insert(challenge);
     const id: number = result.identifiers[0].id;
 
     return this.findById(id);

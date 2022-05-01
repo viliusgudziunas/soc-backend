@@ -3,8 +3,8 @@ import {
   Exercise,
   UpdateExerciseInput,
 } from 'src/exercises/exercise.entity';
-import { ExerciseParams } from 'src/exercises/exercises.types';
 import { InsertResult, UpdateResult } from 'typeorm';
+import { EntityParams } from '../entity-base/entity-base.types';
 
 export const mockExercise: Exercise = {
   id: 1,
@@ -23,7 +23,8 @@ export const mockAddExerciseInput: AddExerciseInput = {
   timeSpentInMinutes: 20,
 };
 
-export const mockInsertExerciseParams: ExerciseParams = mockAddExerciseInput;
+export const mockInsertExerciseParams: EntityParams<Exercise> =
+  mockAddExerciseInput;
 
 export const mockInsertExerciseResponse: InsertResult = {
   identifiers: [{ id: 1 }],
@@ -35,7 +36,7 @@ export const mockUpdateExerciseInput: UpdateExerciseInput = {
   name: 'Updated test exercise',
 };
 
-export const mockUpdateExerciseParams: Partial<ExerciseParams> =
+export const mockUpdateExerciseParams: Partial<EntityParams<Exercise>> =
   mockUpdateExerciseInput;
 
 export const mockUpdatedExercise: Exercise = {

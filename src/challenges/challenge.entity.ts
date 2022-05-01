@@ -1,26 +1,10 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
-import { ChallengeParams } from './challenges.types';
+import { Field, ObjectType } from '@nestjs/graphql';
+import { EntityBase } from 'src/shared/entity-base/entity-base.entity';
+import { Column, Entity } from 'typeorm';
 
 @ObjectType()
 @Entity('challenges')
-export class Challenge {
-  @Field(() => ID)
-  @PrimaryGeneratedColumn()
-  readonly id: number;
-  @Field()
-  @CreateDateColumn()
-  readonly createdAt: Date;
-  @Field()
-  @UpdateDateColumn()
-  readonly updatedAt: Date;
-
+export class Challenge extends EntityBase<Challenge> {
   @Field()
   @Column()
   readonly name: string;
@@ -36,10 +20,6 @@ export class Challenge {
   @Field({ nullable: true })
   @Column({ nullable: true })
   readonly endDate?: Date;
-
-  constructor(params: ChallengeParams) {
-    Object.assign(this, params);
-  }
 }
 
 export const returns = {

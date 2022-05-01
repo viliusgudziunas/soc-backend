@@ -1,34 +1,17 @@
 import {
   Field,
-  ID,
   InputType,
   Int,
   ObjectType,
   OmitType,
   PartialType,
 } from '@nestjs/graphql';
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
-import { ExerciseParams } from './exercises.types';
+import { EntityBase } from 'src/shared/entity-base/entity-base.entity';
+import { Column, Entity } from 'typeorm';
 
 @ObjectType()
 @Entity('exercises')
-export class Exercise {
-  @Field(() => ID)
-  @PrimaryGeneratedColumn()
-  readonly id: number;
-  @Field()
-  @CreateDateColumn()
-  readonly createdAt: Date;
-  @Field()
-  @UpdateDateColumn()
-  readonly updatedAt: Date;
-
+export class Exercise extends EntityBase<Exercise> {
   @Field()
   @Column()
   readonly name: string;
@@ -40,10 +23,6 @@ export class Exercise {
   @Field(() => Int)
   @Column()
   readonly timeSpentInMinutes: number;
-
-  constructor(params: ExerciseParams) {
-    Object.assign(this, params);
-  }
 }
 
 export const returns = {
