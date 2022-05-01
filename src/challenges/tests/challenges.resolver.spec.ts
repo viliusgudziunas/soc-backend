@@ -57,4 +57,21 @@ describe('ChallengesResolver', () => {
       expect(result).toBe(data.mockChallenge);
     });
   });
+
+  describe('.addChallenge() mutation', () => {
+    it("should pass it's parameters to challenges service", () => {
+      const insertMock = jest.spyOn(service, 'insert');
+
+      resolver.addChallenge(data.mockAddChallengeInput);
+
+      expect(insertMock).toBeCalledTimes(1);
+      expect(insertMock).toBeCalledWith(data.mockAddChallengeInput);
+    });
+
+    it('should return the result it gets back from challenges service', async () => {
+      const result = await resolver.addChallenge(data.mockAddChallengeInput);
+
+      expect(result).toBe(data.mockChallenge);
+    });
+  });
 });

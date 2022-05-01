@@ -1,6 +1,6 @@
-import { Args, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { operationArgs } from 'src/shared/operation-args';
-import { Challenge, returns } from './challenge.entity';
+import { AddChallengeInput, Challenge, returns } from './challenge.entity';
 import { ChallengesService } from './challenges.service';
 
 @Resolver(() => Challenge)
@@ -15,5 +15,12 @@ export class ChallengesResolver {
   @Query(returns.challenge)
   async challenge(@Args(operationArgs.id) id: number): Promise<Challenge> {
     return this.challengesService.findById(id);
+  }
+
+  @Mutation(returns.challenge)
+  async addChallenge(
+    @Args('challenge') challenge: AddChallengeInput,
+  ): Promise<Challenge> {
+    return this.challengesService.insert(challenge);
   }
 }

@@ -1,4 +1,4 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, InputType, ObjectType, OmitType } from '@nestjs/graphql';
 import { EntityBase } from 'src/shared/entity-base/entity-base.entity';
 import { Column, Entity } from 'typeorm';
 
@@ -26,3 +26,10 @@ export const returns = {
   challenge: () => Challenge,
   challenges: () => [Challenge],
 };
+
+@InputType()
+export class AddChallengeInput extends OmitType(
+  Challenge,
+  ['id', 'createdAt', 'updatedAt'],
+  InputType,
+) {}

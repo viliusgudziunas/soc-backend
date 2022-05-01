@@ -5,6 +5,7 @@ import { challengesData as data } from 'src/shared/test-data';
 export const mockChallengesService = {
   findAll: jest.fn().mockResolvedValue(data.mockChallenges),
   findById: jest.fn().mockResolvedValue(data.mockChallenge),
+  insert: jest.fn().mockResolvedValue(data.mockChallenge),
 };
 
 export const mockRepository = {
