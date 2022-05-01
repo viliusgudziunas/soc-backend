@@ -26,7 +26,8 @@ export class ExercisesResolver {
   async addExercise(
     @Args('exercise') exercise: AddExerciseInput,
   ): Promise<Exercise> {
-    return this.exercisesService.insert(exercise);
+    const id = await this.exercisesService.insert(exercise);
+    return this.exercisesService.findById(id);
   }
 
   @Mutation(returns.exercise)

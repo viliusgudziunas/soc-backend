@@ -2,7 +2,7 @@ import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { exercisesData as data } from 'src/shared/test-data';
 import { exerciseMocks as mocks, sharedMocks } from 'src/shared/test-mocks';
-import { EntityNotFoundError, QueryFailedError, Repository } from 'typeorm';
+import { EntityNotFoundError, Repository } from 'typeorm';
 import { Exercise } from '../exercise.entity';
 import { ExercisesService } from '../exercises.service';
 
@@ -78,40 +78,19 @@ describe('ExercisesService', () => {
   });
 
   describe('.insert()', () => {
-    let findByIdMock: jest.SpyInstance;
-
-    beforeEach(() => {
-      findByIdMock = mocks.mockFindById(service, data.mockExercise);
-    });
-
-    it('should try insert a new exercise into repository', async () => {
-      await service.insert(data.mockInsertExerciseParams);
+    it('should try insert a new exercise into repository', () => {
+      service.insert(data.mockInsertExerciseParams);
 
       expect(repository.insert).toBeCalledTimes(1);
       expect(repository.insert).toBeCalledWith(data.mockInsertExerciseParams);
     });
 
-    it('should try to get an exercise from exercises service', async () => {
-      await service.insert(data.mockInsertExerciseParams);
-      const identifierId = data.mockInsertExerciseResponse.identifiers[0].id;
+    it('should return the id returned by repository', async () => {
+      const { id } = data.mockInsertExerciseResponse.identifiers[0];
 
-      expect(findByIdMock).toBeCalledTimes(1);
-      expect(findByIdMock).toBeCalledWith(identifierId);
-    });
-
-    it('should return the exercise which was just added', async () => {
       const result = await service.insert(data.mockInsertExerciseParams);
 
-      expect(result).toBe(data.mockExercise);
-    });
-
-    it('should not handle errors thrown by repository', async () => {
-      const error = new QueryFailedError('', [], {});
-      sharedMocks.mockInsertError<Exercise>(repository, error);
-
-      await expect(
-        service.insert(data.mockInsertExerciseParams),
-      ).rejects.toThrowError(error);
+      expect(result).toBe(id);
     });
   });
 

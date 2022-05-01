@@ -59,16 +59,23 @@ describe('ExercisesResolver', () => {
   });
 
   describe('.addExercise() mutation', () => {
-    it("should pass it's parameters to exercises service", () => {
-      const insertMock = jest.spyOn(service, 'insert');
+    const { id } = data.mockExercise;
 
+    it('should try to insert exercise via exercises service', () => {
       resolver.addExercise(data.mockAddExerciseInput);
 
-      expect(insertMock).toBeCalledTimes(1);
-      expect(insertMock).toBeCalledWith(data.mockAddExerciseInput);
+      expect(service.insert).toBeCalledTimes(1);
+      expect(service.insert).toBeCalledWith(data.mockAddExerciseInput);
     });
 
-    it('should return the result it gets back from exercises service', async () => {
+    it('should try to find the inserted exercise via exercises service', async () => {
+      await resolver.addExercise(data.mockAddExerciseInput);
+
+      expect(service.findById).toBeCalledTimes(1);
+      expect(service.findById).toBeCalledWith(id);
+    });
+
+    it('should return the exercise it gets back from exercises service', async () => {
       const result = await resolver.addExercise(data.mockAddExerciseInput);
 
       expect(result).toBe(data.mockExercise);
@@ -92,7 +99,7 @@ describe('ExercisesResolver', () => {
       expect(service.findById).toBeCalledWith(id);
     });
 
-    it('should return the result it gets back from exercises service', async () => {
+    it('should return the exercise it gets back from exercises service', async () => {
       mocks.mockFindById(service, data.mockUpdatedExercise);
 
       const result = await resolver.updateExercise(

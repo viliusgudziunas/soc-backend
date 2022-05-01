@@ -27,6 +27,9 @@ describe('EntityNotFoundErrorFilter', () => {
   describe('handle()', () => {
     const id = 1;
     const fieldName = 'object';
+    const expectedMessage = locale.entityNotFoundMessage
+      .replace('%entity', 'Object')
+      .replace('%id', String(id));
 
     let error: EntityNotFoundError;
 
@@ -48,9 +51,13 @@ describe('EntityNotFoundErrorFilter', () => {
     });
 
     it('should return correct entityNotFoundMessage', () => {
-      const expectedMessage = locale.entityNotFoundMessage
-        .replace('%entity', 'Object')
-        .replace('%id', String(id));
+      const result = filter.catch(error, host);
+
+      expect(result.getResponse()).toBe(expectedMessage);
+    });
+
+    it('should not use fieldName to construct error message', () => {
+      mocks.mockHostGetArgByIndex(host, { id }, 'testFieldName');
 
       const result = filter.catch(error, host);
 

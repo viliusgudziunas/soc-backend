@@ -19,13 +19,11 @@ export class ExercisesService {
     return await this.exercisesRepository.findOneOrFail(id);
   }
 
-  async insert(params: EntityParams<Exercise>): Promise<Exercise> {
+  async insert(params: EntityParams<Exercise>): Promise<number> {
     const exercise = new Exercise(params);
 
     const result = await this.exercisesRepository.insert(exercise);
-    const id: number = result.identifiers[0].id;
-
-    return this.findById(id);
+    return result.identifiers[0].id;
   }
 
   async update(
