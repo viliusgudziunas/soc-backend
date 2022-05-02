@@ -12,4 +12,5 @@ export const mockHost = (): ArgumentsHost => ({
 export const mockHostGetArgByIndex = (
   host: ArgumentsHost,
   args: { [key: string]: unknown },
-) => jest.spyOn(host, 'getArgByIndex').mockImplementation(() => args);
+): jest.SpyInstance =>
+  jest.spyOn(host, 'getArgByIndex').mockImplementation(() => args);

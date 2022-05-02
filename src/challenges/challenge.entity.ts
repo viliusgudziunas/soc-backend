@@ -1,4 +1,10 @@
-import { Field, InputType, ObjectType, OmitType } from '@nestjs/graphql';
+import {
+  Field,
+  InputType,
+  ObjectType,
+  OmitType,
+  ReturnTypeFuncValue,
+} from '@nestjs/graphql';
 import { EntityBase } from 'src/shared/entity-base/entity-base.entity';
 import { Column, Entity } from 'typeorm';
 
@@ -23,8 +29,8 @@ export class Challenge extends EntityBase<Challenge> {
 }
 
 export const returns = {
-  challenge: () => Challenge,
-  challenges: () => [Challenge],
+  challenge: (): ReturnTypeFuncValue => Challenge,
+  challenges: (): ReturnTypeFuncValue => [Challenge],
 };
 
 @InputType()

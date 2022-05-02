@@ -5,6 +5,7 @@ import {
   ObjectType,
   OmitType,
   PartialType,
+  ReturnTypeFuncValue,
 } from '@nestjs/graphql';
 import { EntityBase } from 'src/shared/entity-base/entity-base.entity';
 import { Column, Entity } from 'typeorm';
@@ -26,8 +27,8 @@ export class Exercise extends EntityBase<Exercise> {
 }
 
 export const returns = {
-  exercise: () => Exercise,
-  exercises: () => [Exercise],
+  exercise: (): ReturnTypeFuncValue => Exercise,
+  exercises: (): ReturnTypeFuncValue => [Exercise],
 };
 
 @InputType()
