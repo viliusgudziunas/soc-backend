@@ -41,7 +41,7 @@ describe('ExercisesService', () => {
     it('should return all exercises found by repository', async () => {
       const result = await service.findAll();
 
-      expect(result).toBe(data.mockExercises);
+      expect(result).toBe(data.exercises);
     });
 
     it('should return empty array when no exercises exist in repository', async () => {
@@ -54,7 +54,7 @@ describe('ExercisesService', () => {
   });
 
   describe('.findById()', () => {
-    const { id } = data.mockExercise;
+    const { id } = data.exercise;
 
     it('should try get an exercise from repository by id', () => {
       service.findById(id);
@@ -66,22 +66,22 @@ describe('ExercisesService', () => {
     it('should return the exercise it got back from repository', async () => {
       const result = await service.findById(id);
 
-      expect(result).toBe(data.mockExercise);
+      expect(result).toBe(data.exercise);
     });
   });
 
   describe('.insert()', () => {
     it('should try insert a new exercise into repository', () => {
-      service.insert(data.mockInsertExerciseParams);
+      service.insert(data.insertExerciseParams);
 
       expect(repository.insert).toBeCalledTimes(1);
-      expect(repository.insert).toBeCalledWith(data.mockInsertExerciseParams);
+      expect(repository.insert).toBeCalledWith(data.insertExerciseParams);
     });
 
     it('should return the id returned by repository', async () => {
-      const { id } = data.mockInsertExerciseResponse.identifiers[0];
+      const { id } = data.insertExerciseResponse.identifiers[0];
 
-      const result = await service.insert(data.mockInsertExerciseParams);
+      const result = await service.insert(data.insertExerciseParams);
 
       expect(result).toBe(id);
     });
@@ -89,15 +89,12 @@ describe('ExercisesService', () => {
 
   describe('.update()', () => {
     it('should try to update an exercise in a repository', () => {
-      const { id } = data.mockExercise;
+      const { id } = data.exercise;
 
-      service.update(id, data.mockUpdateExerciseParams);
+      service.update(id, data.updateExerciseParams);
 
       expect(repository.update).toBeCalledTimes(1);
-      expect(repository.update).toBeCalledWith(
-        id,
-        data.mockUpdateExerciseParams,
-      );
+      expect(repository.update).toBeCalledWith(id, data.updateExerciseParams);
     });
   });
 });

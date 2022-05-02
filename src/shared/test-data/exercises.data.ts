@@ -6,7 +6,7 @@ import {
 import { InsertResult } from 'typeorm';
 import { EntityParams } from '../entity-base/entity-base.types';
 
-export const mockExercise: Exercise = {
+export const exercise: Exercise = {
   id: 1,
   name: 'Test exercise',
   calories: 10,
@@ -15,31 +15,30 @@ export const mockExercise: Exercise = {
   updatedAt: new Date(),
 };
 
-export const mockExercises: Exercise[] = [mockExercise];
+export const exercises: Exercise[] = [exercise];
 
-export const mockAddExerciseInput: AddExerciseInput = {
+export const addExerciseInput: AddExerciseInput = {
   name: 'Test exercise',
   calories: 10,
   timeSpentInMinutes: 20,
 };
 
-export const mockInsertExerciseParams: EntityParams<Exercise> =
-  mockAddExerciseInput;
+export const insertExerciseParams: EntityParams<Exercise> = addExerciseInput;
 
-export const mockInsertExerciseResponse: InsertResult = {
+export const insertExerciseResponse: InsertResult = {
   identifiers: [{ id: 1 }],
   generatedMaps: [],
   raw: {},
 };
 
-export const mockUpdateExerciseInput: UpdateExerciseInput = {
+export const updateExerciseInput: UpdateExerciseInput = {
   name: 'Updated test exercise',
 };
 
-export const mockUpdateExerciseParams: Partial<EntityParams<Exercise>> =
-  mockUpdateExerciseInput;
+export const updateExerciseParams: Partial<EntityParams<Exercise>> =
+  updateExerciseInput;
 
-export const mockUpdatedExercise: Exercise = {
-  ...mockExercise,
-  ...mockUpdateExerciseInput,
+export const updatedExercise: Exercise = {
+  ...exercise,
+  ...updateExerciseInput,
 };

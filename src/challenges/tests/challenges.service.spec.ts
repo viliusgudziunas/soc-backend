@@ -41,7 +41,7 @@ describe('ChallengesService', () => {
     it('should return all challenges found by repository', async () => {
       const result = await service.findAll();
 
-      expect(result).toBe(data.mockChallenges);
+      expect(result).toBe(data.challenges);
     });
 
     it('should return empty array when no challenges exist in repository', async () => {
@@ -54,7 +54,7 @@ describe('ChallengesService', () => {
   });
 
   describe('.findById()', () => {
-    const { id } = data.mockChallenge;
+    const { id } = data.challenge;
 
     it('should try get a challenge from repository by id', () => {
       service.findById(id);
@@ -66,22 +66,22 @@ describe('ChallengesService', () => {
     it('should return the challenge it got back from repository', async () => {
       const result = await service.findById(id);
 
-      expect(result).toBe(data.mockChallenge);
+      expect(result).toBe(data.challenge);
     });
   });
 
   describe('.insert()', () => {
     it('should try insert a new challenge into repository', () => {
-      service.insert(data.mockInsertChallengeParams);
+      service.insert(data.insertChallengeParams);
 
       expect(repository.insert).toBeCalledTimes(1);
-      expect(repository.insert).toBeCalledWith(data.mockInsertChallengeParams);
+      expect(repository.insert).toBeCalledWith(data.insertChallengeParams);
     });
 
     it('should return the id returned by repository', async () => {
-      const { id } = data.mockInsertChallengeResponse.identifiers[0];
+      const { id } = data.insertChallengeResponse.identifiers[0];
 
-      const result = await service.insert(data.mockInsertChallengeParams);
+      const result = await service.insert(data.insertChallengeParams);
 
       expect(result).toBe(id);
     });
@@ -89,15 +89,12 @@ describe('ChallengesService', () => {
 
   describe('.update()', () => {
     it('should try to update a challenge in a repository', () => {
-      const { id } = data.mockChallenge;
+      const { id } = data.challenge;
 
-      service.update(id, data.mockUpdateChallengeParams);
+      service.update(id, data.updateChallengeParams);
 
       expect(repository.update).toBeCalledTimes(1);
-      expect(repository.update).toBeCalledWith(
-        id,
-        data.mockUpdateChallengeParams,
-      );
+      expect(repository.update).toBeCalledWith(id, data.updateChallengeParams);
     });
   });
 });

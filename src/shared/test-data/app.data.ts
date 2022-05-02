@@ -1,6 +1,6 @@
 import { GraphQLError } from 'graphql';
 
-export const mockGqlError: GraphQLError = {
+export const gqlError: GraphQLError = {
   message: "GraphQLError: Exercise was not found with ID '112'",
   path: ['exercise'],
   extensions: {

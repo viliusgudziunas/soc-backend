@@ -5,16 +5,16 @@ describe('formatAppError()', () => {
   it.each<string>(['message', 'path'])(
     'should return %p property of the original error',
     (property: string) => {
-      const result = formatAppError(data.mockGqlError);
+      const result = formatAppError(data.gqlError);
 
-      expect(result[property]).toBe(data.mockGqlError[property]);
+      expect(result[property]).toBe(data.gqlError[property]);
     },
   );
 
   it.each<string>(['locations', 'extensions'])(
     'should remove %p property of the original error',
     (property: string) => {
-      const result = formatAppError(data.mockGqlError);
+      const result = formatAppError(data.gqlError);
 
       expect(result).not.toHaveProperty(property);
     },

@@ -37,12 +37,12 @@ describe('ExercisesResolver', () => {
     it('should return all exercises found by exercises service', async () => {
       const result = await resolver.exercises();
 
-      expect(result).toBe(data.mockExercises);
+      expect(result).toBe(data.exercises);
     });
   });
 
   describe('.exercise() query', () => {
-    const { id } = data.mockExercise;
+    const { id } = data.exercise;
 
     it('should pass id to exercises service', () => {
       resolver.exercise(id);
@@ -54,60 +54,60 @@ describe('ExercisesResolver', () => {
     it('should return the result it gets back from exercises service', async () => {
       const result = await resolver.exercise(id);
 
-      expect(result).toBe(data.mockExercise);
+      expect(result).toBe(data.exercise);
     });
   });
 
   describe('.addExercise() mutation', () => {
-    const { id } = data.mockExercise;
+    const { id } = data.exercise;
 
     it('should try to insert exercise via exercises service', () => {
-      resolver.addExercise(data.mockAddExerciseInput);
+      resolver.addExercise(data.addExerciseInput);
 
       expect(service.insert).toBeCalledTimes(1);
-      expect(service.insert).toBeCalledWith(data.mockAddExerciseInput);
+      expect(service.insert).toBeCalledWith(data.addExerciseInput);
     });
 
     it('should try to find the inserted exercise via exercises service', async () => {
-      await resolver.addExercise(data.mockAddExerciseInput);
+      await resolver.addExercise(data.addExerciseInput);
 
       expect(service.findById).toBeCalledTimes(1);
       expect(service.findById).toBeCalledWith(id);
     });
 
     it('should return the exercise it gets back from exercises service', async () => {
-      const result = await resolver.addExercise(data.mockAddExerciseInput);
+      const result = await resolver.addExercise(data.addExerciseInput);
 
-      expect(result).toBe(data.mockExercise);
+      expect(result).toBe(data.exercise);
     });
   });
 
   describe('.updateExercise() mutation', () => {
-    const { id } = data.mockExercise;
+    const { id } = data.exercise;
 
     it('should try to update exercise via exercises service', () => {
-      resolver.updateExercise(id, data.mockUpdateExerciseInput);
+      resolver.updateExercise(id, data.updateExerciseInput);
 
       expect(service.update).toBeCalledTimes(1);
-      expect(service.update).toBeCalledWith(id, data.mockUpdateExerciseInput);
+      expect(service.update).toBeCalledWith(id, data.updateExerciseInput);
     });
 
     it('should try to find the updated exercise via exercises service', async () => {
-      await resolver.updateExercise(id, data.mockUpdateExerciseInput);
+      await resolver.updateExercise(id, data.updateExerciseInput);
 
       expect(service.findById).toBeCalledTimes(1);
       expect(service.findById).toBeCalledWith(id);
     });
 
     it('should return the exercise it gets back from exercises service', async () => {
-      mocks.mockFindById(service, data.mockUpdatedExercise);
+      mocks.mockFindById(service, data.updatedExercise);
 
       const result = await resolver.updateExercise(
         id,
-        data.mockUpdateExerciseInput,
+        data.updateExerciseInput,
       );
 
-      expect(result).toBe(data.mockUpdatedExercise);
+      expect(result).toBe(data.updatedExercise);
     });
   });
 });

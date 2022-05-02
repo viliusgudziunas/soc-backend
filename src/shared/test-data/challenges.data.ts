@@ -6,7 +6,7 @@ import {
 import { InsertResult } from 'typeorm';
 import { EntityParams } from '../entity-base/entity-base.types';
 
-export const mockChallenge: Challenge = {
+export const challenge: Challenge = {
   id: 1,
   name: 'Test challenge',
   description: 'Test challenge description',
@@ -16,32 +16,31 @@ export const mockChallenge: Challenge = {
   updatedAt: new Date(),
 };
 
-export const mockChallenges: Challenge[] = [mockChallenge];
+export const challenges: Challenge[] = [challenge];
 
-export const mockAddChallengeInput: AddChallengeInput = {
+export const addChallengeInput: AddChallengeInput = {
   name: 'Test challenge',
   description: 'Test challenge description',
   active: true,
 };
 
-export const mockInsertChallengeParams: EntityParams<Challenge> =
-  mockAddChallengeInput;
+export const insertChallengeParams: EntityParams<Challenge> = addChallengeInput;
 
-export const mockInsertChallengeResponse: InsertResult = {
+export const insertChallengeResponse: InsertResult = {
   identifiers: [{ id: 1 }],
   generatedMaps: [],
   raw: {},
 };
 
-export const mockUpdateChallengeInput: UpdateChallengeInput = {
+export const updateChallengeInput: UpdateChallengeInput = {
   name: 'Updated test challenge',
   active: false,
 };
 
-export const mockUpdateChallengeParams: Partial<EntityParams<Challenge>> =
-  mockUpdateChallengeInput;
+export const updateChallengeParams: Partial<EntityParams<Challenge>> =
+  updateChallengeInput;
 
-export const mockUpdatedChallenge: Challenge = {
-  ...mockChallenge,
-  ...mockUpdateChallengeInput,
+export const updatedChallenge: Challenge = {
+  ...challenge,
+  ...updateChallengeInput,
 };

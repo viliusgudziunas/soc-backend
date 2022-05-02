@@ -37,12 +37,12 @@ describe('ChallengesResolver', () => {
     it('should return all challenges found by challenges service', async () => {
       const result = await resolver.challenges();
 
-      expect(result).toBe(data.mockChallenges);
+      expect(result).toBe(data.challenges);
     });
   });
 
   describe('.challenge() query', () => {
-    const { id } = data.mockChallenge;
+    const { id } = data.challenge;
 
     it('should pass id to challenges service', () => {
       resolver.challenge(id);
@@ -54,60 +54,60 @@ describe('ChallengesResolver', () => {
     it('should return the result it gets back from challenges service', async () => {
       const result = await resolver.challenge(id);
 
-      expect(result).toBe(data.mockChallenge);
+      expect(result).toBe(data.challenge);
     });
   });
 
   describe('.addChallenge() mutation', () => {
-    const { id } = data.mockChallenge;
+    const { id } = data.challenge;
 
     it('should try to insert challenge via challenges service', () => {
-      resolver.addChallenge(data.mockAddChallengeInput);
+      resolver.addChallenge(data.addChallengeInput);
 
       expect(service.insert).toBeCalledTimes(1);
-      expect(service.insert).toBeCalledWith(data.mockAddChallengeInput);
+      expect(service.insert).toBeCalledWith(data.addChallengeInput);
     });
 
     it('should try to find the inserted challenge via challenges service', async () => {
-      await resolver.addChallenge(data.mockAddChallengeInput);
+      await resolver.addChallenge(data.addChallengeInput);
 
       expect(service.findById).toBeCalledTimes(1);
       expect(service.findById).toBeCalledWith(id);
     });
 
     it('should return the challenge it gets back from challenges service', async () => {
-      const result = await resolver.addChallenge(data.mockAddChallengeInput);
+      const result = await resolver.addChallenge(data.addChallengeInput);
 
-      expect(result).toBe(data.mockChallenge);
+      expect(result).toBe(data.challenge);
     });
   });
 
   describe('.updateChallenge() mutation', () => {
-    const { id } = data.mockChallenge;
+    const { id } = data.challenge;
 
     it('should try to update challenge via challenges service', () => {
-      resolver.updateChallenge(id, data.mockUpdateChallengeInput);
+      resolver.updateChallenge(id, data.updateChallengeInput);
 
       expect(service.update).toBeCalledTimes(1);
-      expect(service.update).toBeCalledWith(id, data.mockUpdateChallengeInput);
+      expect(service.update).toBeCalledWith(id, data.updateChallengeInput);
     });
 
     it('should try to find the updated challenge via challenges service', async () => {
-      await resolver.updateChallenge(id, data.mockUpdateChallengeInput);
+      await resolver.updateChallenge(id, data.updateChallengeInput);
 
       expect(service.findById).toBeCalledTimes(1);
       expect(service.findById).toBeCalledWith(id);
     });
 
     it('should return the challenge it gets back from challenges service', async () => {
-      mocks.mockFindById(service, data.mockUpdatedChallenge);
+      mocks.mockFindById(service, data.updatedChallenge);
 
       const result = await resolver.updateChallenge(
         id,
-        data.mockUpdateChallengeInput,
+        data.updateChallengeInput,
       );
 
-      expect(result).toBe(data.mockUpdatedChallenge);
+      expect(result).toBe(data.updatedChallenge);
     });
   });
 });
