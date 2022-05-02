@@ -2,7 +2,7 @@ import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { exercisesData as data } from 'src/shared/test-data';
 import { exerciseMocks as mocks, sharedMocks } from 'src/shared/test-mocks';
-import { EntityNotFoundError, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Exercise } from '../exercise.entity';
 import { ExercisesService } from '../exercises.service';
 
@@ -67,13 +67,6 @@ describe('ExercisesService', () => {
       const result = await service.findById(id);
 
       expect(result).toBe(data.mockExercise);
-    });
-
-    it('should not handle errors thrown by repository', async () => {
-      const error = new EntityNotFoundError(Exercise, id);
-      sharedMocks.mockFindOneOrFailError<Exercise>(repository, error);
-
-      await expect(service.findById(id)).rejects.toThrowError(error);
     });
   });
 

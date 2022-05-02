@@ -59,16 +59,23 @@ describe('ChallengesResolver', () => {
   });
 
   describe('.addChallenge() mutation', () => {
-    it("should pass it's parameters to challenges service", () => {
-      const insertMock = jest.spyOn(service, 'insert');
+    const { id } = data.mockChallenge;
 
+    it('should try to insert challenge via challenges service', () => {
       resolver.addChallenge(data.mockAddChallengeInput);
 
-      expect(insertMock).toBeCalledTimes(1);
-      expect(insertMock).toBeCalledWith(data.mockAddChallengeInput);
+      expect(service.insert).toBeCalledTimes(1);
+      expect(service.insert).toBeCalledWith(data.mockAddChallengeInput);
     });
 
-    it('should return the result it gets back from challenges service', async () => {
+    it('should try to find the inserted challenge via challenges service', async () => {
+      await resolver.addChallenge(data.mockAddChallengeInput);
+
+      expect(service.findById).toBeCalledTimes(1);
+      expect(service.findById).toBeCalledWith(id);
+    });
+
+    it('should return the exercise it gets back from exercises service', async () => {
       const result = await resolver.addChallenge(data.mockAddChallengeInput);
 
       expect(result).toBe(data.mockChallenge);

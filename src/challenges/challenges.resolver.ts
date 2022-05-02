@@ -21,6 +21,7 @@ export class ChallengesResolver {
   async addChallenge(
     @Args('challenge') challenge: AddChallengeInput,
   ): Promise<Challenge> {
-    return this.challengesService.insert(challenge);
+    const id = await this.challengesService.insert(challenge);
+    return this.challengesService.findById(id);
   }
 }

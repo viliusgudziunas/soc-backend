@@ -26,7 +26,6 @@ describe('EntityNotFoundErrorFilter', () => {
 
   describe('handle()', () => {
     const id = 1;
-    const fieldName = 'object';
     const expectedMessage = locale.entityNotFoundMessage
       .replace('%entity', 'Object')
       .replace('%id', String(id));
@@ -35,7 +34,7 @@ describe('EntityNotFoundErrorFilter', () => {
 
     beforeEach(() => {
       error = new EntityNotFoundError(Object, id);
-      mocks.mockHostGetArgByIndex(host, { id }, fieldName);
+      mocks.mockHostGetArgByIndex(host, { id });
     });
 
     it('should return HttpException', () => {
@@ -51,14 +50,6 @@ describe('EntityNotFoundErrorFilter', () => {
     });
 
     it('should return correct entityNotFoundMessage', () => {
-      const result = filter.catch(error, host);
-
-      expect(result.getResponse()).toBe(expectedMessage);
-    });
-
-    it('should not use fieldName to construct error message', () => {
-      mocks.mockHostGetArgByIndex(host, { id }, 'testFieldName');
-
       const result = filter.catch(error, host);
 
       expect(result.getResponse()).toBe(expectedMessage);

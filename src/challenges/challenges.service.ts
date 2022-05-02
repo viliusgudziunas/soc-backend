@@ -19,12 +19,10 @@ export class ChallengesService {
     return await this.challengesRepository.findOneOrFail(id);
   }
 
-  async insert(params: EntityParams<Challenge>): Promise<Challenge> {
+  async insert(params: EntityParams<Challenge>): Promise<number> {
     const challenge = new Challenge(params);
 
     const result = await this.challengesRepository.insert(challenge);
-    const id: number = result.identifiers[0].id;
-
-    return this.findById(id);
+    return result.identifiers[0].id;
   }
 }
