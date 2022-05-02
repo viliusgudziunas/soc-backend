@@ -3,6 +3,7 @@ import {
   InputType,
   ObjectType,
   OmitType,
+  PartialType,
   ReturnTypeFuncValue,
 } from '@nestjs/graphql';
 import { EntityBase } from 'src/shared/entity-base/entity-base.entity';
@@ -39,3 +40,6 @@ export class AddChallengeInput extends OmitType(
   ['id', 'createdAt', 'updatedAt'],
   InputType,
 ) {}
+
+@InputType()
+export class UpdateChallengeInput extends PartialType(AddChallengeInput) {}

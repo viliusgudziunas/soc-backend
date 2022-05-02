@@ -1,4 +1,8 @@
-import { AddChallengeInput, Challenge } from 'src/challenges/challenge.entity';
+import {
+  AddChallengeInput,
+  Challenge,
+  UpdateChallengeInput,
+} from 'src/challenges/challenge.entity';
 import { InsertResult } from 'typeorm';
 import { EntityParams } from '../entity-base/entity-base.types';
 
@@ -29,7 +33,15 @@ export const mockInsertChallengeResponse: InsertResult = {
   raw: {},
 };
 
-export const mockUpdateChallengeParams: Partial<EntityParams<Challenge>> = {
+export const mockUpdateChallengeInput: UpdateChallengeInput = {
   name: 'Updated test challenge',
   active: false,
+};
+
+export const mockUpdateChallengeParams: Partial<EntityParams<Challenge>> =
+  mockUpdateChallengeInput;
+
+export const mockUpdatedChallenge: Challenge = {
+  ...mockChallenge,
+  ...mockUpdateChallengeInput,
 };

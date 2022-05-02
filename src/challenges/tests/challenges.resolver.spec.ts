@@ -75,10 +75,39 @@ describe('ChallengesResolver', () => {
       expect(service.findById).toBeCalledWith(id);
     });
 
-    it('should return the exercise it gets back from exercises service', async () => {
+    it('should return the challenge it gets back from challenges service', async () => {
       const result = await resolver.addChallenge(data.mockAddChallengeInput);
 
       expect(result).toBe(data.mockChallenge);
+    });
+  });
+
+  describe('.updateChallenge() mutation', () => {
+    const { id } = data.mockChallenge;
+
+    it('should try to update challenge via challenges service', () => {
+      resolver.updateChallenge(id, data.mockUpdateChallengeInput);
+
+      expect(service.update).toBeCalledTimes(1);
+      expect(service.update).toBeCalledWith(id, data.mockUpdateChallengeInput);
+    });
+
+    it('should try to find the updated challenge via challenges service', async () => {
+      await resolver.updateChallenge(id, data.mockUpdateChallengeInput);
+
+      expect(service.findById).toBeCalledTimes(1);
+      expect(service.findById).toBeCalledWith(id);
+    });
+
+    it('should return the challenge it gets back from challenges service', async () => {
+      mocks.mockFindById(service, data.mockUpdatedChallenge);
+
+      const result = await resolver.updateChallenge(
+        id,
+        data.mockUpdateChallengeInput,
+      );
+
+      expect(result).toBe(data.mockUpdatedChallenge);
     });
   });
 });

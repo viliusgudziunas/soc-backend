@@ -1,9 +1,12 @@
+import { Challenge } from 'src/challenges/challenge.entity';
+import { ChallengesService } from 'src/challenges/challenges.service';
 import { challengesData as data } from 'src/shared/test-data';
 
 export const mockChallengesService = {
   findAll: jest.fn().mockResolvedValue(data.mockChallenges),
   findById: jest.fn().mockResolvedValue(data.mockChallenge),
   insert: jest.fn().mockResolvedValue(data.mockChallenge.id),
+  update: jest.fn().mockResolvedValue(null),
 };
 
 export const mockRepository = {
@@ -12,3 +15,9 @@ export const mockRepository = {
   insert: jest.fn().mockResolvedValue(data.mockInsertChallengeResponse),
   update: jest.fn(),
 };
+
+export const mockFindById = (
+  service: ChallengesService,
+  challenge: Challenge,
+): jest.SpyInstance =>
+  jest.spyOn(service, 'findById').mockResolvedValue(challenge);

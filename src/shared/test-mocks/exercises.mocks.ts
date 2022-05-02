@@ -6,7 +6,7 @@ export const mockExercisesService = {
   findAll: jest.fn().mockResolvedValue(data.mockExercises),
   findById: jest.fn().mockResolvedValue(data.mockExercise),
   insert: jest.fn().mockResolvedValue(data.mockExercise.id),
-  update: jest.fn().mockResolvedValue(data.mockUpdatedExercise),
+  update: jest.fn().mockResolvedValue(null),
 };
 
 export const mockRepository = {
