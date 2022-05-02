@@ -3,7 +3,7 @@ import {
   Exercise,
   UpdateExerciseInput,
 } from 'src/exercises/exercise.entity';
-import { InsertResult, UpdateResult } from 'typeorm';
+import { InsertResult } from 'typeorm';
 import { EntityParams } from '../entity-base/entity-base.types';
 
 export const mockExercise: Exercise = {
@@ -42,15 +42,4 @@ export const mockUpdateExerciseParams: Partial<EntityParams<Exercise>> =
 export const mockUpdatedExercise: Exercise = {
   ...mockExercise,
   ...mockUpdateExerciseInput,
-};
-
-export const mockUpdateExerciseResponse: UpdateResult = {
-  raw: [],
-  affected: 1,
-  generatedMaps: [],
-};
-
-export const mockUpdateExerciseZeroAffectedResponse: UpdateResult = {
-  ...mockUpdateExerciseResponse,
-  affected: 0,
 };

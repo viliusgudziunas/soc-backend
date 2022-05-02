@@ -25,4 +25,12 @@ export class ChallengesService {
     const result = await this.challengesRepository.insert(challenge);
     return result.identifiers[0].id;
   }
+
+  async update(
+    id: number,
+    params: Partial<EntityParams<Challenge>>,
+  ): Promise<void> {
+    const partialEntity = { ...params };
+    await this.challengesRepository.update(id, partialEntity);
+  }
 }

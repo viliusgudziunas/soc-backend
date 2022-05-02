@@ -86,4 +86,18 @@ describe('ChallengesService', () => {
       expect(result).toBe(id);
     });
   });
+
+  describe('.update()', () => {
+    it('should try to update a challenge in a repository', () => {
+      const { id } = data.mockChallenge;
+
+      service.update(id, data.mockUpdateChallengeParams);
+
+      expect(repository.update).toBeCalledTimes(1);
+      expect(repository.update).toBeCalledWith(
+        id,
+        data.mockUpdateChallengeParams,
+      );
+    });
+  });
 });

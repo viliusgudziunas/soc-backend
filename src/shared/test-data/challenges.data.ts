@@ -28,3 +28,8 @@ export const mockInsertChallengeResponse: InsertResult = {
   generatedMaps: [],
   raw: {},
 };
+
+export const mockUpdateChallengeParams: Partial<EntityParams<Challenge>> = {
+  name: 'Updated test challenge',
+  active: false,
+};
