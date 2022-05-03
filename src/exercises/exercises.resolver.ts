@@ -5,7 +5,7 @@ import {
   Exercise,
   returns,
   UpdateExerciseInput,
-} from './exercise.entity';
+} from './dto/exercise.model';
 import { ExercisesService } from './exercises.service';
 
 @Resolver(() => Exercise)

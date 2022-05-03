@@ -7,23 +7,21 @@ import {
   PartialType,
   ReturnTypeFuncValue,
 } from '@nestjs/graphql';
-import { EntityBase } from 'src/shared/entity-base/entity-base.entity';
-import { Column, Entity } from 'typeorm';
+import { ModelBase } from 'src/shared/base/base.model';
 
 @ObjectType()
-@Entity('exercises')
-export class Exercise extends EntityBase<Exercise> {
+export class Exercise extends ModelBase {
   @Field()
-  @Column()
   readonly name: string;
 
   @Field(() => Int)
-  @Column()
   readonly calories: number;
 
   @Field(() => Int)
-  @Column()
   readonly timeSpentInMinutes: number;
+
+  // @Field(() => Challenge)
+  // challenge?: Challenge;
 }
 
 export const returns = {
@@ -34,6 +32,7 @@ export const returns = {
 @InputType()
 export class AddExerciseInput extends OmitType(
   Exercise,
+  // ['id', 'createdAt', 'updatedAt', 'challenge'],
   ['id', 'createdAt', 'updatedAt'],
   InputType,
 ) {}

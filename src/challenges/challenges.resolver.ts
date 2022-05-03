@@ -1,12 +1,12 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { operationArgs } from 'src/shared/operation-args';
+import { ChallengesService } from './challenges.service';
 import {
   AddChallengeInput,
   Challenge,
   returns,
   UpdateChallengeInput,
-} from './challenge.entity';
-import { ChallengesService } from './challenges.service';
+} from './dto/challenge.model';
 
 @Resolver(() => Challenge)
 export class ChallengesResolver {

@@ -1,26 +1,26 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EntityParams } from 'src/shared/entity-base/entity-base.types';
+import { EntityParams } from 'src/shared/base/base.types';
 import { Repository } from 'typeorm';
-import { Challenge } from './challenge.entity';
+import { ChallengeEntity } from './dto/challenge.entity';
 
 @Injectable()
 export class ChallengesService {
   constructor(
-    @InjectRepository(Challenge)
-    private readonly challengesRepository: Repository<Challenge>,
+    @InjectRepository(ChallengeEntity)
+    private readonly challengesRepository: Repository<ChallengeEntity>,
   ) {}
 
-  findAll(): Promise<Challenge[]> {
+  findAll(): Promise<ChallengeEntity[]> {
     return this.challengesRepository.find();
   }
 
-  async findById(id: number): Promise<Challenge> {
+  async findById(id: number): Promise<ChallengeEntity> {
     return await this.challengesRepository.findOneOrFail(id);
   }
 
-  async insert(params: EntityParams<Challenge>): Promise<number> {
-    const challenge = new Challenge(params);
+  async insert(params: EntityParams<ChallengeEntity>): Promise<number> {
+    const challenge = new ChallengeEntity(params);
 
     const result = await this.challengesRepository.insert(challenge);
     return result.identifiers[0].id;
@@ -28,7 +28,7 @@ export class ChallengesService {
 
   async update(
     id: number,
-    params: Partial<EntityParams<Challenge>>,
+    params: Partial<EntityParams<ChallengeEntity>>,
   ): Promise<void> {
     const partialEntity = { ...params };
     await this.challengesRepository.update(id, partialEntity);

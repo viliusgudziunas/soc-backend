@@ -3,14 +3,14 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { exercisesData as data } from 'src/shared/test-data';
 import { exerciseMocks as mocks, sharedMocks } from 'src/shared/test-mocks';
 import { Repository } from 'typeorm';
-import { Exercise } from '../exercise.entity';
+import { ExerciseEntity } from '../dto/exercise.entity';
 import { ExercisesService } from '../exercises.service';
 
 describe('ExercisesService', () => {
-  let repository: Repository<Exercise>;
+  let repository: Repository<ExerciseEntity>;
   let service: ExercisesService;
 
-  const REPOSITORY_TOKEN = getRepositoryToken(Exercise);
+  const REPOSITORY_TOKEN = getRepositoryToken(ExerciseEntity);
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
@@ -21,7 +21,7 @@ describe('ExercisesService', () => {
     }).compile();
 
     service = module.get<ExercisesService>(ExercisesService);
-    repository = module.get<Repository<Exercise>>(REPOSITORY_TOKEN);
+    repository = module.get<Repository<ExerciseEntity>>(REPOSITORY_TOKEN);
   });
 
   afterEach(() => jest.clearAllMocks());
@@ -45,7 +45,7 @@ describe('ExercisesService', () => {
     });
 
     it('should return empty array when no exercises exist in repository', async () => {
-      sharedMocks.mockFind<Exercise>(repository, []);
+      sharedMocks.mockFind<ExerciseEntity>(repository, []);
 
       const result = await service.findAll();
 

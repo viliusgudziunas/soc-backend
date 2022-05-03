@@ -1,12 +1,12 @@
+import { ExerciseEntity } from 'src/exercises/dto/exercise.entity';
 import {
   AddExerciseInput,
-  Exercise,
   UpdateExerciseInput,
-} from 'src/exercises/exercise.entity';
+} from 'src/exercises/dto/exercise.model';
 import { InsertResult } from 'typeorm';
-import { EntityParams } from '../entity-base/entity-base.types';
+import { EntityParams } from '../base/base.types';
 
-export const exercise: Exercise = {
+export const exercise: ExerciseEntity = {
   id: 1,
   name: 'Test exercise',
   calories: 10,
@@ -15,7 +15,7 @@ export const exercise: Exercise = {
   updatedAt: new Date(),
 };
 
-export const exercises: Exercise[] = [exercise];
+export const exercises: ExerciseEntity[] = [exercise];
 
 export const addExerciseInput: AddExerciseInput = {
   name: 'Test exercise',
@@ -23,7 +23,8 @@ export const addExerciseInput: AddExerciseInput = {
   timeSpentInMinutes: 20,
 };
 
-export const insertExerciseParams: EntityParams<Exercise> = addExerciseInput;
+export const insertExerciseParams: EntityParams<ExerciseEntity> =
+  addExerciseInput;
 
 export const insertExerciseResponse: InsertResult = {
   identifiers: [{ id: 1 }],
@@ -35,10 +36,10 @@ export const updateExerciseInput: UpdateExerciseInput = {
   name: 'Updated test exercise',
 };
 
-export const updateExerciseParams: Partial<EntityParams<Exercise>> =
+export const updateExerciseParams: Partial<EntityParams<ExerciseEntity>> =
   updateExerciseInput;
 
-export const updatedExercise: Exercise = {
+export const updatedExercise: ExerciseEntity = {
   ...exercise,
   ...updateExerciseInput,
 };

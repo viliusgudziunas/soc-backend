@@ -6,27 +6,24 @@ import {
   PartialType,
   ReturnTypeFuncValue,
 } from '@nestjs/graphql';
-import { EntityBase } from 'src/shared/entity-base/entity-base.entity';
-import { Column, Entity } from 'typeorm';
+import { ModelBase } from 'src/shared/base/base.model';
 
 @ObjectType()
-@Entity('challenges')
-export class Challenge extends EntityBase<Challenge> {
+export class Challenge extends ModelBase {
   @Field()
-  @Column()
   readonly name: string;
 
   @Field()
-  @Column()
   readonly description: string;
 
-  @Field()
-  @Column({ default: true })
+  @Field({ defaultValue: true })
   readonly active: boolean;
 
   @Field({ nullable: true })
-  @Column({ nullable: true })
   readonly endDate?: Date;
+
+  // @Field(() => [Exercise], { nullable: true })
+  // exercises?: Exercise[];
 }
 
 export const returns = {
@@ -37,6 +34,7 @@ export const returns = {
 @InputType()
 export class AddChallengeInput extends OmitType(
   Challenge,
+  // ['id', 'createdAt', 'updatedAt', 'exercises'],
   ['id', 'createdAt', 'updatedAt'],
   InputType,
 ) {}
