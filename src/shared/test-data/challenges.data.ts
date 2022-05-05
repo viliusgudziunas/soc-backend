@@ -1,12 +1,12 @@
-import { ChallengeEntity } from 'src/challenges/dto/challenge.entity';
 import {
   AddChallengeInput,
+  Challenge,
   UpdateChallengeInput,
-} from 'src/challenges/dto/challenge.model';
+} from 'src/challenges/challenge.entity';
+import { ChallengeParams } from 'src/challenges/challenges.types';
 import { InsertResult } from 'typeorm';
-import { EntityParams } from '../base/base.types';
 
-export const challenge: ChallengeEntity = {
+export const challenge: Challenge = {
   id: 1,
   name: 'Test challenge',
   description: 'Test challenge description',
@@ -16,7 +16,7 @@ export const challenge: ChallengeEntity = {
   updatedAt: new Date(),
 };
 
-export const challenges: ChallengeEntity[] = [challenge];
+export const challenges: Challenge[] = [challenge];
 
 export const addChallengeInput: AddChallengeInput = {
   name: 'Test challenge',
@@ -24,7 +24,7 @@ export const addChallengeInput: AddChallengeInput = {
   active: true,
 };
 
-export const insertChallengeParams: EntityParams<ChallengeEntity> = {
+export const insertChallengeParams: ChallengeParams = {
   ...addChallengeInput,
 };
 
@@ -39,10 +39,10 @@ export const updateChallengeInput: UpdateChallengeInput = {
   active: false,
 };
 
-export const updateChallengeParams: Partial<EntityParams<ChallengeEntity>> =
+export const updateChallengeParams: Partial<ChallengeParams> =
   updateChallengeInput;
 
-export const updatedChallenge: ChallengeEntity = {
+export const updatedChallenge: Challenge = {
   ...challenge,
   ...updateChallengeInput,
 };

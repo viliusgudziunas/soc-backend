@@ -3,14 +3,15 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { exercisesData as data } from 'src/shared/test-data';
 import { exerciseMocks as mocks, sharedMocks } from 'src/shared/test-mocks';
 import { Repository } from 'typeorm';
-import { ExerciseEntity } from '../dto/exercise.entity';
+import { Exercise } from '../exercise.entity';
 import { ExercisesService } from '../exercises.service';
 
 describe('ExercisesService', () => {
-  let repository: Repository<ExerciseEntity>;
+  let repository: Repository<Exercise>;
   let service: ExercisesService;
 
-  const REPOSITORY_TOKEN = getRepositoryToken(ExerciseEntity);
+  const REPOSITORY_TOKEN = getRepositoryToken(Exercise);
+  const relations = { relations: Exercise.relations };
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
@@ -21,7 +22,7 @@ describe('ExercisesService', () => {
     }).compile();
 
     service = module.get<ExercisesService>(ExercisesService);
-    repository = module.get<Repository<ExerciseEntity>>(REPOSITORY_TOKEN);
+    repository = module.get<Repository<Exercise>>(REPOSITORY_TOKEN);
   });
 
   afterEach(() => jest.clearAllMocks());
@@ -31,11 +32,11 @@ describe('ExercisesService', () => {
   });
 
   describe('.findAll()', () => {
-    it('should try get all exercises from repository', () => {
+    it('should try get all exercises from repository together with the relations', () => {
       service.findAll();
 
       expect(repository.find).toBeCalledTimes(1);
-      expect(repository.find).toBeCalledWith();
+      expect(repository.find).toBeCalledWith(relations);
     });
 
     it('should return all exercises found by repository', async () => {
@@ -45,7 +46,7 @@ describe('ExercisesService', () => {
     });
 
     it('should return empty array when no exercises exist in repository', async () => {
-      sharedMocks.mockFind<ExerciseEntity>(repository, []);
+      sharedMocks.mockFind<Exercise>(repository, []);
 
       const result = await service.findAll();
 
@@ -56,11 +57,11 @@ describe('ExercisesService', () => {
   describe('.findById()', () => {
     const { id } = data.exercise;
 
-    it('should try get an exercise from repository by id', () => {
+    it('should try get an exercise from repository by id together the relations', () => {
       service.findById(id);
 
       expect(repository.findOneOrFail).toBeCalledTimes(1);
-      expect(repository.findOneOrFail).toBeCalledWith(id);
+      expect(repository.findOneOrFail).toBeCalledWith(id, relations);
     });
 
     it('should return the exercise it got back from repository', async () => {

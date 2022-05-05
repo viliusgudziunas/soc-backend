@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { Challenge } from './challenge.entity';
 import { ChallengesResolver } from './challenges.resolver';
 import { ChallengesService } from './challenges.service';
-import { ChallengeEntity } from './dto/challenge.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([ChallengeEntity])],
+  imports: [TypeOrmModule.forFeature([Challenge])],
   providers: [ChallengesResolver, ChallengesService],
 })
 export class ChallengesModule {}

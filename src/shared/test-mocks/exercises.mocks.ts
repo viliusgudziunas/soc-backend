@@ -1,4 +1,4 @@
-import { ExerciseEntity } from 'src/exercises/dto/exercise.entity';
+import { Exercise } from 'src/exercises/exercise.entity';
 import { ExercisesService } from 'src/exercises/exercises.service';
 import { exercisesData as data } from 'src/shared/test-data';
 
@@ -18,6 +18,6 @@ export const mockRepository = {
 
 export const mockFindById = (
   service: ExercisesService,
-  exercise: ExerciseEntity,
+  exercise: Exercise,
 ): jest.SpyInstance =>
   jest.spyOn(service, 'findById').mockResolvedValue(exercise);

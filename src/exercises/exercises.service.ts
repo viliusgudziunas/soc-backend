@@ -1,35 +1,34 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EntityParams } from 'src/shared/base/base.types';
 import { Repository } from 'typeorm';
-import { ExerciseEntity } from './dto/exercise.entity';
+import { Exercise } from './exercise.entity';
+import { ExerciseParams } from './exercises.types';
 
 @Injectable()
 export class ExercisesService {
   constructor(
-    @InjectRepository(ExerciseEntity)
-    private readonly exercisesRepository: Repository<ExerciseEntity>,
+    @InjectRepository(Exercise)
+    private readonly exercisesRepository: Repository<Exercise>,
   ) {}
 
-  findAll(): Promise<ExerciseEntity[]> {
-    return this.exercisesRepository.find();
+  findAll(): Promise<Exercise[]> {
+    return this.exercisesRepository.find({ relations: Exercise.relations });
   }
 
-  async findById(id: number): Promise<ExerciseEntity> {
-    return await this.exercisesRepository.findOneOrFail(id);
+  findById(id: number): Promise<Exercise> {
+    return this.exercisesRepository.findOneOrFail(id, {
+      relations: Exercise.relations,
+    });
   }
 
-  async insert(params: EntityParams<ExerciseEntity>): Promise<number> {
-    const exercise = new ExerciseEntity(params);
+  async insert(params: ExerciseParams): Promise<number> {
+    const exercise = new Exercise(params);
 
     const result = await this.exercisesRepository.insert(exercise);
     return result.identifiers[0].id;
   }
 
-  async update(
-    id: number,
-    params: Partial<EntityParams<ExerciseEntity>>,
-  ): Promise<void> {
+  async update(id: number, params: Partial<ExerciseParams>): Promise<void> {
     const partialEntity = { ...params };
     await this.exercisesRepository.update(id, partialEntity);
   }
