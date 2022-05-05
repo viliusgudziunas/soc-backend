@@ -14,6 +14,7 @@ export const challenge: Challenge = {
   endDate: new Date(),
   createdAt: new Date(),
   updatedAt: new Date(),
+  exercises: [],
 };
 
 export const challenges: Challenge[] = [challenge];

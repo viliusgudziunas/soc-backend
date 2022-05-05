@@ -32,18 +32,19 @@ export class Challenge extends EntityBase {
 
   @Field(() => [Exercise], { nullable: true })
   @OneToMany(() => Exercise, (exercise) => exercise.challenge)
-  exercises?: Exercise[];
+  exercises: Exercise[];
 
   constructor(params: ChallengeParams) {
     super();
     Object.assign(this, params);
   }
-}
 
-export const returns = {
-  challenge: (): ReturnTypeFuncValue => Challenge,
-  challenges: (): ReturnTypeFuncValue => [Challenge],
-};
+  static returns = {
+    challenge: (): ReturnTypeFuncValue => Challenge,
+    challenges: (): ReturnTypeFuncValue => [Challenge],
+  };
+  static relations: string[] = ['exercises'];
+}
 
 @InputType()
 export class AddChallengeInput extends OmitType(

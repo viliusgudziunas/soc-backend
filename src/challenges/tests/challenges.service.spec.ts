@@ -11,6 +11,7 @@ describe('ChallengesService', () => {
   let service: ChallengesService;
 
   const REPOSITORY_TOKEN = getRepositoryToken(Challenge);
+  const relations = { relations: ['exercises'] };
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
@@ -31,11 +32,11 @@ describe('ChallengesService', () => {
   });
 
   describe('.findAll()', () => {
-    it('should try get all challenges from repository', () => {
+    it('should try get all challenges from repository together with the relations', () => {
       service.findAll();
 
       expect(repository.find).toBeCalledTimes(1);
-      expect(repository.find).toBeCalledWith();
+      expect(repository.find).toBeCalledWith(relations);
     });
 
     it('should return all challenges found by repository', async () => {
@@ -56,11 +57,11 @@ describe('ChallengesService', () => {
   describe('.findById()', () => {
     const { id } = data.challenge;
 
-    it('should try get a challenge from repository by id', () => {
+    it('should try get a challenge from repository by id together with the relations', () => {
       service.findById(id);
 
       expect(repository.findOneOrFail).toBeCalledTimes(1);
-      expect(repository.findOneOrFail).toBeCalledWith(id);
+      expect(repository.findOneOrFail).toBeCalledWith(id, relations);
     });
 
     it('should return the challenge it got back from repository', async () => {

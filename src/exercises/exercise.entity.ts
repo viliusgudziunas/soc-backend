@@ -40,13 +40,12 @@ export class Exercise extends EntityBase {
     Object.assign(this, params);
   }
 
+  static returns = {
+    exercise: (): ReturnTypeFuncValue => Exercise,
+    exercises: (): ReturnTypeFuncValue => [Exercise],
+  };
   static relations: string[] = ['challenge'];
 }
-
-export const returns = {
-  exercise: (): ReturnTypeFuncValue => Exercise,
-  exercises: (): ReturnTypeFuncValue => [Exercise],
-};
 
 @InputType()
 export class AddExerciseInput extends OmitType(

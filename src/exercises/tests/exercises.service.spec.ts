@@ -57,7 +57,7 @@ describe('ExercisesService', () => {
   describe('.findById()', () => {
     const { id } = data.exercise;
 
-    it('should try get an exercise from repository by id together the relations', () => {
+    it('should try get an exercise from repository by id together with the relations', () => {
       service.findById(id);
 
       expect(repository.findOneOrFail).toBeCalledTimes(1);

@@ -3,7 +3,6 @@ import { operationArgs } from 'src/shared/operation-args';
 import {
   AddExerciseInput,
   Exercise,
-  returns,
   UpdateExerciseInput,
 } from './exercise.entity';
 import { ExercisesService } from './exercises.service';
@@ -12,17 +11,17 @@ import { ExercisesService } from './exercises.service';
 export class ExercisesResolver {
   constructor(private readonly exercisesService: ExercisesService) {}
 
-  @Query(returns.exercises)
+  @Query(Exercise.returns.exercises)
   async exercises(): Promise<Exercise[]> {
     return this.exercisesService.findAll();
   }
 
-  @Query(returns.exercise)
+  @Query(Exercise.returns.exercise)
   async exercise(@Args(operationArgs.id) id: number): Promise<Exercise> {
     return this.exercisesService.findById(id);
   }
 
-  @Mutation(returns.exercise)
+  @Mutation(Exercise.returns.exercise)
   async addExercise(
     @Args('exercise') exercise: AddExerciseInput,
   ): Promise<Exercise> {
@@ -30,7 +29,7 @@ export class ExercisesResolver {
     return this.exercisesService.findById(id);
   }
 
-  @Mutation(returns.exercise)
+  @Mutation(Exercise.returns.exercise)
   async updateExercise(
     @Args(operationArgs.id) id: number,
     @Args('exercise') exerciseUpdates: UpdateExerciseInput,

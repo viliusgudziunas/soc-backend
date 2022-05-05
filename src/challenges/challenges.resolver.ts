@@ -3,7 +3,6 @@ import { operationArgs } from 'src/shared/operation-args';
 import {
   AddChallengeInput,
   Challenge,
-  returns,
   UpdateChallengeInput,
 } from './challenge.entity';
 import { ChallengesService } from './challenges.service';
@@ -12,17 +11,17 @@ import { ChallengesService } from './challenges.service';
 export class ChallengesResolver {
   constructor(private readonly challengesService: ChallengesService) {}
 
-  @Query(returns.challenges)
+  @Query(Challenge.returns.challenges)
   async challenges(): Promise<Challenge[]> {
     return this.challengesService.findAll();
   }
 
-  @Query(returns.challenge)
+  @Query(Challenge.returns.challenge)
   async challenge(@Args(operationArgs.id) id: number): Promise<Challenge> {
     return this.challengesService.findById(id);
   }
 
-  @Mutation(returns.challenge)
+  @Mutation(Challenge.returns.challenge)
   async addChallenge(
     @Args('challenge') challenge: AddChallengeInput,
   ): Promise<Challenge> {
@@ -30,7 +29,7 @@ export class ChallengesResolver {
     return this.challengesService.findById(id);
   }
 
-  @Mutation(returns.challenge)
+  @Mutation(Challenge.returns.challenge)
   async updateChallenge(
     @Args(operationArgs.id) id: number,
     @Args('challenge') challengeUpdates: UpdateChallengeInput,
