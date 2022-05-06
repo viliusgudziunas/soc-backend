@@ -11,7 +11,7 @@ describe('ChallengesService', () => {
   let service: ChallengesService;
 
   const REPOSITORY_TOKEN = getRepositoryToken(Challenge);
-  const relations = { relations: ['exercises'] };
+  const relations = { relations: Challenge.relations };
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
