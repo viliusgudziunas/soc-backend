@@ -8,10 +8,10 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ChallengesModule } from './challenges/challenges.module';
 import configuration from './config/configuration';
+import { EntityNotFoundErrorFilter } from './exception-filters/entity-not-found-error.filter';
+import { QueryFailedErrorFilter } from './exception-filters/query-failed-error.filter';
 import { ExercisesModule } from './exercises/exercises.module';
 import { GroupsModule } from './groups/groups.module';
-import { EntityNotFoundErrorFilter } from './shared/exception-filters/entity-not-found-error.filter';
-import { QueryFailedErrorFilter } from './shared/exception-filters/query-failed-error.filter';
 
 @Module({
   imports: [

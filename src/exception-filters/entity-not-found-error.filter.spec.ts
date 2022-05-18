@@ -1,20 +1,20 @@
 import { ArgumentsHost, HttpException, HttpStatus } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
+import { locale } from 'src/shared/locale';
 import { exceptionFiltersMocks as mocks } from 'src/shared/test-mocks';
-import { QueryFailedError } from 'typeorm';
-import { locale } from '../locale';
-import { QueryFailedErrorFilter } from './query-failed-error.filter';
+import { EntityNotFoundError } from 'typeorm';
+import { EntityNotFoundErrorFilter } from './entity-not-found-error.filter';
 
-describe('QueryFailedErrorFilter', () => {
-  let filter: QueryFailedErrorFilter;
+describe('EntityNotFoundErrorFilter', () => {
+  let filter: EntityNotFoundErrorFilter;
   let host: ArgumentsHost;
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
-      providers: [QueryFailedErrorFilter],
+      providers: [EntityNotFoundErrorFilter],
     }).compile();
 
-    filter = module.get<QueryFailedErrorFilter>(QueryFailedErrorFilter);
+    filter = module.get<EntityNotFoundErrorFilter>(EntityNotFoundErrorFilter);
     host = mocks.mockHost();
   });
 
@@ -25,12 +25,16 @@ describe('QueryFailedErrorFilter', () => {
   });
 
   describe('handle()', () => {
-    const detail = 'Key (testKey)=(TestValue) already exists.';
+    const id = 1;
+    const expectedMessage = locale.entityNotFoundMessage
+      .replace('%entity', 'Object')
+      .replace('%id', String(id));
 
-    let error: QueryFailedError;
+    let error: EntityNotFoundError;
 
     beforeEach(() => {
-      error = new QueryFailedError('', [], { detail });
+      error = new EntityNotFoundError(Object, id);
+      mocks.mockHostGetArgByIndex(host, { id });
     });
 
     it('should return HttpException', () => {
@@ -39,18 +43,13 @@ describe('QueryFailedErrorFilter', () => {
       expect(result).toBeInstanceOf(HttpException);
     });
 
-    it('should return BAD_REQUEST status', () => {
+    it('should return NOT_FOUND status', () => {
       const result = filter.catch(error, host);
 
-      expect(result.getStatus()).toBe(HttpStatus.BAD_REQUEST);
+      expect(result.getStatus()).toBe(HttpStatus.NOT_FOUND);
     });
 
     it('should return correct entityNotFoundMessage', () => {
-      const expectedMessage = locale.queryFailedMessage.replace(
-        '%detail',
-        detail,
-      );
-
       const result = filter.catch(error, host);
 
       expect(result.getResponse()).toBe(expectedMessage);

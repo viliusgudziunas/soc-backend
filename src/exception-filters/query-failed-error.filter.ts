@@ -5,8 +5,8 @@ import {
   HttpException,
   HttpStatus,
 } from '@nestjs/common';
+import { locale } from 'src/shared/locale';
 import { QueryFailedError } from 'typeorm';
-import { locale } from '../locale';
 
 @Catch(QueryFailedError)
 export class QueryFailedErrorFilter
