@@ -1,5 +1,4 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { operationArgs } from 'src/shared/operation-args';
 import {
   AddExerciseInput,
   Exercise,
@@ -17,7 +16,7 @@ export class ExercisesResolver {
   }
 
   @Query(Exercise.returns.exercise)
-  async exercise(@Args(operationArgs.id) id: number): Promise<Exercise> {
+  async exercise(@Args(Exercise.args.id) id: number): Promise<Exercise> {
     return this.exercisesService.findById(id);
   }
 
@@ -31,7 +30,7 @@ export class ExercisesResolver {
 
   @Mutation(Exercise.returns.exercise)
   async updateExercise(
-    @Args(operationArgs.id) id: number,
+    @Args(Exercise.args.id) id: number,
     @Args('exercise') exerciseUpdates: UpdateExerciseInput,
   ): Promise<Exercise> {
     await this.exercisesService.update(id, exerciseUpdates);

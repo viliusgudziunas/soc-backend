@@ -83,7 +83,6 @@
       "config/",
       "locale.ts",
       "main.ts",
-      "operation-args.ts",
       "test.data/",
       "test.mocks/"
     ],

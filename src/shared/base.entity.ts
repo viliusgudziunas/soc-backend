@@ -1,4 +1,5 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
+import { GraphQLScalarType } from 'graphql';
 import {
   CreateDateColumn,
   PrimaryGeneratedColumn,
@@ -18,4 +19,8 @@ export class EntityBase {
   @Field()
   @UpdateDateColumn()
   readonly updatedAt: Date;
+
+  static args = {
+    id: { name: 'id', type: (): GraphQLScalarType => Int },
+  };
 }
