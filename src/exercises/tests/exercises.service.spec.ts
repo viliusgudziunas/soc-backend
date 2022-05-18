@@ -1,7 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { exercisesData as data } from 'src/shared/test-data';
-import { exerciseMocks as mocks, sharedMocks } from 'src/shared/test-mocks';
+import { exercisesMocks as mocks, sharedMocks } from 'src/shared/test-mocks';
 import { Repository } from 'typeorm';
 import { Exercise } from '../exercise.entity';
 import { ExercisesService } from '../exercises.service';

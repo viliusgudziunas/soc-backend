@@ -1,4 +1,4 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, ObjectType, ReturnTypeFuncValue } from '@nestjs/graphql';
 import { EntityBase } from 'src/shared/base.entity';
 import { Column, Entity } from 'typeorm';
 
@@ -8,4 +8,8 @@ export class Group extends EntityBase {
   @Field()
   @Column()
   readonly name: string;
+
+  static returns = {
+    groups: (): ReturnTypeFuncValue => [Group],
+  };
 }

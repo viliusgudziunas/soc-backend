@@ -1,6 +1,6 @@
 import { Test } from '@nestjs/testing';
 import { exercisesData as data } from 'src/shared/test-data';
-import { exerciseMocks as mocks } from 'src/shared/test-mocks';
+import { exercisesMocks as mocks } from 'src/shared/test-mocks';
 import { ExercisesResolver } from '../exercises.resolver';
 import { ExercisesService } from '../exercises.service';
 
