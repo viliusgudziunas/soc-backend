@@ -1,7 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { exercisesData as data } from 'src/shared/test-data';
-import { exercisesMocks as mocks, sharedMocks } from 'src/shared/test-mocks';
+import { exercisesMocks as mocks } from 'src/shared/test-mocks';
 import { Repository } from 'typeorm';
 import { Exercise } from '../exercise.entity';
 import { ExercisesService } from '../exercises.service';
@@ -32,39 +32,31 @@ describe('ExercisesService', () => {
   });
 
   describe('.findAll()', () => {
-    it('should try get all exercises from repository together with the relations', () => {
+    it('should try to get exercises and their relations from repository', () => {
       service.findAll();
 
       expect(repository.find).toBeCalledTimes(1);
       expect(repository.find).toBeCalledWith(relations);
     });
 
-    it('should return all exercises found by repository', async () => {
+    it('should return all exercises returned by repository', async () => {
       const result = await service.findAll();
 
       expect(result).toBe(data.exercises);
-    });
-
-    it('should return empty array when no exercises exist in repository', async () => {
-      sharedMocks.mockFind<Exercise>(repository, []);
-
-      const result = await service.findAll();
-
-      expect(result).toStrictEqual([]);
     });
   });
 
   describe('.findById()', () => {
     const { id } = data.exercise;
 
-    it('should try get an exercise from repository by id together with the relations', () => {
+    it('should try to get exercise and its relations from repository', () => {
       service.findById(id);
 
       expect(repository.findOneOrFail).toBeCalledTimes(1);
       expect(repository.findOneOrFail).toBeCalledWith(id, relations);
     });
 
-    it('should return the exercise it got back from repository', async () => {
+    it('should return the exercise returned by repository', async () => {
       const result = await service.findById(id);
 
       expect(result).toBe(data.exercise);
@@ -72,7 +64,7 @@ describe('ExercisesService', () => {
   });
 
   describe('.insert()', () => {
-    it('should try insert a new exercise into repository', () => {
+    it('should try to insert exercise into repository', () => {
       service.insert(data.insertExerciseParams);
 
       expect(repository.insert).toBeCalledTimes(1);
@@ -89,7 +81,7 @@ describe('ExercisesService', () => {
   });
 
   describe('.update()', () => {
-    it('should try to update an exercise in a repository', () => {
+    it('should try to update exercise via repository', () => {
       const { id } = data.exercise;
 
       service.update(id, data.updateExerciseParams);

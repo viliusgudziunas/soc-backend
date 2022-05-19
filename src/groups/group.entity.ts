@@ -10,6 +10,7 @@ export class Group extends EntityBase {
   readonly name: string;
 
   static returns = {
+    group: (): ReturnTypeFuncValue => Group,
     groups: (): ReturnTypeFuncValue => [Group],
   };
 }

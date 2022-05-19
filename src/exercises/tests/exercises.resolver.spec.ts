@@ -27,14 +27,14 @@ describe('ExercisesResolver', () => {
   });
 
   describe('.exercises() query', () => {
-    it('should try get all exercises from exercises service', () => {
+    it('should try to get all exercises from exercises service', () => {
       resolver.exercises();
 
       expect(service.findAll).toBeCalledTimes(1);
       expect(service.findAll).toBeCalledWith();
     });
 
-    it('should return all exercises found by exercises service', async () => {
+    it('should return the exercises returned by exercises service', async () => {
       const result = await resolver.exercises();
 
       expect(result).toBe(data.exercises);
@@ -44,14 +44,14 @@ describe('ExercisesResolver', () => {
   describe('.exercise() query', () => {
     const { id } = data.exercise;
 
-    it('should pass id to exercises service', () => {
+    it('should try to find exercise via exercises service', () => {
       resolver.exercise(id);
 
       expect(service.findById).toBeCalledTimes(1);
       expect(service.findById).toBeCalledWith(id);
     });
 
-    it('should return the result it gets back from exercises service', async () => {
+    it('should return the exercise returned by exercises service', async () => {
       const result = await resolver.exercise(id);
 
       expect(result).toBe(data.exercise);
@@ -75,7 +75,7 @@ describe('ExercisesResolver', () => {
       expect(service.findById).toBeCalledWith(id);
     });
 
-    it('should return the exercise it gets back from exercises service', async () => {
+    it('should return the exercise returned by exercises service', async () => {
       const result = await resolver.addExercise(data.addExerciseInput);
 
       expect(result).toBe(data.exercise);
@@ -99,7 +99,7 @@ describe('ExercisesResolver', () => {
       expect(service.findById).toBeCalledWith(id);
     });
 
-    it('should return the exercise it gets back from exercises service', async () => {
+    it('should return the exercise returned by exercises service', async () => {
       mocks.mockFindById(service, data.updatedExercise);
 
       const result = await resolver.updateExercise(

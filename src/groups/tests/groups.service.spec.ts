@@ -1,7 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { groupsData as data } from 'src/shared/test-data';
-import { groupsMocks as mocks, sharedMocks } from 'src/shared/test-mocks';
+import { groupsMocks as mocks } from 'src/shared/test-mocks';
 import { Repository } from 'typeorm';
 import { Group } from '../group.entity';
 import { GroupsService } from '../groups.service';
@@ -31,25 +31,34 @@ describe('GroupsService', () => {
   });
 
   describe('.findAll()', () => {
-    it('should try get all groups from repository', () => {
+    it('should try to get groups from repository', () => {
       service.findAll();
 
       expect(repository.find).toBeCalledTimes(1);
       expect(repository.find).toBeCalledWith();
     });
 
-    it('should return all groups found by repository', async () => {
+    it('should return all groups returned by repository', async () => {
       const result = await service.findAll();
 
       expect(result).toBe(data.groups);
     });
+  });
 
-    it('should return empty array when no groups exist in repository', async () => {
-      sharedMocks.mockFind<Group>(repository, []);
+  describe('.findById()', () => {
+    const { id } = data.group;
 
-      const result = await service.findAll();
+    it('should try to get group from repository', () => {
+      service.findById(id);
 
-      expect(result).toStrictEqual([]);
+      expect(repository.findOneOrFail).toBeCalledTimes(1);
+      expect(repository.findOneOrFail).toBeCalledWith(id);
+    });
+
+    it('should return the group returned by repository', async () => {
+      const result = await service.findById(id);
+
+      expect(result).toBe(data.group);
     });
   });
 });

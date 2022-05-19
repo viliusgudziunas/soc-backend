@@ -1,4 +1,4 @@
-import { Query, Resolver } from '@nestjs/graphql';
+import { Args, Query, Resolver } from '@nestjs/graphql';
 import { Group } from './group.entity';
 import { GroupsService } from './groups.service';
 
@@ -9,5 +9,10 @@ export class GroupsResolver {
   @Query(Group.returns.groups)
   async groups(): Promise<Group[]> {
     return this.groupsService.findAll();
+  }
+
+  @Query(Group.returns.group)
+  async group(@Args(Group.args.id) id: number): Promise<Group> {
+    return this.groupsService.findById(id);
   }
 }

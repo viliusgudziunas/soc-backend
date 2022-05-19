@@ -13,4 +13,8 @@ export class GroupsService {
   findAll(): Promise<Group[]> {
     return this.groupsRepository.find();
   }
+
+  findById(id: number): Promise<Group> {
+    return this.groupsRepository.findOneOrFail(id);
+  }
 }

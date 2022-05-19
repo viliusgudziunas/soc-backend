@@ -27,14 +27,14 @@ describe('ChallengesResolver', () => {
   });
 
   describe('.challenges() query', () => {
-    it('should try get all challenges from challenges service', () => {
+    it('should try to get all challenges from challenges service', () => {
       resolver.challenges();
 
       expect(service.findAll).toBeCalledTimes(1);
       expect(service.findAll).toBeCalledWith();
     });
 
-    it('should return all challenges found by challenges service', async () => {
+    it('should return the challenges returned by challenges service', async () => {
       const result = await resolver.challenges();
 
       expect(result).toBe(data.challenges);
@@ -44,14 +44,14 @@ describe('ChallengesResolver', () => {
   describe('.challenge() query', () => {
     const { id } = data.challenge;
 
-    it('should pass id to challenges service', () => {
+    it('should try to find challenge via challenges service', () => {
       resolver.challenge(id);
 
       expect(service.findById).toBeCalledTimes(1);
       expect(service.findById).toBeCalledWith(id);
     });
 
-    it('should return the result it gets back from challenges service', async () => {
+    it('should return the challenge returned by challenges service', async () => {
       const result = await resolver.challenge(id);
 
       expect(result).toBe(data.challenge);
@@ -75,7 +75,7 @@ describe('ChallengesResolver', () => {
       expect(service.findById).toBeCalledWith(id);
     });
 
-    it('should return the challenge it gets back from challenges service', async () => {
+    it('should return the challenge returned by challenges service', async () => {
       const result = await resolver.addChallenge(data.addChallengeInput);
 
       expect(result).toBe(data.challenge);
@@ -99,7 +99,7 @@ describe('ChallengesResolver', () => {
       expect(service.findById).toBeCalledWith(id);
     });
 
-    it('should return the challenge it gets back from challenges service', async () => {
+    it('should return the challenge returned by challenges service', async () => {
       mocks.mockFindById(service, data.updatedChallenge);
 
       const result = await resolver.updateChallenge(

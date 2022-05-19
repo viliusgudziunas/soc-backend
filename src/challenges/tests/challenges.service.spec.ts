@@ -1,7 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { challengesData as data } from 'src/shared/test-data';
-import { challengesMocks as mocks, sharedMocks } from 'src/shared/test-mocks';
+import { challengesMocks as mocks } from 'src/shared/test-mocks';
 import { Repository } from 'typeorm';
 import { Challenge } from '../challenge.entity';
 import { ChallengesService } from '../challenges.service';
@@ -32,39 +32,31 @@ describe('ChallengesService', () => {
   });
 
   describe('.findAll()', () => {
-    it('should try get all challenges from repository together with the relations', () => {
+    it('should try to get challenges and their relations from repository', () => {
       service.findAll();
 
       expect(repository.find).toBeCalledTimes(1);
       expect(repository.find).toBeCalledWith(relations);
     });
 
-    it('should return all challenges found by repository', async () => {
+    it('should return all challenges returned by repository', async () => {
       const result = await service.findAll();
 
       expect(result).toBe(data.challenges);
-    });
-
-    it('should return empty array when no challenges exist in repository', async () => {
-      sharedMocks.mockFind<Challenge>(repository, []);
-
-      const result = await service.findAll();
-
-      expect(result).toStrictEqual([]);
     });
   });
 
   describe('.findById()', () => {
     const { id } = data.challenge;
 
-    it('should try get a challenge from repository by id together with the relations', () => {
+    it('should try to get challenge and its relations from repository', () => {
       service.findById(id);
 
       expect(repository.findOneOrFail).toBeCalledTimes(1);
       expect(repository.findOneOrFail).toBeCalledWith(id, relations);
     });
 
-    it('should return the challenge it got back from repository', async () => {
+    it('should return the challenge returned by repository', async () => {
       const result = await service.findById(id);
 
       expect(result).toBe(data.challenge);
@@ -72,7 +64,7 @@ describe('ChallengesService', () => {
   });
 
   describe('.insert()', () => {
-    it('should try insert a new challenge into repository', () => {
+    it('should try to insert challenge into repository', () => {
       service.insert(data.insertChallengeParams);
 
       expect(repository.insert).toBeCalledTimes(1);
@@ -89,7 +81,7 @@ describe('ChallengesService', () => {
   });
 
   describe('.update()', () => {
-    it('should try to update a challenge in a repository', () => {
+    it('should try to update challenge via repository', () => {
       const { id } = data.challenge;
 
       service.update(id, data.updateChallengeParams);
