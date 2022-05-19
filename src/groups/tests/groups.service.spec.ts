@@ -61,4 +61,21 @@ describe('GroupsService', () => {
       expect(result).toBe(data.group);
     });
   });
+
+  describe('.insert()', () => {
+    it('should try to insert group into repository', () => {
+      service.insert(data.insertGroupParams);
+
+      expect(repository.insert).toBeCalledTimes(1);
+      expect(repository.insert).toBeCalledWith(data.insertGroupParams);
+    });
+
+    it('should return the id returned by repository', async () => {
+      const { id } = data.insertGroupResponse.identifiers[0];
+
+      const result = await service.insert(data.insertGroupParams);
+
+      expect(result).toBe(id);
+    });
+  });
 });

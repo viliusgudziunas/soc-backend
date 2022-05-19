@@ -57,4 +57,28 @@ describe('GroupsResolver', () => {
       expect(result).toBe(data.group);
     });
   });
+
+  describe('.addGroup() mutation', () => {
+    const { id } = data.group;
+
+    it('should try to insert group via groups service', () => {
+      resolver.addGroup(data.addGroupInput);
+
+      expect(service.insert).toBeCalledTimes(1);
+      expect(service.insert).toBeCalledWith(data.addGroupInput);
+    });
+
+    it('should try to find the inserted group via groups service', async () => {
+      await resolver.addGroup(data.addGroupInput);
+
+      expect(service.findById).toBeCalledTimes(1);
+      expect(service.findById).toBeCalledWith(id);
+    });
+
+    it('should return the group returned by groups service', async () => {
+      const result = await resolver.addGroup(data.addGroupInput);
+
+      expect(result).toBe(data.group);
+    });
+  });
 });

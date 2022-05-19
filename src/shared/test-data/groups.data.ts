@@ -1,4 +1,6 @@
-import { Group } from 'src/groups/group.entity';
+import { AddGroupInput, Group } from 'src/groups/group.entity';
+import { GroupParams } from 'src/groups/groups.types';
+import { InsertResult } from 'typeorm';
 
 export const group: Group = {
   id: 1,
@@ -8,3 +10,13 @@ export const group: Group = {
 };
 
 export const groups: Group[] = [group];
+
+export const addGroupInput: AddGroupInput = { name: 'Test group' };
+
+export const insertGroupParams: GroupParams = addGroupInput;
+
+export const insertGroupResponse: InsertResult = {
+  identifiers: [{ id: 1 }],
+  generatedMaps: [],
+  raw: {},
+};
