@@ -81,4 +81,30 @@ describe('GroupsResolver', () => {
       expect(result).toBe(data.group);
     });
   });
+
+  describe('.updateGroup() mutation', () => {
+    const { id } = data.group;
+
+    it('should try to update group via groups service', () => {
+      resolver.updateGroup(id, data.updateGroupInput);
+
+      expect(service.update).toBeCalledTimes(1);
+      expect(service.update).toBeCalledWith(id, data.updateGroupInput);
+    });
+
+    it('should try to find the updated group via groups service', async () => {
+      await resolver.updateGroup(id, data.updateGroupInput);
+
+      expect(service.findById).toBeCalledTimes(1);
+      expect(service.findById).toBeCalledWith(id);
+    });
+
+    it('should return the group returned by groups service', async () => {
+      mocks.mockFindById(service, data.updatedGroup);
+
+      const result = await resolver.updateGroup(id, data.updateGroupInput);
+
+      expect(result).toBe(data.updatedGroup);
+    });
+  });
 });

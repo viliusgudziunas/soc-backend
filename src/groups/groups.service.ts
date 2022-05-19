@@ -25,4 +25,9 @@ export class GroupsService {
     const result = await this.groupsRepository.insert(group);
     return result.identifiers[0].id;
   }
+
+  async update(id: number, params: Partial<GroupParams>): Promise<void> {
+    const partialEntity = { ...params };
+    await this.groupsRepository.update(id, partialEntity);
+  }
 }

@@ -31,9 +31,9 @@ export class ExercisesResolver {
   @Mutation(Exercise.returns.exercise)
   async updateExercise(
     @Args(Exercise.args.id) id: number,
-    @Args('exercise') exerciseUpdates: UpdateExerciseInput,
+    @Args('exercise') exercise: UpdateExerciseInput,
   ): Promise<Exercise> {
-    await this.exercisesService.update(id, exerciseUpdates);
+    await this.exercisesService.update(id, exercise);
     return this.exercisesService.findById(id);
   }
 }

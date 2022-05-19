@@ -1,5 +1,5 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { AddGroupInput, Group } from './group.entity';
+import { AddGroupInput, Group, UpdateGroupInput } from './group.entity';
 import { GroupsService } from './groups.service';
 
 @Resolver(() => Group)
@@ -19,6 +19,15 @@ export class GroupsResolver {
   @Mutation(Group.returns.group)
   async addGroup(@Args('group') group: AddGroupInput): Promise<Group> {
     const id = await this.groupsService.insert(group);
+    return this.groupsService.findById(id);
+  }
+
+  @Mutation(Group.returns.group)
+  async updateGroup(
+    @Args(Group.args.id) id: number,
+    @Args('group') group: UpdateGroupInput,
+  ): Promise<Group> {
+    await this.groupsService.update(id, group);
     return this.groupsService.findById(id);
   }
 }

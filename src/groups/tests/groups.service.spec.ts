@@ -78,4 +78,15 @@ describe('GroupsService', () => {
       expect(result).toBe(id);
     });
   });
+
+  describe('.update()', () => {
+    it('should try to update group via repository', () => {
+      const { id } = data.group;
+
+      service.update(id, data.updateGroupParams);
+
+      expect(repository.update).toBeCalledTimes(1);
+      expect(repository.update).toBeCalledWith(id, data.updateGroupParams);
+    });
+  });
 });

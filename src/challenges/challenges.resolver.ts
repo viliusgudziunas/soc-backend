@@ -31,9 +31,9 @@ export class ChallengesResolver {
   @Mutation(Challenge.returns.challenge)
   async updateChallenge(
     @Args(Challenge.args.id) id: number,
-    @Args('challenge') challengeUpdates: UpdateChallengeInput,
+    @Args('challenge') challenge: UpdateChallengeInput,
   ): Promise<Challenge> {
-    await this.challengesService.update(id, challengeUpdates);
+    await this.challengesService.update(id, challenge);
     return this.challengesService.findById(id);
   }
 }

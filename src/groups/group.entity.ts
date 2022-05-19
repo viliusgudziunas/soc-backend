@@ -3,6 +3,7 @@ import {
   InputType,
   ObjectType,
   OmitType,
+  PartialType,
   ReturnTypeFuncValue,
 } from '@nestjs/graphql';
 import { EntityBase } from 'src/shared/base.entity';
@@ -33,3 +34,6 @@ export class AddGroupInput extends OmitType(
   ['id', 'createdAt', 'updatedAt'],
   InputType,
 ) {}
+
+@InputType()
+export class UpdateGroupInput extends PartialType(AddGroupInput) {}

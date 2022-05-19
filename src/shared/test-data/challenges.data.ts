@@ -25,9 +25,7 @@ export const addChallengeInput: AddChallengeInput = {
   active: true,
 };
 
-export const insertChallengeParams: ChallengeParams = {
-  ...addChallengeInput,
-};
+export const insertChallengeParams: ChallengeParams = addChallengeInput;
 
 export const insertChallengeResponse: InsertResult = {
   identifiers: [{ id: 1 }],

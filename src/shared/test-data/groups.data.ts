@@ -1,4 +1,8 @@
-import { AddGroupInput, Group } from 'src/groups/group.entity';
+import {
+  AddGroupInput,
+  Group,
+  UpdateGroupInput,
+} from 'src/groups/group.entity';
 import { GroupParams } from 'src/groups/groups.types';
 import { InsertResult } from 'typeorm';
 
@@ -20,3 +24,11 @@ export const insertGroupResponse: InsertResult = {
   generatedMaps: [],
   raw: {},
 };
+
+export const updateGroupInput: UpdateGroupInput = {
+  name: 'Updated test group',
+};
+
+export const updateGroupParams: Partial<GroupParams> = updateGroupInput;
+
+export const updatedGroup: Group = { ...group, ...updateGroupInput };
