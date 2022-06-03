@@ -44,7 +44,6 @@ export class Exercise extends EntityBase {
     exercise: (): ReturnTypeFuncValue => Exercise,
     exercises: (): ReturnTypeFuncValue => [Exercise],
   };
-  static relations: string[] = ['challenge'];
 }
 
 @InputType()

@@ -22,6 +22,7 @@ export default (): Environment => ({
     synchronize: true,
     autoLoadEntities: true,
     ssl: false,
+    logging: false,
   },
   graphql: {
     autoSchemaFile: true,

@@ -11,7 +11,6 @@ describe('ExercisesService', () => {
   let service: ExercisesService;
 
   const REPOSITORY_TOKEN = getRepositoryToken(Exercise);
-  const relations = { relations: Exercise.relations };
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
@@ -32,15 +31,17 @@ describe('ExercisesService', () => {
   });
 
   describe('.findAll()', () => {
-    it('should try to get exercises and their relations from repository', () => {
-      service.findAll();
+    it('should try to get exercises from repository with relationships that were passed in', () => {
+      const expectedParams = { relations: data.relations };
+
+      service.findAll(data.relations);
 
       expect(repository.find).toBeCalledTimes(1);
-      expect(repository.find).toBeCalledWith(relations);
+      expect(repository.find).toBeCalledWith(expectedParams);
     });
 
     it('should return all exercises returned by repository', async () => {
-      const result = await service.findAll();
+      const result = await service.findAll([]);
 
       expect(result).toBe(data.exercises);
     });
@@ -50,14 +51,16 @@ describe('ExercisesService', () => {
     const { id } = data.exercise;
 
     it('should try to get exercise and its relations from repository', () => {
-      service.findById(id);
+      const expectedParams = { relations: data.relations };
+
+      service.findById(id, data.relations);
 
       expect(repository.findOneOrFail).toBeCalledTimes(1);
-      expect(repository.findOneOrFail).toBeCalledWith(id, relations);
+      expect(repository.findOneOrFail).toBeCalledWith(id, expectedParams);
     });
 
     it('should return the exercise returned by repository', async () => {
-      const result = await service.findById(id);
+      const result = await service.findById(id, data.relations);
 
       expect(result).toBe(data.exercise);
     });

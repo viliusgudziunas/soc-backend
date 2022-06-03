@@ -4,10 +4,8 @@ import {
   UpdateExerciseInput,
 } from 'src/exercises/exercise.entity';
 import { ExerciseParams } from 'src/exercises/exercises.types';
+import { challenge } from 'src/shared/test-data/challenges.data';
 import { InsertResult } from 'typeorm';
-import { challengesData } from '.';
-
-const challenge = challengesData.challenge;
 
 export const exercise: Exercise = {
   id: 1,
@@ -48,3 +46,5 @@ export const updatedExercise: Exercise = {
   ...exercise,
   ...updateExerciseInput,
 };
+
+export const relations: string[] = ['challenge'];
