@@ -15,7 +15,7 @@ describe('EntityNotFoundErrorFilter', () => {
     }).compile();
 
     filter = module.get<EntityNotFoundErrorFilter>(EntityNotFoundErrorFilter);
-    host = mocks.mockHost();
+    host = mocks.mockHost;
   });
 
   afterEach(() => jest.clearAllMocks());

@@ -15,7 +15,7 @@ describe('QueryFailedErrorFilter', () => {
     }).compile();
 
     filter = module.get<QueryFailedErrorFilter>(QueryFailedErrorFilter);
-    host = mocks.mockHost();
+    host = mocks.mockHost;
   });
 
   afterEach(() => jest.clearAllMocks());
