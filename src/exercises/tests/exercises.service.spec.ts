@@ -31,7 +31,7 @@ describe('ExercisesService', () => {
   });
 
   describe('.findAll()', () => {
-    it('should try to get exercises from repository with relationships that were passed in', () => {
+    it('should get exercises and passed in relations from repository', () => {
       const expectedParams = { relations: data.relations };
 
       service.findAll(data.relations);
@@ -50,7 +50,7 @@ describe('ExercisesService', () => {
   describe('.findById()', () => {
     const { id } = data.exercise;
 
-    it('should try to get exercise and its relations from repository', () => {
+    it('should get exercise and passed in relations from repository', () => {
       const expectedParams = { relations: data.relations };
 
       service.findById(id, data.relations);
@@ -67,7 +67,7 @@ describe('ExercisesService', () => {
   });
 
   describe('.insert()', () => {
-    it('should try to insert exercise into repository', () => {
+    it('should insert exercise into repository', () => {
       service.insert(data.insertExerciseParams);
 
       expect(repository.insert).toBeCalledTimes(1);
@@ -84,7 +84,7 @@ describe('ExercisesService', () => {
   });
 
   describe('.update()', () => {
-    it('should try to update exercise via repository', () => {
+    it('should update exercise via repository', () => {
       const { id } = data.exercise;
 
       service.update(id, data.updateExerciseParams);
