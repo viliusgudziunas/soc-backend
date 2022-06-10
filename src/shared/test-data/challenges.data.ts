@@ -4,6 +4,7 @@ import {
   UpdateChallengeInput,
 } from 'src/challenges/challenge.entity';
 import { ChallengeParams } from 'src/challenges/challenges.types';
+import { group } from 'src/shared/test-data/groups.data';
 import { InsertResult } from 'typeorm';
 
 export const challenge: Challenge = {
@@ -15,6 +16,8 @@ export const challenge: Challenge = {
   createdAt: new Date(),
   updatedAt: new Date(),
   exercises: [],
+  groupId: group.id,
+  group,
 };
 
 export const challenges: Challenge[] = [challenge];
@@ -23,6 +26,7 @@ export const addChallengeInput: AddChallengeInput = {
   name: 'Test challenge',
   description: 'Test challenge description',
   active: true,
+  groupId: 1,
 };
 
 export const insertChallengeParams: ChallengeParams = addChallengeInput;
@@ -45,3 +49,5 @@ export const updatedChallenge: Challenge = {
   ...challenge,
   ...updateChallengeInput,
 };
+
+export const relations: string[] = ['group', 'exercises'];

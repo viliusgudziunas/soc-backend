@@ -11,14 +11,12 @@ export class ChallengesService {
     private readonly challengesRepository: Repository<Challenge>,
   ) {}
 
-  findAll(): Promise<Challenge[]> {
-    return this.challengesRepository.find({ relations: Challenge.relations });
+  findAll(relations: string[]): Promise<Challenge[]> {
+    return this.challengesRepository.find({ relations });
   }
 
-  findById(id: number): Promise<Challenge> {
-    return this.challengesRepository.findOneOrFail(id, {
-      relations: Challenge.relations,
-    });
+  findById(id: number, relations: string[]): Promise<Challenge> {
+    return this.challengesRepository.findOneOrFail(id, { relations });
   }
 
   async insert(params: ChallengeParams): Promise<number> {

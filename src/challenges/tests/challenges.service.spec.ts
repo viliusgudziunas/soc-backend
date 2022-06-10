@@ -11,7 +11,6 @@ describe('ChallengesService', () => {
   let service: ChallengesService;
 
   const REPOSITORY_TOKEN = getRepositoryToken(Challenge);
-  const relations = { relations: Challenge.relations };
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
@@ -32,15 +31,17 @@ describe('ChallengesService', () => {
   });
 
   describe('.findAll()', () => {
-    it('should try to get challenges and their relations from repository', () => {
-      service.findAll();
+    it('should get challenges and passed in relations from repository', () => {
+      const expectedParams = { relations: data.relations };
+
+      service.findAll(data.relations);
 
       expect(repository.find).toBeCalledTimes(1);
-      expect(repository.find).toBeCalledWith(relations);
+      expect(repository.find).toBeCalledWith(expectedParams);
     });
 
     it('should return all challenges returned by repository', async () => {
-      const result = await service.findAll();
+      const result = await service.findAll([]);
 
       expect(result).toBe(data.challenges);
     });
@@ -49,22 +50,24 @@ describe('ChallengesService', () => {
   describe('.findById()', () => {
     const { id } = data.challenge;
 
-    it('should try to get challenge and its relations from repository', () => {
-      service.findById(id);
+    it('should get challenge and passed in relations from repository', () => {
+      const expectedParams = { relations: data.relations };
+
+      service.findById(id, data.relations);
 
       expect(repository.findOneOrFail).toBeCalledTimes(1);
-      expect(repository.findOneOrFail).toBeCalledWith(id, relations);
+      expect(repository.findOneOrFail).toBeCalledWith(id, expectedParams);
     });
 
     it('should return the challenge returned by repository', async () => {
-      const result = await service.findById(id);
+      const result = await service.findById(id, data.relations);
 
       expect(result).toBe(data.challenge);
     });
   });
 
   describe('.insert()', () => {
-    it('should try to insert challenge into repository', () => {
+    it('should insert challenge into repository', () => {
       service.insert(data.insertChallengeParams);
 
       expect(repository.insert).toBeCalledTimes(1);
@@ -81,7 +84,7 @@ describe('ChallengesService', () => {
   });
 
   describe('.update()', () => {
-    it('should try to update challenge via repository', () => {
+    it('should update challenge via repository', () => {
       const { id } = data.challenge;
 
       service.update(id, data.updateChallengeParams);

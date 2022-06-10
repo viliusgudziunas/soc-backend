@@ -6,8 +6,8 @@ import { ExercisesResolver } from '../exercises.resolver';
 import { ExercisesService } from '../exercises.service';
 
 describe('ExercisesResolver', () => {
-  let service: ExercisesService;
   let resolver: ExercisesResolver;
+  let service: ExercisesService;
   let relationsService: RelationsService;
 
   const fieldMap = {};
@@ -21,8 +21,8 @@ describe('ExercisesResolver', () => {
       ],
     }).compile();
 
-    service = module.get<ExercisesService>(ExercisesService);
     resolver = module.get<ExercisesResolver>(ExercisesResolver);
+    service = module.get<ExercisesService>(ExercisesService);
     relationsService = module.get<RelationsService>(RelationsService);
   });
 
@@ -115,7 +115,7 @@ describe('ExercisesResolver', () => {
   describe('.updateExercise() mutation', () => {
     const { id } = data.exercise;
 
-    it('should try to update exercise via exercises service', () => {
+    it('should update exercise via exercises service', () => {
       resolver.updateExercise(fieldMap, id, data.updateExerciseInput);
 
       expect(service.update).toBeCalledTimes(1);
@@ -123,13 +123,13 @@ describe('ExercisesResolver', () => {
     });
 
     it('should construct relations via relations service', async () => {
-      await resolver.updateExercise(fieldMap, id, data.addExerciseInput);
+      await resolver.updateExercise(fieldMap, id, data.updateExerciseInput);
 
       expect(relationsService.constructRelations).toBeCalledTimes(1);
       expect(relationsService.constructRelations).toBeCalledWith(fieldMap);
     });
 
-    it('should try to find the updated exercise via exercises service', async () => {
+    it('should find the updated exercise via exercises service', async () => {
       await resolver.updateExercise(fieldMap, id, data.updateExerciseInput);
 
       expect(service.findById).toBeCalledTimes(1);

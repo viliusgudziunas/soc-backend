@@ -21,3 +21,7 @@ export const mockFindById = (
   challenge: Challenge,
 ): jest.SpyInstance =>
   jest.spyOn(service, 'findById').mockResolvedValue(challenge);
+
+export const relationsServiceMock = {
+  constructRelations: jest.fn().mockReturnValue(data.relations),
+};
