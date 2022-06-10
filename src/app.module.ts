@@ -2,10 +2,15 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_FILTER } from '@nestjs/core';
-import { GraphQLModule } from '@nestjs/graphql';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { GqlModuleAsyncOptions, GraphQLModule } from '@nestjs/graphql';
+import {
+  TypeOrmModule,
+  TypeOrmModuleAsyncOptions,
+  TypeOrmModuleOptions,
+} from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthModule } from './auth/auth.module';
 import { ChallengesModule } from './challenges/challenges.module';
 import configuration from './config/configuration';
 import { EntityNotFoundErrorFilter } from './exception-filters/entity-not-found-error.filter';
@@ -13,21 +18,27 @@ import { QueryFailedErrorFilter } from './exception-filters/query-failed-error.f
 import { ExercisesModule } from './exercises/exercises.module';
 import { GroupsModule } from './groups/groups.module';
 
+const getTypeOrmOptions = (): TypeOrmModuleAsyncOptions => ({
+  imports: [ConfigModule],
+  useFactory: (config: ConfigService) => config.get<TypeOrmModuleOptions>('db'),
+  inject: [ConfigService],
+});
+
+const getGqlOptions = (): GqlModuleAsyncOptions => ({
+  driver: ApolloDriver,
+  imports: [ConfigModule],
+  useFactory: (config: ConfigService) =>
+    config.get<ApolloDriverConfig>('graphql'),
+  inject: [ConfigService],
+});
+
 @Module({
   imports: [
     ConfigModule.forRoot({ load: [configuration] }),
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: (config: ConfigService) => config.get('db'),
-      inject: [ConfigService],
-    }),
-    GraphQLModule.forRootAsync<ApolloDriverConfig>({
-      driver: ApolloDriver,
-      imports: [ConfigModule],
-      useFactory: (config: ConfigService) => config.get('graphql'),
-      inject: [ConfigService],
-    }),
+    TypeOrmModule.forRootAsync(getTypeOrmOptions()),
+    GraphQLModule.forRootAsync(getGqlOptions()),
 
+    AuthModule,
     ChallengesModule,
     ExercisesModule,
     GroupsModule,

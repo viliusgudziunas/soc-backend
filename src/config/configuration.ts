@@ -1,6 +1,12 @@
 import { join } from 'path';
 import { formatAppError } from 'src/app.errors';
-import { Environment } from './configuration.types';
+import { Auth0Config, Environment } from './configuration.types';
+
+const auth0: Auth0Config = {
+  issuerUrl: process.env.AUTH0_ISSUER_URL,
+  audience: process.env.AUTH0_AUDIENCE,
+  algorithms: ['RS256'],
+};
 
 export default (): Environment => ({
   port: Number(process.env.PORT),
@@ -24,8 +30,13 @@ export default (): Environment => ({
     ssl: false,
     logging: false,
   },
-  graphql: {
-    autoSchemaFile: true,
-    formatError: formatAppError,
+  graphql: { autoSchemaFile: true, formatError: formatAppError },
+  auth0,
+  jwt: {
+    cache: true,
+    rateLimit: true,
+    jwksRequestsPerMinute: 5,
+    jwksUri: `${auth0.issuerUrl}.well-known/jwks.json`,
   },
+  iAuth: { defaultStrategy: 'jwt' },
 });
