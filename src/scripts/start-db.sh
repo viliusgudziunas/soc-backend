@@ -21,7 +21,15 @@ then
     port=5432
 fi
 
-if [ "$mode" = "kill" ]
+if [ "$mode" = "start" ]
+then
+    echo "start docker [$SERVER]";
+    docker start $SERVER;
+elif [ "$mode" = "restart" ]
+then
+    echo "restart docker [$SERVER]";
+    docker restart $SERVER;
+elif [ "$mode" = "kill" ]
 then
     echo "stop & remove old docker [$SERVER] and starting new fresh instance of [$SERVER]"
     (docker kill $SERVER || :) && \
@@ -31,9 +39,6 @@ then
     -e PGPASSWORD=$PW \
     -p $port:5432 \
     -d postgres
-else
-    echo "restart docker [$SERVER]";
-    docker restart $SERVER;
 fi
 
 echo "sleep & wait for pg-server [$SERVER] to start";
