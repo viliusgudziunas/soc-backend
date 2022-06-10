@@ -11,12 +11,12 @@ export class GroupsService {
     private readonly groupsRepository: Repository<Group>,
   ) {}
 
-  findAll(): Promise<Group[]> {
-    return this.groupsRepository.find();
+  findAll(relations: string[]): Promise<Group[]> {
+    return this.groupsRepository.find({ relations });
   }
 
-  findById(id: number): Promise<Group> {
-    return this.groupsRepository.findOneOrFail(id);
+  findById(id: number, relations: string[]): Promise<Group> {
+    return this.groupsRepository.findOneOrFail(id, { relations });
   }
 
   async insert(params: GroupParams): Promise<number> {

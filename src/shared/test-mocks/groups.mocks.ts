@@ -20,3 +20,7 @@ export const mockFindById = (
   service: GroupsService,
   group: Group,
 ): jest.SpyInstance => jest.spyOn(service, 'findById').mockResolvedValue(group);
+
+export const relationsServiceMock = {
+  constructRelations: jest.fn().mockReturnValue(data.relations),
+};

@@ -31,15 +31,17 @@ describe('GroupsService', () => {
   });
 
   describe('.findAll()', () => {
-    it('should try to get groups from repository', () => {
-      service.findAll();
+    it('should get groups and passed in relations from repository', () => {
+      const expectedParams = { relations: data.relations };
+
+      service.findAll(data.relations);
 
       expect(repository.find).toBeCalledTimes(1);
-      expect(repository.find).toBeCalledWith();
+      expect(repository.find).toBeCalledWith(expectedParams);
     });
 
     it('should return all groups returned by repository', async () => {
-      const result = await service.findAll();
+      const result = await service.findAll([]);
 
       expect(result).toBe(data.groups);
     });
@@ -48,22 +50,24 @@ describe('GroupsService', () => {
   describe('.findById()', () => {
     const { id } = data.group;
 
-    it('should try to get group from repository', () => {
-      service.findById(id);
+    it('should get group and passed in relations from repository', () => {
+      const expectedParams = { relations: data.relations };
+
+      service.findById(id, data.relations);
 
       expect(repository.findOneOrFail).toBeCalledTimes(1);
-      expect(repository.findOneOrFail).toBeCalledWith(id);
+      expect(repository.findOneOrFail).toBeCalledWith(id, expectedParams);
     });
 
     it('should return the group returned by repository', async () => {
-      const result = await service.findById(id);
+      const result = await service.findById(id, data.relations);
 
       expect(result).toBe(data.group);
     });
   });
 
   describe('.insert()', () => {
-    it('should try to insert group into repository', () => {
+    it('should insert group into repository', () => {
       service.insert(data.insertGroupParams);
 
       expect(repository.insert).toBeCalledTimes(1);
@@ -80,7 +84,7 @@ describe('GroupsService', () => {
   });
 
   describe('.update()', () => {
-    it('should try to update group via repository', () => {
+    it('should update group via repository', () => {
       const { id } = data.group;
 
       service.update(id, data.updateGroupParams);

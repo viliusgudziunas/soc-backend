@@ -11,6 +11,7 @@ export const group: Group = {
   name: 'Test group',
   createdAt: new Date(),
   updatedAt: new Date(),
+  challenges: [],
 };
 
 export const groups: Group[] = [group];
@@ -32,3 +33,5 @@ export const updateGroupInput: UpdateGroupInput = {
 export const updateGroupParams: Partial<GroupParams> = updateGroupInput;
 
 export const updatedGroup: Group = { ...group, ...updateGroupInput };
+
+export const relations: string[] = ['challenges'];

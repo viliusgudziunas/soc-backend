@@ -6,8 +6,9 @@ import {
   PartialType,
   ReturnTypeFuncValue,
 } from '@nestjs/graphql';
+import { Challenge } from 'src/challenges/challenge.entity';
 import { EntityBase } from 'src/shared/base.entity';
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 import { GroupParams } from './groups.types';
 
 @ObjectType()
@@ -22,6 +23,10 @@ export class Group extends EntityBase {
     Object.assign(this, params);
   }
 
+  @Field(() => [Challenge], { nullable: true })
+  @OneToMany(() => Challenge, (challenge) => challenge.group)
+  challenges: Challenge[];
+
   static returns = {
     group: (): ReturnTypeFuncValue => Group,
     groups: (): ReturnTypeFuncValue => [Group],
@@ -31,7 +36,7 @@ export class Group extends EntityBase {
 @InputType()
 export class AddGroupInput extends OmitType(
   Group,
-  ['id', 'createdAt', 'updatedAt'],
+  ['id', 'createdAt', 'updatedAt', 'challenges'],
   InputType,
 ) {}
 

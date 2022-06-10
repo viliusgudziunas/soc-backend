@@ -79,7 +79,6 @@
     ],
     "coveragePathIgnorePatterns": [
       ".entity.ts",
-      ".model.ts",
       ".module.ts",
       ".spec.ts",
       "config/",
