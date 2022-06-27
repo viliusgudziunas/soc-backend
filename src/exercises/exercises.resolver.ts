@@ -1,4 +1,6 @@
+import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { FieldMap } from 'src/decorators/field-map.decorator';
 import { FieldMapType } from 'src/decorators/field-map.types';
 import { RelationsService } from 'src/services/relations.service';
@@ -9,6 +11,7 @@ import {
 } from './exercise.entity';
 import { ExercisesService } from './exercises.service';
 
+@UseGuards(JwtAuthGuard)
 @Resolver(() => Exercise)
 export class ExercisesResolver {
   constructor(

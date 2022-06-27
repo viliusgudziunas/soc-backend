@@ -1,7 +1,7 @@
 import { ArgumentsHost, HttpException, HttpStatus } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { locale } from 'src/shared/locale';
-import { exceptionFiltersMocks as mocks } from 'src/shared/test-mocks';
+import { executionContextMocks as mocks } from 'src/shared/test-mocks';
 import { QueryFailedError } from 'typeorm';
 import { QueryFailedErrorFilter } from './query-failed-error.filter';
 
@@ -24,7 +24,7 @@ describe('QueryFailedErrorFilter', () => {
     expect(filter).toBeDefined();
   });
 
-  describe('handle()', () => {
+  describe('.handle()', () => {
     const detail = 'Key (testKey)=(TestValue) already exists.';
 
     let error: QueryFailedError;

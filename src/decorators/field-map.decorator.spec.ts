@@ -1,12 +1,15 @@
 import { FieldNode } from 'graphql';
 import { fieldMapDecoratorData as data } from 'src/shared/test-data';
-import { fieldMapDecoratorMocks as mocks } from 'src/shared/test-mocks';
+import {
+  executionContextMocks,
+  fieldMapDecoratorMocks as mocks,
+} from 'src/shared/test-mocks';
 import { getNodeData, makeFieldMap } from './field-map.decorator';
 
 describe('FieldMap decorator', () => {
   afterEach(() => jest.clearAllMocks());
 
-  describe('getNodeData()', () => {
+  describe('.getNodeData()', () => {
     it('should return null if selectionNode was not provided', () => {
       const result = getNodeData(null as FieldNode);
 
@@ -38,13 +41,14 @@ describe('FieldMap decorator', () => {
     });
   });
 
-  describe('makeFieldMap()', () => {
-    const ctx = mocks.executionContextMock;
-    const getInfoMock = mocks.getInfoMock;
+  describe('.makeFieldMap()', () => {
+    const ctx = executionContextMocks.executionContextMock;
+    const getInfoMock = executionContextMocks.getInfoMock;
+    const gqlContextMock = { getInfo: getInfoMock };
 
     it('should create graphQL execution context with the passed in context', () => {
       const createContextMock =
-        mocks.mockGqlExecutionContextCreate(getInfoMock);
+        executionContextMocks.mockGqlExecutionContextCreate({});
 
       makeFieldMap(null, ctx);
 
@@ -53,7 +57,7 @@ describe('FieldMap decorator', () => {
     });
 
     it('should get info from graphQL execution context', () => {
-      mocks.mockGqlExecutionContextCreate(getInfoMock);
+      executionContextMocks.mockGqlExecutionContextCreate(gqlContextMock);
 
       makeFieldMap(null, ctx);
 
@@ -63,7 +67,7 @@ describe('FieldMap decorator', () => {
 
     it('should call getNodeData with the first node found in graphQL execution context info', () => {
       const getNodeDataMock = mocks.mockGetNodeData();
-      mocks.mockGqlExecutionContextCreate(getInfoMock);
+      executionContextMocks.mockGqlExecutionContextCreate(gqlContextMock);
 
       makeFieldMap(null, ctx);
 
@@ -75,7 +79,7 @@ describe('FieldMap decorator', () => {
 
     it('should return the object returned by getNodeData', () => {
       mocks.mockGetNodeData({});
-      mocks.mockGqlExecutionContextCreate(getInfoMock);
+      executionContextMocks.mockGqlExecutionContextCreate(gqlContextMock);
 
       const result = makeFieldMap(null, ctx);
 

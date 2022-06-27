@@ -19,7 +19,7 @@ describe('RelationsService', () => {
     expect(service).toBeDefined();
   });
 
-  describe('constructRelations()', () => {
+  describe('.constructRelations()', () => {
     it('should return an empty list if no relations are provided', () => {
       const result = service.constructRelations({});
 

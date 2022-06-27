@@ -1,7 +1,7 @@
 import { ArgumentsHost, HttpException, HttpStatus } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { locale } from 'src/shared/locale';
-import { exceptionFiltersMocks as mocks } from 'src/shared/test-mocks';
+import { executionContextMocks as mocks } from 'src/shared/test-mocks';
 import { EntityNotFoundError } from 'typeorm';
 import { EntityNotFoundErrorFilter } from './entity-not-found-error.filter';
 
@@ -24,7 +24,7 @@ describe('EntityNotFoundErrorFilter', () => {
     expect(filter).toBeDefined();
   });
 
-  describe('handle()', () => {
+  describe('.handle()', () => {
     const id = 1;
     const expectedMessage = locale.entityNotFoundMessage
       .replace('%entity', 'Object')

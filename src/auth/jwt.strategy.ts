@@ -14,11 +14,11 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       audience: configService.get<string>('auth0.audience'),
       issuer: configService.get<string>('auth0.issuerUrl'),
-      algorithms: configService.get<string[]>('auth0.issuerUrl'),
+      algorithms: configService.get<string[]>('auth0.algorithms'),
     });
   }
 
-  validate(payload: unknown): unknown {
+  async validate(payload: unknown): Promise<unknown> {
     return payload;
   }
 }

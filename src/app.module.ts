@@ -20,15 +20,15 @@ import { GroupsModule } from './groups/groups.module';
 
 const getTypeOrmOptions = (): TypeOrmModuleAsyncOptions => ({
   imports: [ConfigModule],
-  useFactory: (config: ConfigService) => config.get<TypeOrmModuleOptions>('db'),
+  useFactory: (config: ConfigService): TypeOrmModuleOptions => config.get('db'),
   inject: [ConfigService],
 });
 
 const getGqlOptions = (): GqlModuleAsyncOptions => ({
   driver: ApolloDriver,
   imports: [ConfigModule],
-  useFactory: (config: ConfigService) =>
-    config.get<ApolloDriverConfig>('graphql'),
+  useFactory: (config: ConfigService): ApolloDriverConfig =>
+    config.get('graphql'),
   inject: [ConfigService],
 });
 

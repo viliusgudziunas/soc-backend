@@ -5,18 +5,16 @@ import {
   IAuthModuleOptions,
   PassportModule,
 } from '@nestjs/passport';
-import { AuthController } from './auth.controller';
 import { JwtStrategy } from './jwt.strategy';
 
 const getAuthOptions = (): AuthModuleAsyncOptions => ({
   imports: [ConfigModule],
-  useFactory: (config: ConfigService) =>
-    config.get<IAuthModuleOptions>('iAuth'),
+  useFactory: (config: ConfigService): IAuthModuleOptions =>
+    config.get('iAuth'),
   inject: [ConfigService],
 });
 
 @Module({
-  controllers: [AuthController],
   imports: [ConfigModule, PassportModule.registerAsync(getAuthOptions())],
   providers: [JwtStrategy],
 })
