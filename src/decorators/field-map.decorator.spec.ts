@@ -42,24 +42,23 @@ describe('FieldMap decorator', () => {
   });
 
   describe('.makeFieldMap()', () => {
-    const ctx = executionContextMocks.executionContextMock;
+    const context = executionContextMocks.ExecutionContext;
     const getInfoMock = executionContextMocks.getInfoMock;
     const gqlContextMock = { getInfo: getInfoMock };
 
     it('should create graphQL execution context with the passed in context', () => {
-      const createContextMock =
-        executionContextMocks.mockGqlExecutionContextCreate({});
+      const createContextMock = executionContextMocks.mockCreateGqlContext({});
 
-      makeFieldMap(null, ctx);
+      makeFieldMap(null, context);
 
       expect(createContextMock).toHaveBeenCalledTimes(1);
-      expect(createContextMock).toHaveBeenCalledWith(ctx);
+      expect(createContextMock).toHaveBeenCalledWith(context);
     });
 
     it('should get info from graphQL execution context', () => {
-      executionContextMocks.mockGqlExecutionContextCreate(gqlContextMock);
+      executionContextMocks.mockCreateGqlContext(gqlContextMock);
 
-      makeFieldMap(null, ctx);
+      makeFieldMap(null, context);
 
       expect(getInfoMock).toHaveBeenCalledTimes(1);
       expect(getInfoMock).toHaveBeenCalledWith();
@@ -67,9 +66,9 @@ describe('FieldMap decorator', () => {
 
     it('should call getNodeData with the first node found in graphQL execution context info', () => {
       const getNodeDataMock = mocks.mockGetNodeData();
-      executionContextMocks.mockGqlExecutionContextCreate(gqlContextMock);
+      executionContextMocks.mockCreateGqlContext(gqlContextMock);
 
-      makeFieldMap(null, ctx);
+      makeFieldMap(null, context);
 
       const node = getInfoMock().fieldNodes[0];
 
@@ -79,9 +78,9 @@ describe('FieldMap decorator', () => {
 
     it('should return the object returned by getNodeData', () => {
       mocks.mockGetNodeData({});
-      executionContextMocks.mockGqlExecutionContextCreate(gqlContextMock);
+      executionContextMocks.mockCreateGqlContext(gqlContextMock);
 
-      const result = makeFieldMap(null, ctx);
+      const result = makeFieldMap(null, context);
 
       expect(result).toStrictEqual({});
     });

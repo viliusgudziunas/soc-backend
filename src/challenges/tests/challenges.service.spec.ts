@@ -16,7 +16,7 @@ describe('ChallengesService', () => {
     const module = await Test.createTestingModule({
       providers: [
         ChallengesService,
-        { provide: REPOSITORY_TOKEN, useValue: mocks.mockRepository },
+        { provide: REPOSITORY_TOKEN, useValue: mocks.Repository },
       ],
     }).compile();
 

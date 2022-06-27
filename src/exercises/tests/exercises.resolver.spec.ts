@@ -16,8 +16,8 @@ describe('ExercisesResolver', () => {
     const module = await Test.createTestingModule({
       providers: [
         ExercisesResolver,
-        { provide: ExercisesService, useValue: mocks.mockExercisesService },
-        { provide: RelationsService, useValue: mocks.relationsServiceMock },
+        { provide: ExercisesService, useValue: mocks.ExercisesService },
+        { provide: RelationsService, useValue: mocks.RelationsService },
       ],
     }).compile();
 

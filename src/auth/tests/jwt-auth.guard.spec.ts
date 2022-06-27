@@ -15,12 +15,12 @@ describe('JwtAuthGuard', () => {
   });
 
   describe('.getRequest()', () => {
-    const context = mocks.executionContextMock;
+    const context = mocks.ExecutionContext;
     const getContextMock = mocks.getContext;
     const gqlContextMock = { getContext: getContextMock };
 
     it('should create graphQL execution context with the passed in context', () => {
-      const createContextMock = mocks.mockGqlExecutionContextCreate({});
+      const createContextMock = mocks.mockCreateGqlContext({});
 
       guard.getRequest(context);
 
@@ -29,7 +29,7 @@ describe('JwtAuthGuard', () => {
     });
 
     it('should get context from graphQL execution context', () => {
-      mocks.mockGqlExecutionContextCreate(gqlContextMock);
+      mocks.mockCreateGqlContext(gqlContextMock);
 
       guard.getRequest(context);
 
@@ -38,7 +38,7 @@ describe('JwtAuthGuard', () => {
     });
 
     it('should return req from graphQL execution context', () => {
-      mocks.mockGqlExecutionContextCreate(gqlContextMock);
+      mocks.mockCreateGqlContext(gqlContextMock);
 
       const request = guard.getRequest(context);
 

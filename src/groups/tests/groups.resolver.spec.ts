@@ -16,8 +16,8 @@ describe('GroupsResolver', () => {
     const module = await Test.createTestingModule({
       providers: [
         GroupsResolver,
-        { provide: GroupsService, useValue: mocks.mockGroupsService },
-        { provide: RelationsService, useValue: mocks.relationsServiceMock },
+        { provide: GroupsService, useValue: mocks.GroupsService },
+        { provide: RelationsService, useValue: mocks.RelationsService },
       ],
     }).compile();
 

@@ -23,7 +23,7 @@ describe('JwtStrategy', () => {
     const module = await Test.createTestingModule({
       providers: [
         JwtStrategy,
-        { provide: ConfigService, useValue: mocks.configServiceMock },
+        { provide: ConfigService, useValue: mocks.ConfigService },
       ],
     }).compile();
 

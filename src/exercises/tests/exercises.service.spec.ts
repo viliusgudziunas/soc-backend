@@ -16,7 +16,7 @@ describe('ExercisesService', () => {
     const module = await Test.createTestingModule({
       providers: [
         ExercisesService,
-        { provide: REPOSITORY_TOKEN, useValue: mocks.mockRepository },
+        { provide: REPOSITORY_TOKEN, useValue: mocks.Repository },
       ],
     }).compile();
 

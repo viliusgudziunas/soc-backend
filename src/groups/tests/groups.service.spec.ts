@@ -16,7 +16,7 @@ describe('GroupsService', () => {
     const module = await Test.createTestingModule({
       providers: [
         GroupsService,
-        { provide: REPOSITORY_TOKEN, useValue: mocks.mockRepository },
+        { provide: REPOSITORY_TOKEN, useValue: mocks.Repository },
       ],
     }).compile();
 

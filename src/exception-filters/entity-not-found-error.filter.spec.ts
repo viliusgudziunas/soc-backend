@@ -15,7 +15,7 @@ describe('EntityNotFoundErrorFilter', () => {
     }).compile();
 
     filter = module.get<EntityNotFoundErrorFilter>(EntityNotFoundErrorFilter);
-    host = mocks.mockHost;
+    host = mocks.ArgumentsHost;
   });
 
   afterEach(() => jest.clearAllMocks());
@@ -34,7 +34,7 @@ describe('EntityNotFoundErrorFilter', () => {
 
     beforeEach(() => {
       error = new EntityNotFoundError(Object, id);
-      mocks.mockHostGetArgByIndex(host, { id });
+      mocks.mockGetArgByIndex(host, { id });
     });
 
     it('should return HttpException', () => {
