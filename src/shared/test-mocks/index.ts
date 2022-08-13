@@ -1,3 +1,4 @@
+import * as appMocks from './app.mocks';
 import * as challengesMocks from './challenges.mocks';
 import * as configMocks from './config.mocks';
 import * as executionContextMocks from './execution-context.mocks';
@@ -6,6 +7,7 @@ import * as fieldMapDecoratorMocks from './field-map.decorator.mocks';
 import * as groupsMocks from './groups.mocks';
 
 export {
+  appMocks,
   challengesMocks,
   configMocks,
   executionContextMocks,

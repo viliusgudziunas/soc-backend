@@ -8,8 +8,6 @@ import {
   TypeOrmModuleAsyncOptions,
   TypeOrmModuleOptions,
 } from '@nestjs/typeorm';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { ChallengesModule } from './challenges/challenges.module';
 import configuration from './config/configuration';
@@ -17,6 +15,7 @@ import { EntityNotFoundErrorFilter } from './exception-filters/entity-not-found-
 import { QueryFailedErrorFilter } from './exception-filters/query-failed-error.filter';
 import { ExercisesModule } from './exercises/exercises.module';
 import { GroupsModule } from './groups/groups.module';
+import { HealthModule } from './health/health.module';
 
 const getTypeOrmOptions = (): TypeOrmModuleAsyncOptions => ({
   imports: [ConfigModule],
@@ -42,11 +41,9 @@ const getGqlOptions = (): GqlModuleAsyncOptions => ({
     ChallengesModule,
     ExercisesModule,
     GroupsModule,
+    HealthModule,
   ],
-  controllers: [AppController],
   providers: [
-    AppService,
-
     { provide: APP_FILTER, useClass: EntityNotFoundErrorFilter },
     { provide: APP_FILTER, useClass: QueryFailedErrorFilter },
   ],

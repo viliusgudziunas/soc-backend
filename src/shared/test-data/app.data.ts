@@ -1,3 +1,4 @@
+import { HealthCheckResult, HealthIndicatorResult } from '@nestjs/terminus';
 import { GraphQLError } from 'graphql';
 
 export const gqlError: GraphQLError = {
@@ -15,4 +16,15 @@ export const gqlError: GraphQLError = {
   positions: undefined,
   source: undefined,
   toJSON: undefined,
+};
+
+export const appHealth: HealthCheckResult = {
+  status: 'ok',
+  info: { database: { status: 'up' } },
+  error: {},
+  details: { database: { status: 'up' } },
+};
+
+export const dbHealthCheckResult: HealthIndicatorResult = {
+  database: { status: 'up' },
 };
