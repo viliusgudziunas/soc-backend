@@ -13,15 +13,17 @@
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
-    "start:db:dev": "./src/scripts/start-db.sh -e dev -m start",
-    "start:db:prod": "./src/scripts/start-db.sh -e prod -m start",
-    "restart:db:dev": "./src/scripts/start-db.sh -e dev -m restart",
+    "db:dev:create": "./src/scripts/start-db.sh -e dev -m create",
+    "db:dev:start": "./src/scripts/start-db.sh -e dev -m start",
+    "db:dev:restart": "./src/scripts/start-db.sh -e dev -m restart",
+    "db:prod:start": "./src/scripts/start-db.sh -e prod -m start",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "test:e2e:watch": "jest --config ./test/jest-e2e.json --watch"
   },
   "dependencies": {
     "@nestjs/apollo": "10.0.8",

@@ -29,7 +29,7 @@ elif [ "$mode" = "restart" ]
 then
     echo "restart docker [$SERVER]";
     docker restart $SERVER;
-elif [ "$mode" = "kill" ]
+elif [ "$mode" = "create" ]
 then
     echo "stop & remove old docker [$SERVER] and starting new fresh instance of [$SERVER]"
     (docker kill $SERVER || :) && \
@@ -44,7 +44,7 @@ fi
 echo "sleep & wait for pg-server [$SERVER] to start";
 sleep 3;
 
-if [ "$mode" = "kill" ]
+if [ "$mode" = "create" ]
 then
     echo "CREATE DATABASE $DB ENCODING 'UTF-8';" | docker exec -i $SERVER psql -U postgres
     echo "\l" | docker exec -i $SERVER psql -U postgres
